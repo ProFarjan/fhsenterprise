@@ -8,8 +8,8 @@ export default function MissionVisionPage() {
   const tAbout = useTranslations("aboutPages");
 
   const bands = [
-    { label: tAbout("mission"), text: missionVision.mission, image: "/images/gallery/overview.png" },
-    { label: tAbout("vision"), text: missionVision.vision, image: "/images/gallery/distribution.jpg" },
+    { label: tAbout("mission"), text: missionVision.mission, image: "/images/gallery/fhs_mission.jpg" },
+    { label: tAbout("vision"), text: missionVision.vision, image: "/images/gallery/fhs_vision.jpg" },
   ];
 
   return (

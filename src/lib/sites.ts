@@ -5,15 +5,10 @@ import { SiteKey } from "@/generated/prisma/enums";
 // with COMPANY_SUBDOMAINS in src/lib/companies.ts (MR_GROUP is the one entry
 // with no subdomain, for content not tied to a subsidiary).
 export const SITE_OPTIONS: { key: SiteKey; label: string }[] = [
-  { key: SiteKey.MR_GROUP, label: "MR Group" },
-  { key: SiteKey.AGRO, label: "Rabeya Agro" },
-  { key: SiteKey.FEED, label: "MR Feed" },
-  { key: SiteKey.AGRO_MEDICINE, label: "MR Chemical (Agro Medicine)" },
-  { key: SiteKey.FILLING_STATION, label: "Sattar Filling Station" },
-  { key: SiteKey.AGRI_TECH, label: "MR Agri Technology" },
-  { key: SiteKey.MR_LUBE, label: "MR Lube" },
-  { key: SiteKey.MAHIN, label: "Mahin Enterprise (LPG)" },
-  { key: SiteKey.RAHIM, label: "Rahim Enterprise (Ammonia)" },
+  { key: SiteKey.FHS_ENTERPRISE, label: "FHS Enterprise" },
+  { key: SiteKey.AUTO_RICE_MILL, label: "M/s. Bangladesh Auto Rice Mill" },
+  { key: SiteKey.VEHICLE_SOLUTIONS, label: "Vehicle Solutions" },
+  { key: SiteKey.DAILY_BAZAR, label: "Daily Bazar" },
 ];
 
 const LABEL_BY_KEY = new Map(SITE_OPTIONS.map((o) => [o.key, o.label]));

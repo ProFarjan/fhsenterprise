@@ -15,7 +15,7 @@ import { parseProductBenefits, parseProductSpecs } from "@/lib/productJson";
 import { getSiteConfig } from "@/data/site";
 import type { AppLocale } from "@/i18n/routing";
 import type { Company, FaqItem } from "@/types/content";
-import type { AgroMedProduct } from "@/types/agromed";
+
 
 export type PublicNewsItem = {
   id: number;
@@ -32,7 +32,7 @@ const NEWS_HREF = "/media/news";
 
 export async function getMrGroupNews(limit?: number): Promise<PublicNewsItem[]> {
   const rows = await prisma.newsItem.findMany({
-    where: { site: SiteKey.MR_GROUP },
+    where: { site: SiteKey.FHS_ENTERPRISE },
     orderBy: { date: "desc" },
     take: limit,
     select: { title: true, excerpt: true, date: true, id: true },
@@ -65,7 +65,7 @@ export async function getMrGroupGallery(): Promise<{
   photos: PublicGalleryPhoto[];
   videos: PublicGalleryVideo[];
 }> {
-  return getSiteGallery(SiteKey.MR_GROUP);
+  return getSiteGallery(SiteKey.FHS_ENTERPRISE);
 }
 
 // Same as getMrGroupGallery but parameterised by site — used by the
@@ -107,7 +107,7 @@ export async function getSiteGallery(site: SiteKey): Promise<{
 // hero/banner helpers keep the bespoke static content as a fallback.
 export async function getFaqs(
   locale: AppLocale,
-  site: SiteKey = SiteKey.MR_GROUP,
+  site: SiteKey = SiteKey.FHS_ENTERPRISE,
 ): Promise<FaqItem[]> {
   const rows = await prisma.faqItem.findMany({
     where: { site, isPublished: true },
@@ -135,7 +135,7 @@ export type PublicEvent = {
 };
 
 export async function getMrGroupEvents(): Promise<PublicEvent[]> {
-  return getSiteEvents(SiteKey.MR_GROUP);
+  return getSiteEvents(SiteKey.FHS_ENTERPRISE);
 }
 
 // Same as getMrGroupEvents but parameterised by site — used by subsidiary
@@ -171,7 +171,13 @@ const BANNER_FALLBACK: Record<string, string> = {
   mahin: "/images/companies/mahin-banner.svg",
   rahim: "/images/companies/rahim-banner.svg",
 };
-const LOGO_FALLBACK = "/logos/placeholder.svg";
+const LOGO_FALLBACK = "/logos/fhs_logo.png";
+
+const COMPANY_LOGO_FALLBACK: Record<string, string> = {
+  "auto-rice-mill": "/logos/rice-mill.png",
+  "vehicle-solutions": "/logos/vehicle_solutions.svg",
+  "daily-bazar.fhsenterprise.com": "/logos/daily_bazar.svg",
+};
 
 // Published subsidiary companies for the parent site's company cards (see
 // CompanyExplorer and the homepage Companies carousel). Backed by the
@@ -202,14 +208,17 @@ export async function getCompanies(locale: AppLocale): Promise<Company[]> {
     // keeps serving the old image. Version the URL by `updatedAt` to bust
     // both caches whenever the row (and thus its images) changes.
     const v = row.updatedAt.getTime();
+    
+    const fallbackLogo = COMPANY_LOGO_FALLBACK[row.subdomain] ?? LOGO_FALLBACK;
+    
     return {
       name: locale === "en" ? row.nameEn : row.nameBn,
       sector: locale === "en" ? row.sectorEn : row.sectorBn,
       description: locale === "en" ? row.descriptionEn : row.descriptionBn,
-      logo: row.logoMimeType ? `/api/companies/${row.id}/logo?v=${v}` : LOGO_FALLBACK,
+      logo: row.logoMimeType ? `/api/companies/${row.id}/logo?v=${v}` : fallbackLogo,
       image: row.bannerMimeType
         ? `/api/companies/${row.id}/banner?v=${v}`
-        : (BANNER_FALLBACK[row.subdomain] ?? LOGO_FALLBACK),
+        : (BANNER_FALLBACK[row.subdomain] ?? fallbackLogo),
       subdomain: row.subdomain,
     };
   });
@@ -314,29 +323,3 @@ export async function getSimpleDbProducts(site: SiteKey): Promise<SimpleDbProduc
   }));
 }
 
-// AgroMedProduct is richer than the shared shape above (pharma-specific
-// fields the admin Product form doesn't collect — form, pack, composition,
-// overview, indications, directions, storage, icon). Admin-added products
-// get sensible placeholders for those so the detail page still renders
-// without crashing; a future iteration could expose them in the admin form
-// if AgroMed's public catalogue needs to be fully admin-managed.
-export async function getAgroMedDbProducts(): Promise<AgroMedProduct[]> {
-  const products = await getSimpleDbProducts(SiteKey.AGRO_MEDICINE);
-
-  return products.map((p) => ({
-    slug: p.slug,
-    category: p.category,
-    name: p.name,
-    tagline: p.tagline,
-    form: "—",
-    pack: "—",
-    composition: "—",
-    benefits: p.benefits,
-    icon: "shield",
-    image: p.image,
-    overview: p.description,
-    indications: [],
-    directions: "—",
-    storage: "—",
-  }));
-}

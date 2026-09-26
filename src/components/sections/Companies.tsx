@@ -73,6 +73,7 @@ export default function Companies({ companies }: { companies: Company[] }) {
             <a
               key={company.name}
               href={companyUrl(company.subdomain, locale)}
+              target={company.subdomain.includes(".") ? "_blank" : undefined}
               className="group flex h-40 w-40 flex-none items-center justify-center rounded-2xl bg-white p-6 shadow-sm ring-1 ring-neutral-200 transition-shadow hover:shadow-lg sm:h-44 sm:w-44"
             >
               <Image

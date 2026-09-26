@@ -32,6 +32,8 @@ function SubmitButton() {
   );
 }
 
+import { SiteKey } from "@/generated/prisma/enums";
+
 export default function EditProductModal({
   product,
   onClose,
@@ -43,7 +45,7 @@ export default function EditProductModal({
 }) {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageFileError, setImageFileError] = useState<string | null>(null);
-  const categories = categoriesForSite(product.site);
+  const categories = categoriesForSite(product.site as SiteKey);
 
   const action = async (prev: ProductFormState, formData: FormData) => {
     const result = await updateProductAction(prev, formData);

@@ -26,28 +26,16 @@ export type EventFormState = { error?: string; success?: boolean };
 // MR_GROUP, FILLING_STATION, and AGRO are wired to public pages so far.
 function revalidatePublicMediaPaths(site: string) {
   for (const locale of routing.locales) {
-    if (site === SiteKey.MR_GROUP) {
+    if (site === SiteKey.FHS_ENTERPRISE) {
       revalidatePath(`/${locale}`);
       revalidatePath(`/${locale}/media`);
       revalidatePath(`/${locale}/media/news`);
       revalidatePath(`/${locale}/media/gallery`);
       revalidatePath(`/${locale}/media/events`);
-    } else if (site === SiteKey.FILLING_STATION) {
-      revalidatePath(`/${locale}/companies/filling-station/gallery`);
-    } else if (site === SiteKey.AGRO) {
-      revalidatePath(`/${locale}/companies/agro/gallery`);
-    } else if (site === SiteKey.AGRO_MEDICINE) {
-      revalidatePath(`/${locale}/companies/agro-medicine/gallery`);
-    } else if (site === SiteKey.FEED) {
-      revalidatePath(`/${locale}/companies/feed/gallery`);
-    } else if (site === SiteKey.AGRI_TECH) {
-      revalidatePath(`/${locale}/companies/tech/gallery`);
-    } else if (site === SiteKey.MR_LUBE) {
-      revalidatePath(`/${locale}/companies/lube/gallery`);
-    } else if (site === SiteKey.MAHIN) {
-      revalidatePath(`/${locale}/companies/mahin/gallery`);
-    } else if (site === SiteKey.RAHIM) {
-      revalidatePath(`/${locale}/companies/rahim/gallery`);
+    } else if (site === SiteKey.AUTO_RICE_MILL) {
+      revalidatePath(`/${locale}/companies/auto-rice-mill/gallery`);
+    } else if (site === SiteKey.VEHICLE_SOLUTIONS) {
+      revalidatePath(`/${locale}/companies/vehicle-solutions/gallery`);
     }
   }
 }
@@ -219,3 +207,4 @@ export async function deleteEventAction(formData: FormData): Promise<void> {
   }
   revalidatePath("/admin/media");
 }
+

@@ -20,14 +20,9 @@ const prisma = new PrismaClient({
 });
 
 const SUBDOMAIN_TO_SITE: Record<string, SiteKey> = {
-  agro: SiteKey.AGRO,
-  "filling-station": SiteKey.FILLING_STATION,
-  "agro-medicine": SiteKey.AGRO_MEDICINE,
-  feed: SiteKey.FEED,
-  tech: SiteKey.AGRI_TECH,
-  lube: SiteKey.MR_LUBE,
-  mahin: SiteKey.MAHIN,
-  rahim: SiteKey.RAHIM,
+  "auto-rice-mill": SiteKey.AUTO_RICE_MILL,
+  "vehicle-solutions": SiteKey.VEHICLE_SOLUTIONS,
+  "daily-bazar.fhsenterprise.com": SiteKey.DAILY_BAZAR,
 };
 
 async function main() {

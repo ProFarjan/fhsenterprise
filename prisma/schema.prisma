@@ -69,15 +69,10 @@ model Session {
 // subsidiary (e.g. the parent site's own news). Keep in sync with the
 // display-name mapping in src/lib/sites.ts.
 enum SiteKey {
-  MR_GROUP
-  AGRO
-  AGRO_MEDICINE
-  FEED
-  FILLING_STATION
-  AGRI_TECH
-  MR_LUBE
-  MAHIN
-  RAHIM
+  FHS_ENTERPRISE
+  AUTO_RICE_MILL
+  VEHICLE_SOLUTIONS
+  DAILY_BAZAR
 }
 
 enum MediaType {
@@ -284,7 +279,7 @@ model Product {
 // site with a public FAQ page today — but exists for future per-site reuse.
 model FaqItem {
   id   Int     @id @default(autoincrement())
-  site SiteKey @default(MR_GROUP)
+  site SiteKey @default(FHS_ENTERPRISE)
 
   questionEn String @db.VarChar(500)
   questionBn String @db.VarChar(500)

@@ -16,13 +16,13 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-6 py-14 lg:px-8">
         <div className="grid gap-10 md:grid-cols-3">
           <div>
-            <Link href="/" className="inline-flex items-center rounded-lg bg-white px-3 py-1.5">
+            <Link href="/" className="inline-flex items-center rounded-lg bg-white px-2 py-1">
               <Image
-                src="/logos/logo-navbar.png"
+                src="/logos/fhs_logo.png"
                 alt={siteConfig.groupName}
-                width={800}
-                height={540}
-                className="h-10 w-auto"
+                width={400}
+                height={400}
+                className="h-14 w-auto object-contain"
               />
             </Link>
             <p className="mt-4 max-w-xs text-sm text-neutral-400">{siteConfig.tagline}</p>

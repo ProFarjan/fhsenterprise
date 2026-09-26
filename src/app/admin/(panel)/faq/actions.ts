@@ -55,7 +55,7 @@ export async function createFaqAction(
 
   await prisma.faqItem.create({
     data: {
-      site: SiteKey.MR_GROUP,
+      site: SiteKey.FHS_ENTERPRISE,
       questionEn: fields.questionEn,
       questionBn: fields.questionBn,
       answerEn: fields.answerEn,

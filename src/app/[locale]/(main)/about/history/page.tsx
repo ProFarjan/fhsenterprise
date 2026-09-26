@@ -12,8 +12,8 @@ export default function HistoryPage() {
         {/* Sticky image */}
         <div className="relative aspect-[4/5] overflow-hidden rounded-3xl shadow-2xl ring-1 ring-black/5 lg:sticky lg:top-24">
           <Image
-            src="/images/gallery/history.png"
-            alt=""
+            src="/images/gallery/fhs_history.jpg"
+            alt="FHS Enterprise History"
             fill
             sizes="(min-width: 1024px) 50vw, 100vw"
             className="object-cover"

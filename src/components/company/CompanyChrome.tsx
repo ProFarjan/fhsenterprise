@@ -15,6 +15,7 @@ export default async function CompanyChrome({
   locale,
   theme,
   rootDomain,
+  logo,
   children,
 }: {
   name: string;
@@ -22,6 +23,7 @@ export default async function CompanyChrome({
   locale: AppLocale;
   theme: CompanyTheme;
   rootDomain: string;
+  logo?: string | null;
   children: React.ReactNode;
 }) {
   const t = await getTranslations({ locale, namespace: "companySite" });
@@ -32,11 +34,11 @@ export default async function CompanyChrome({
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 lg:px-8">
           <a href={`//${rootDomain}/${locale}`} className="flex items-center gap-3">
             <Image
-              src="/logos/placeholder.svg"
+              src={logo || "/logos/fhs_logo.png"}
               alt={name}
-              width={36}
-              height={36}
-              className="h-9 w-9"
+              width={100}
+              height={100}
+              className="h-10 w-10 sm:h-12 sm:w-12 object-contain"
             />
             <span className="text-lg font-bold tracking-tight">{name}</span>
           </a>

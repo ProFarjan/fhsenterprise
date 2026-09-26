@@ -5,7 +5,7 @@ import type { FaqCardData } from "@/components/admin/faq/FaqCard";
 
 export default async function AdminFaqPage() {
   const rows = await prisma.faqItem.findMany({
-    where: { site: SiteKey.MR_GROUP },
+    where: { site: SiteKey.FHS_ENTERPRISE },
     orderBy: [{ order: "asc" }, { createdAt: "asc" }],
     select: {
       id: true,

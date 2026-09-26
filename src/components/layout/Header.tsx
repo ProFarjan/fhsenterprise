@@ -83,14 +83,14 @@ export default function Header() {
       </div>
 
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
-        <Link href="/" className="flex items-center rounded-lg bg-white px-3 py-1.5">
+        <Link href="/" className="flex items-center rounded-lg bg-white px-2 py-1">
           <Image
-            src="/logos/logo-navbar.png"
+            src="/logos/fhs_logo.png"
             alt={siteConfig.groupName}
-            width={800}
-            height={540}
+            width={400}
+            height={400}
             priority
-            className="h-9 w-auto sm:h-10"
+            className="h-12 w-auto sm:h-14 object-contain"
           />
         </Link>
 

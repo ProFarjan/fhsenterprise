@@ -6,6 +6,7 @@ import Modal from "@/components/admin/Modal";
 import { validateImageFileSync } from "@/lib/imageUpload";
 import { categoriesForSite } from "@/lib/productCategories";
 import { createProductAction, type ProductFormState } from "@/app/admin/(panel)/products/actions";
+import { SiteKey } from "@/generated/prisma/enums";
 
 const inputClass =
   "w-full rounded-lg border border-neutral-200 bg-white px-3.5 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-orange-400 focus:ring-2 focus:ring-orange-500/20 focus:outline-none";
@@ -35,7 +36,7 @@ export default function CreateProductModal({
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageFileError, setImageFileError] = useState<string | null>(null);
   const [site, setSite] = useState("");
-  const categories = categoriesForSite(site);
+  const categories = categoriesForSite(site as SiteKey);
 
   const action = async (prev: ProductFormState, formData: FormData) => {
     const result = await createProductAction(prev, formData);

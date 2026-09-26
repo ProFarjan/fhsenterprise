@@ -33,13 +33,13 @@
   "pageHeaders": {
     "about": {
       "eyebrow": "Who We Are",
-      "title": "About MR Group",
+      "title": "About FHS Enterprise",
       "description": "Our history, mission, milestones, and facilities — all in one place."
     },
     "media": {
       "eyebrow": "Media Center",
       "title": "News, Events & Gallery",
-      "description": "The latest stories, milestones, and moments from across MR Group."
+      "description": "The latest stories, milestones, and moments from across FHS Enterprise."
     },
     "sustainability": {
       "eyebrow": "Sustainability",
@@ -48,7 +48,7 @@
     },
     "companies": {
       "eyebrow": "Our Portfolio",
-      "title": "Companies of MR Group",
+      "title": "Companies of FHS Enterprise",
       "description": "A diversified family of businesses spanning agriculture, energy, food, textiles, and more — united under one group."
     }
   },
@@ -78,7 +78,7 @@
       "headingPrefix": "Our Products",
       "headingHighlight": "& Supplies",
       "subheading": "eight companies, one supply chain",
-      "description": "MR Group works across agriculture, energy, and industrial supply — feed and agro medicine for farmers, machinery and lubricants for the field, and LPG, ammonia, and fuel for homes and industry."
+      "description": "FHS Enterprise works across agriculture, energy, and industrial supply — feed and agro medicine for farmers, machinery and lubricants for the field, and LPG, ammonia, and fuel for homes and industry."
     },
     "stats": {
       "badge": "By The Numbers",
@@ -89,7 +89,7 @@
       "badge": "Media Center",
       "headingPrefix": "Latest",
       "headingHighlight": "News",
-      "description": "Stay up to date with announcements, milestones, and stories from across the MR Group family of companies.",
+      "description": "Stay up to date with announcements, milestones, and stories from across the FHS Enterprise family of companies.",
       "viewAll": "View All News"
     },
     "contact": { "badge": "Get in Touch" }
@@ -144,10 +144,11 @@
     "headOffice": "Head Office"
   },
   "companySite": {
-    "backToGroup": "MR Group ↗",
+    "backToGroup": "FHS Enterprise ↗",
     "partOf": "A company of",
     "email": "Email",
     "phone": "Phone",
     "address": "Address"
   }
 }
+
