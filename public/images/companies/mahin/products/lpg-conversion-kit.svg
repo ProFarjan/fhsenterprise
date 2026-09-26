@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <linearGradient id="bg-prod-lpg-conversion-kit" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f4f6f9"/>
+      <stop offset="55%" stop-color="#e9edf3"/>
+      <stop offset="100%" stop-color="#e0e5ec"/>
+    </linearGradient>
+    <linearGradient id="flame-prod-lpg-conversion-kit" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f26a1b" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#f26a1b" stop-opacity="0.9"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg-prod-lpg-conversion-kit)"/>
+  <g stroke="#132033" stroke-opacity="0.05" stroke-width="1">
+    <line x1="0" y1="0" x2="0" y2="600"/>
+    <line x1="100" y1="0" x2="100" y2="600"/>
+    <line x1="200" y1="0" x2="200" y2="600"/>
+    <line x1="300" y1="0" x2="300" y2="600"/>
+    <line x1="400" y1="0" x2="400" y2="600"/>
+    <line x1="500" y1="0" x2="500" y2="600"/>
+    <line x1="600" y1="0" x2="600" y2="600"/>
+    <line x1="700" y1="0" x2="700" y2="600"/>
+    <line x1="800" y1="0" x2="800" y2="600"/>
+    <line x1="0" y1="0" x2="800" y2="0"/>
+    <line x1="0" y1="100" x2="800" y2="100"/>
+    <line x1="0" y1="200" x2="800" y2="200"/>
+    <line x1="0" y1="300" x2="800" y2="300"/>
+    <line x1="0" y1="400" x2="800" y2="400"/>
+    <line x1="0" y1="500" x2="800" y2="500"/>
+    <line x1="0" y1="600" x2="800" y2="600"/>
+  </g>
+  <g transform="rotate(4 400 151)">
+    <rect x="-40" y="151" width="880" height="10" fill="url(#flame-prod-lpg-conversion-kit)"/>
+    <rect x="-40" y="169" width="880" height="3" fill="#f26a1b" fill-opacity="0.35"/>
+  </g>
+  <g transform="translate(250 150) scale(12.5)" fill="none" stroke="#132033" stroke-opacity="0.85" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20.5 6.5a5 5 0 0 0-6.7 5.7L5 21l-2-2 8.8-8.8A5 5 0 0 0 17.5 3.5l-3 3-3-3 3-3"/>
+  </g>
+  <g font-family="Segoe UI, system-ui, Arial, sans-serif" text-anchor="middle">
+    <text x="400" y="500" fill="#132033" font-size="34" font-weight="700" letter-spacing="0.5">LPG CONVERSION KIT</text>
+    <text x="400" y="534" fill="#f26a1b" font-size="16" font-weight="700" letter-spacing="3">MAHIN ENTERPRISE</text>
+  </g>
+</svg>

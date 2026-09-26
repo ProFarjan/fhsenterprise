@@ -1,0 +1,153 @@
+{
+  "nav": {
+    "contactUs": "Contact Us",
+    "toggleMenu": "Toggle navigation menu",
+    "language": "Language"
+  },
+  "hero": {
+    "goToSlide": "Go to slide {n}",
+    "prevSlide": "Previous slide",
+    "nextSlide": "Next slide"
+  },
+  "footer": {
+    "navigation": "Navigation",
+    "contact": "Contact",
+    "rights": "All rights reserved."
+  },
+  "tabs": {
+    "overview": "Overview",
+    "history": "History",
+    "founder": "About Founder",
+    "missionVision": "Mission & Vision",
+    "milestones": "Milestones",
+    "facilities": "Facilities",
+    "faq": "FAQ",
+    "news": "News",
+    "events": "Events",
+    "gallery": "Gallery",
+    "health": "Health",
+    "education": "Education",
+    "communityDevelopment": "Community Development",
+    "environment": "Environment"
+  },
+  "pageHeaders": {
+    "about": {
+      "eyebrow": "Who We Are",
+      "title": "About MR Group",
+      "description": "Our history, mission, milestones, and facilities — all in one place."
+    },
+    "media": {
+      "eyebrow": "Media Center",
+      "title": "News, Events & Gallery",
+      "description": "The latest stories, milestones, and moments from across MR Group."
+    },
+    "sustainability": {
+      "eyebrow": "Sustainability",
+      "title": "Building a Better Tomorrow",
+      "description": "Our commitment to health, education, community, and the environment across every company we run."
+    },
+    "companies": {
+      "eyebrow": "Our Portfolio",
+      "title": "Companies of MR Group",
+      "description": "A diversified family of businesses spanning agriculture, energy, food, textiles, and more — united under one group."
+    }
+  },
+  "common": {
+    "readMore": "Read More",
+    "learnMore": "Learn More",
+    "explore": "Explore",
+    "sendMessage": "Send Us a Message",
+    "address": "Address",
+    "email": "Email",
+    "phone": "Phone",
+    "all": "All"
+  },
+  "home": {
+    "about": { "badge": "Who We Are" },
+    "companies": {
+      "headingPrefix": "Our",
+      "headingHighlight": "Companies",
+      "subheading": "a family of businesses built on trust",
+      "description": "Explore a selection from across our growing portfolio of companies. We're on a mission to serve every industry and make everyday life better.",
+      "scrollPrev": "Scroll previous",
+      "scrollNext": "Scroll next",
+      "seeAll": "See All"
+    },
+    "products": {
+      "badge": "What We Do",
+      "headingPrefix": "Our Products",
+      "headingHighlight": "& Supplies",
+      "subheading": "eight companies, one supply chain",
+      "description": "MR Group works across agriculture, energy, and industrial supply — feed and agro medicine for farmers, machinery and lubricants for the field, and LPG, ammonia, and fuel for homes and industry."
+    },
+    "stats": {
+      "badge": "By The Numbers",
+      "headingPrefix": "Our Impact",
+      "headingHighlight": "at a Glance"
+    },
+    "news": {
+      "badge": "Media Center",
+      "headingPrefix": "Latest",
+      "headingHighlight": "News",
+      "description": "Stay up to date with announcements, milestones, and stories from across the MR Group family of companies.",
+      "viewAll": "View All News"
+    },
+    "contact": { "badge": "Get in Touch" }
+  },
+  "explorer": {
+    "companies": "Companies",
+    "sectors": "Sectors",
+    "group": "Group",
+    "empty": "No companies found in this sector."
+  },
+  "pillar": {
+    "badge": "Sustainability",
+    "initiatives": "Our Initiatives"
+  },
+  "form": {
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone (optional)",
+    "subject": "Subject",
+    "message": "Message",
+    "sending": "Sending...",
+    "submit": "Send Message",
+    "successTitle": "Message sent!",
+    "successBody": "Thanks for reaching out — we'll get back to you soon.",
+    "sendAnother": "Send another message",
+    "error": "Something went wrong."
+  },
+  "aboutPages": {
+    "mission": "Mission",
+    "vision": "Vision",
+    "coreValues": "Our Core Values"
+  },
+  "media": {
+    "latestUpdate": "Latest Update",
+    "featured": "Featured",
+    "photos": "Photos",
+    "videos": "Videos",
+    "newsDesc": "Announcements, milestones, and stories from across the group.",
+    "eventsDesc": "Summits, launches, and community events we've hosted.",
+    "galleryDesc": "Photos and videos from our facilities, teams, and events.",
+    "noNews": "No news yet — check back soon.",
+    "noPhotos": "No photos yet.",
+    "noVideos": "No videos yet.",
+    "noEvents": "No events yet — check back soon."
+  },
+  "contactPage": {
+    "heading": "Let's Start a Conversation",
+    "visitUs": "Visit Us",
+    "emailUs": "Email Us",
+    "callUs": "Call Us",
+    "formIntro": "Whether you have a partnership inquiry, a question about one of our companies, or feedback for our team — we'd love to hear from you.",
+    "headOffice": "Head Office"
+  },
+  "companySite": {
+    "backToGroup": "MR Group ↗",
+    "partOf": "A company of",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address"
+  }
+}

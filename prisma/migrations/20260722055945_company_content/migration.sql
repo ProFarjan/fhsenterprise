@@ -1,0 +1,31 @@
+-- CreateTable
+CREATE TABLE `Company` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `site` ENUM('MR_GROUP', 'AGRO', 'AGRO_MEDICINE', 'FEED', 'FILLING_STATION', 'AGRI_TECH') NOT NULL,
+    `subdomain` VARCHAR(64) NOT NULL,
+    `nameEn` VARCHAR(200) NOT NULL,
+    `nameBn` VARCHAR(200) NOT NULL,
+    `sectorEn` VARCHAR(120) NOT NULL,
+    `sectorBn` VARCHAR(120) NOT NULL,
+    `descriptionEn` TEXT NOT NULL,
+    `descriptionBn` TEXT NOT NULL,
+    `heroHeadlineEn` VARCHAR(255) NULL,
+    `heroHeadlineBn` VARCHAR(255) NULL,
+    `heroTaglineEn` TEXT NULL,
+    `heroTaglineBn` TEXT NULL,
+    `logoData` LONGBLOB NULL,
+    `logoMimeType` VARCHAR(100) NULL,
+    `bannerData` LONGBLOB NULL,
+    `bannerMimeType` VARCHAR(100) NULL,
+    `heroData` LONGBLOB NULL,
+    `heroMimeType` VARCHAR(100) NULL,
+    `order` INTEGER NOT NULL DEFAULT 0,
+    `isPublished` BOOLEAN NOT NULL DEFAULT true,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    UNIQUE INDEX `Company_site_key`(`site`),
+    UNIQUE INDEX `Company_subdomain_key`(`subdomain`),
+    INDEX `Company_order_idx`(`order`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

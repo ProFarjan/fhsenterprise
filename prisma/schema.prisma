@@ -1,0 +1,304 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+//
+// Phase 1 of the admin panel: real, database-backed admin accounts and
+// sessions. Phase 2 adds Media & News content models.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+// An account that can sign in to /admin.
+model Admin {
+  id    Int    @id @default(autoincrement())
+  email String @unique
+  name  String
+
+  // scrypt digest produced by src/lib/password.ts — never a plaintext password.
+  // Format: scrypt$N$r$p$<salt-b64>$<hash-b64>
+  passwordHash String @db.Text
+
+  // Every admin currently has full access. The column exists so finer-grained
+  // roles can be enforced later without a schema rewrite.
+  role AdminRole @default(ADMIN)
+
+  // Soft disable — an inactive admin keeps their row but cannot sign in.
+  isActive Boolean @default(true)
+
+  lastLoginAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  sessions   Session[]
+  mediaItems MediaItem[]
+  newsItems  NewsItem[]
+  eventItems EventItem[]
+  products   Product[]
+  faqItems   FaqItem[]
+}
+
+enum AdminRole {
+  ADMIN
+  SUPER_ADMIN
+}
+
+// A server-side session. The browser only ever holds the raw random token;
+// `id` here is its SHA-256, so a leaked database cannot be replayed as a login.
+model Session {
+  id        String   @id
+  adminId   Int
+  admin     Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  // Recorded for auditing / "active sessions" UI later.
+  userAgent String? @db.VarChar(255)
+  ipAddress String? @db.VarChar(45)
+
+  @@index([adminId])
+  @@index([expiresAt])
+}
+
+// Which site a piece of content belongs to. Mirrors the subsidiary subdomains
+// in src/lib/companies.ts, plus MR_GROUP for content that isn't tied to one
+// subsidiary (e.g. the parent site's own news). Keep in sync with the
+// display-name mapping in src/lib/sites.ts.
+enum SiteKey {
+  MR_GROUP
+  AGRO
+  AGRO_MEDICINE
+  FEED
+  FILLING_STATION
+  AGRI_TECH
+  MR_LUBE
+  MAHIN
+  RAHIM
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
+// A gallery entry: either an uploaded image (bytes stored in the database —
+// there is no object storage in this project yet) or a YouTube video (only
+// the link is stored; the thumbnail is derived from the video ID at render
+// time, so no video file ever touches this server).
+model MediaItem {
+  id    Int       @id @default(autoincrement())
+  type  MediaType
+  site  SiteKey
+  title String    @db.VarChar(200)
+
+  // Populated when type = IMAGE. LongBlob because MySQL's default Blob
+  // caps out at 64KB — nowhere near enough for a photo.
+  imageData     Bytes?  @db.LongBlob
+  imageMimeType String? @db.VarChar(100)
+
+  // Populated when type = VIDEO. Kept as the original pasted URL; the video
+  // ID is parsed back out from it wherever it's embedded/thumbnailed.
+  youtubeUrl String? @db.VarChar(500)
+
+  createdById Int?
+  createdBy   Admin?   @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+
+  @@index([site])
+  @@index([createdAt])
+}
+
+// A news article summary. Matches the fields the public site's news pages
+// already render (title, excerpt, date, cover image) — see NewsItem in
+// src/types/content.ts. A full article body is a later-phase addition.
+model NewsItem {
+  id      Int      @id @default(autoincrement())
+  site    SiteKey
+  title   String   @db.VarChar(200)
+  excerpt String   @db.Text
+  date    DateTime
+
+  coverImageData     Bytes  @db.LongBlob
+  coverImageMimeType String @db.VarChar(100)
+
+  createdById Int?
+  createdBy   Admin?   @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+
+  @@index([site])
+  @@index([date])
+}
+
+// An event: a summit, launch, or community event — see MediaEvent in
+// src/types/content.ts, which this mirrors. Cover image is required (the
+// public events page uses it as a full-bleed background).
+model EventItem {
+  id          Int      @id @default(autoincrement())
+  site        SiteKey
+  title       String   @db.VarChar(200)
+  location    String   @db.VarChar(200)
+  description String   @db.Text
+  date        DateTime
+
+  coverImageData     Bytes  @db.LongBlob
+  coverImageMimeType String @db.VarChar(100)
+
+  createdById Int?
+  createdBy   Admin?   @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+
+  @@index([site])
+  @@index([date])
+}
+
+// A subsidiary company managed from /admin/companies. One row per subsidiary
+// SiteKey (MR_GROUP is the parent site itself, not a card here). Feeds the
+// parent site's company cards (see CompanyExplorer) and each subsidiary's
+// shared hero block. The deep bespoke subdomain sections still live in
+// src/data/companies/*.ts — this model deliberately covers only the uniform
+// slice of content that's the same shape across every company.
+model Company {
+  id Int @id @default(autoincrement())
+
+  // AGRO, FEED, AGRO_MEDICINE, FILLING_STATION, or AGRI_TECH.
+  site SiteKey @unique
+
+  // Matches the folder under src/app/[locale]/companies/ and the subdomain
+  // host — see COMPANY_SUBDOMAINS in src/lib/companies.ts.
+  subdomain String @unique @db.VarChar(64)
+
+  nameEn        String @db.VarChar(200)
+  nameBn        String @db.VarChar(200)
+  sectorEn      String @db.VarChar(120)
+  sectorBn      String @db.VarChar(120)
+  descriptionEn String @db.Text
+  descriptionBn String @db.Text
+
+  // Images as bytes — same convention as MediaItem/NewsItem/EventItem above
+  // (there is no object storage in this project). Unlike those append-only
+  // tables, a Company row is edited in place, so its id stays constant across
+  // an image replacement — the serving routes must not cache these responses
+  // as immutable. The hero gallery (image + its own headline/tagline) is a
+  // separate one-to-many table (CompanyHeroImage) — several subsidiaries
+  // rotate through multiple hero slides, each with different copy, not one
+  // shared headline/tagline.
+  logoData       Bytes?  @db.LongBlob
+  logoMimeType   String? @db.VarChar(100)
+  bannerData     Bytes?  @db.LongBlob
+  bannerMimeType String? @db.VarChar(100)
+
+  // Ascending display order on the parent site's company grid.
+  order       Int     @default(0)
+  isPublished Boolean @default(true)
+
+  heroImages CompanyHeroImage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([order])
+}
+
+// One slide in a company's hero gallery — an image plus its own headline and
+// tagline. A separate table (rather than fields on Company) because several
+// subsidiaries rotate through multiple hero slides with different copy per
+// slide — see the `hero.slides` arrays in
+// src/data/companies/{agritech,feed,agro-medicine}.ts. The image itself
+// (imageData/imageMimeType) is set once at creation and never edited in
+// place — a re-upload deletes the row and creates a new one — so it can be
+// served with an immutable cache header; the headline/tagline text can be
+// edited any time.
+model CompanyHeroImage {
+  id Int @id @default(autoincrement())
+
+  companyId Int
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  imageData     Bytes  @db.LongBlob
+  imageMimeType String @db.VarChar(100)
+
+  headlineEn String? @db.VarChar(255)
+  headlineBn String? @db.VarChar(255)
+  taglineEn  String? @db.Text
+  taglineBn  String? @db.Text
+
+  // Ascending display order within the company's hero gallery.
+  order Int @default(0)
+
+  createdAt DateTime @default(now())
+
+  @@index([companyId, order])
+}
+
+// A product listed under one of MR Group's subsidiaries — managed from
+// /admin/products. Admin-side CRUD only for now, matching the Media & News
+// pattern (see src/app/admin/(panel)/media/) — no subsidiary's public site
+// reads from this table yet; each still renders its own bespoke, larger
+// product shape from src/data/companies/*.ts (see AgroProduct, FeedProduct,
+// AgritechProduct, AgroMedProduct in src/types/).
+model Product {
+  id   Int     @id @default(autoincrement())
+  site SiteKey
+
+  // URL-friendly identifier generated from `name` at creation. Unique per
+  // site rather than globally — two subsidiaries could reasonably sell
+  // similarly-named products.
+  slug String @db.VarChar(220)
+
+  category String @db.VarChar(120)
+  name     String @db.VarChar(200)
+  tagline  String @db.VarChar(300)
+
+  description String @db.Text
+
+  // One string per bullet point, e.g. ["Fast-acting", "Vet-approved"]. Both
+  // optional — a product may only need a description.
+  benefits Json?
+  // Label/value spec rows, e.g. [{ "label": "Pack size", "value": "500ml" }].
+  specs Json?
+
+  imageData     Bytes  @db.LongBlob
+  imageMimeType String @db.VarChar(100)
+
+  isPublished Boolean @default(true)
+
+  createdById Int?
+  createdBy   Admin?   @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+
+  @@unique([site, slug])
+  @@index([site])
+  @@index([createdAt])
+}
+
+// A frequently-asked question shown on the public About > FAQ page — managed
+// from /admin/faq. Fully bilingual (question/answer in both languages), like
+// the Company model's paired ...En/...Bn columns, because the public page
+// renders whichever language the visitor is viewing. Ordered by an explicit
+// `order` column (see CompanyHeroImage) rather than creation time, so an admin
+// controls the sequence of questions. `site` defaults to MR_GROUP — the only
+// site with a public FAQ page today — but exists for future per-site reuse.
+model FaqItem {
+  id   Int     @id @default(autoincrement())
+  site SiteKey @default(MR_GROUP)
+
+  questionEn String @db.VarChar(500)
+  questionBn String @db.VarChar(500)
+  answerEn   String @db.Text
+  answerBn   String @db.Text
+
+  // Ascending display order on the public FAQ accordion.
+  order       Int     @default(0)
+  isPublished Boolean @default(true)
+
+  createdById Int?
+  createdBy   Admin?   @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([site, order])
+}

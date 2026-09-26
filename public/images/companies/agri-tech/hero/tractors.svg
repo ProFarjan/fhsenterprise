@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <linearGradient id="g-tractor-steel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#14181c" />
+      <stop offset="55%" stop-color="#1f2933" />
+      <stop offset="100%" stop-color="#334352" />
+    </linearGradient>
+    <linearGradient id="g-tractor-steel-sweep" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f0a202" stop-opacity="0" />
+      <stop offset="100%" stop-color="#f0a202" stop-opacity="0.16" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#g-tractor-steel)" />
+  <g stroke="#ffffff" stroke-opacity="0.05" stroke-width="1">
+    <line x1="0" y1="0" x2="0" y2="600" />
+    <line x1="100" y1="0" x2="100" y2="600" />
+    <line x1="200" y1="0" x2="200" y2="600" />
+    <line x1="300" y1="0" x2="300" y2="600" />
+    <line x1="400" y1="0" x2="400" y2="600" />
+    <line x1="500" y1="0" x2="500" y2="600" />
+    <line x1="600" y1="0" x2="600" y2="600" />
+    <line x1="700" y1="0" x2="700" y2="600" />
+    <line x1="800" y1="0" x2="800" y2="600" />
+    <line x1="0" y1="0" x2="800" y2="0" />
+    <line x1="0" y1="100" x2="800" y2="100" />
+    <line x1="0" y1="200" x2="800" y2="200" />
+    <line x1="0" y1="300" x2="800" y2="300" />
+    <line x1="0" y1="400" x2="800" y2="400" />
+    <line x1="0" y1="500" x2="800" y2="500" />
+    <line x1="0" y1="600" x2="800" y2="600" />
+  </g>
+  <polygon points="500,0 800,0 800,600 650,600" fill="url(#g-tractor-steel-sweep)" />
+  <g transform="translate(430 190) scale(3.4)" stroke="#f0a202" stroke-opacity="0.14" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20 62h6M26 62a12 12 0 1 0 24 0 12 12 0 0 0-24 0Z" />
+    <path d="M38 62a4 4 0 1 0 8 0 4 4 0 0 0-8 0Z" />
+    <path d="M50 62h8l6-14h10M64 48v-8h-9M55 62V40h-14l-6 10v12" />
+    <path d="M72 62a8 8 0 1 0 16 0 8 8 0 0 0-16 0Z" />
+    <path d="M76 62a4 4 0 1 0 8 0 4 4 0 0 0-8 0Z" />
+    <path d="M20 62h-4" />
+  </g>
+  <g transform="translate(96 424)">
+    <rect x="0" y="0" width="112" height="112" rx="24" fill="#f0a202" fill-opacity="0.14" />
+    <g transform="translate(20 20) scale(0.72)" stroke="#f0a202" stroke-width="4.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      
+    <path d="M20 62h6M26 62a12 12 0 1 0 24 0 12 12 0 0 0-24 0Z" />
+    <path d="M38 62a4 4 0 1 0 8 0 4 4 0 0 0-8 0Z" />
+    <path d="M50 62h8l6-14h10M64 48v-8h-9M55 62V40h-14l-6 10v12" />
+    <path d="M72 62a8 8 0 1 0 16 0 8 8 0 0 0-16 0Z" />
+    <path d="M76 62a4 4 0 1 0 8 0 4 4 0 0 0-8 0Z" />
+    <path d="M20 62h-4" />
+  
+    </g>
+  </g>
+  <line x1="96" y1="560" x2="260" y2="560" stroke="#ffc94a" stroke-width="4" stroke-linecap="round" />
+</svg>
