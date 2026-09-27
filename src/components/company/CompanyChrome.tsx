@@ -16,6 +16,7 @@ export default async function CompanyChrome({
   theme,
   rootDomain,
   logo,
+  nav,
   children,
 }: {
   name: string;
@@ -24,13 +25,14 @@ export default async function CompanyChrome({
   theme: CompanyTheme;
   rootDomain: string;
   logo?: string | null;
+  nav?: { label: string; href: string }[];
   children: React.ReactNode;
 }) {
   const t = await getTranslations({ locale, namespace: "companySite" });
 
   return (
     <div className="flex min-h-full flex-1 flex-col bg-white text-neutral-900">
-      <header className="border-b border-neutral-200">
+      <header className="sticky top-0 z-50 bg-white border-b border-neutral-200">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 lg:px-8">
           <a href={`//${rootDomain}/${locale}`} className="flex items-center gap-3">
             <Image
@@ -42,6 +44,16 @@ export default async function CompanyChrome({
             />
             <span className="text-lg font-bold tracking-tight">{name}</span>
           </a>
+
+          {nav && nav.length > 0 && (
+            <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-neutral-600">
+              {nav.map((item) => (
+                <a key={item.label} href={item.href} className="hover:text-neutral-900 transition-colors">
+                  {item.label}
+                </a>
+              ))}
+            </nav>
+          )}
 
           <div className="flex items-center gap-4">
             <LanguageSwitcher />

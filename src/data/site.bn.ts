@@ -45,20 +45,35 @@ export const siteConfigBn: SiteConfig = {
 
   hero: [
     {
-      title: "FHS Enterprise এ স্বাগতম",
-      subtitle: "Driven by innovation and a commitment to quality.",
+      title: "এফএইচএস এন্টারপ্রাইজে স্বাগতম",
+      subtitle: "মানসম্মত সেবার দৃঢ় প্রতিশ্রুতি নিয়ে বিভিন্ন সেক্টরে একটি টেকসই ভবিষ্যৎ নির্মাণ।",
+      videoSrc: "/videos/bd-agro-1.mp4",
+    },
+    {
+      title: "মেসার্স বাংলাদেশ অটো রাইস মিল",
+      subtitle: "প্রিমিয়াম মানের কৃষি পণ্য সরবরাহ এবং জাতির পুষ্টি নিশ্চিতকরণ।",
+      videoSrc: "/videos/bd-agro-1.mp4",
+    },
+    {
+      title: "ভেহিকেল সলিউশনস",
+      subtitle: "নির্ভরযোগ্য অটোমোটিভ পার্টস, মেরামত এবং বিশেষজ্ঞ সেবার মাধ্যমে আপনাকে এগিয়ে রাখা।",
+      videoSrc: "/videos/bd-agro-1.mp4",
+    },
+    {
+      title: "ডেইলি বাজার",
+      subtitle: "তাজা, দ্রুত এবং নির্ভরযোগ্য দৈনন্দিন প্রয়োজন ও মুদি পণ্যের জন্য আপনার বিশ্বস্ত অনলাইন শপ।",
       videoSrc: "/videos/bd-agro-1.mp4",
     }
   ],
 
   about: {
-    title: "FHS Enterprise সম্পর্কে",
-    description: "FHS Enterprise is a growing conglomerate spanning multiple sectors...",
+    title: "এফএইচএস এন্টারপ্রাইজ সম্পর্কে",
+    description: "এফএইচএস এন্টারপ্রাইজ ময়মনসিংহের ফুলবাড়িয়ায় অবস্থিত একটি দ্রুত বর্ধনশীল গ্রুপ অব কোম্পানিজ। প্রিমিয়াম কৃষি প্রক্রিয়াকরণ, উন্নত অটোমোটিভ সলিউশন এবং আধুনিক ডিজিটাল ই-কমার্স জুড়ে একটি বৈচিত্র্যময় পোর্টফোলিও নিয়ে, আমরা মান, সম্প্রদায়ের ক্ষমতায়ন এবং টেকসই প্রবৃদ্ধির অভিন্ন প্রতিশ্রুতি দ্বারা ঐক্যবদ্ধ।",
     points: [
-      "Industry leadership",
-      "Diversified sectors",
-      "Dedicated employees",
-      "Trusted products",
+      "শিল্প-নেতৃস্থানীয় কৃষি প্রক্রিয়াকরণ",
+      "নির্ভরযোগ্য অটোমোটিভ পার্টস ও সলিউশন",
+      "দ্রুত এবং তাজা ডিজিটাল ই-কমার্স",
+      "কমিউনিটি উন্নয়নে প্রতিশ্রুতিবদ্ধ",
     ],
   },
 
@@ -92,9 +107,24 @@ export const siteConfigBn: SiteConfig = {
     },
     milestones: [
       {
-        year: "2020",
-        title: "Founded",
-        description: "FHS Enterprise established.",
+        year: "২০১০",
+        title: "সূচনা",
+        description: "এফএইচএস এন্টারপ্রাইজ স্থানীয় সম্প্রদায়ের কাছে মানসম্মত পণ্য এবং সেবা সরবরাহের দৃঢ় প্রতিশ্রুতি নিয়ে তার যাত্রা শুরু করে।",
+      },
+      {
+        year: "২০১৫",
+        title: "কার্যক্রম সম্প্রসারণ",
+        description: "আমাদের অপারেশনাল সক্ষমতা প্রসারিত হয় এবং আধুনিক ব্যবসার বৈচিত্র্যময় পোর্টফোলিওর ভিত্তি স্থাপিত হয়।",
+      },
+      {
+        year: "২০২০",
+        title: "নতুন উদ্যোগ",
+        description: "অফিসিয়ালি এফএইচএস এন্টারপ্রাইজ হিসাবে একত্রিত হয় এবং স্বয়ংচালিত সমাধান এবং ই-কমার্সে উত্তেজনাপূর্ণ নতুন উদ্যোগ চালু করে।",
+      },
+      {
+        year: "২০২৪",
+        title: "মার্কেট লিডারশিপ",
+        description: "কৃষি, লজিস্টিকস এবং ডিজিটাল খুচরা পরিষেবা জুড়ে অঞ্চলে একটি শীর্ষস্থানীয় এবং বিশ্বস্ত নাম হিসাবে প্রতিষ্ঠিত।",
       }
     ],
     facilities: [],
@@ -128,8 +158,35 @@ export const siteConfigBn: SiteConfig = {
     },
   ],
 
-  productCategories: [],
-  stats: [],
+  productCategories: [
+    {
+      name: "প্রিমিয়াম রাইস ও কৃষি",
+      company: "মেসার্স বাংলাদেশ অটো রাইস মিল",
+      subdomain: "auto-rice-mill",
+      items: ["সিদ্ধ চাল", "প্রিমিয়াম রাইস", "সুগন্ধি চাল"],
+      icon: "grain",
+    },
+    {
+      name: "অটোমোটিভ পার্টস ও লুব্রিকেন্ট",
+      company: "ভেহিকেল সলিউশনস",
+      subdomain: "vehicle-solutions",
+      items: ["খুচরা যন্ত্রাংশ", "লুব্রিকেন্ট", "অ্যাক্সেসরিজ"],
+      icon: "cog",
+    },
+    {
+      name: "ডেইলি বাজার ও মুদি",
+      company: "ডেইলি বাজার",
+      subdomain: "daily-bazar.fhsenterprise.com",
+      items: ["তাজা পণ্য", "দৈনন্দিন প্রয়োজন", "মুদি"],
+      icon: "leaf",
+    },
+  ],
+  stats: [
+    { label: "বছরের অভিজ্ঞতা", value: "১০+", icon: "calendar" },
+    { label: "ব্যবসায়িক প্রতিষ্ঠান", value: "৩", icon: "building" },
+    { label: "সন্তুষ্ট গ্রাহক", value: "৫০০+", icon: "users" },
+    { label: "ডেডিকেটেড সাপোর্ট", value: "২৪/৭", icon: "map-pin" },
+  ],
   news: [],
   mediaPages: {
     events: [],

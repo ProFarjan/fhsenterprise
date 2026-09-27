@@ -52,6 +52,7 @@ export default async function AutoRiceMillLayout({
       locale={locale as AppLocale}
       rootDomain={rootDomain}
       logo={logoUrl || "/logos/rice-mill.png"}
+      nav={content.nav}
     >
       {children}
     </CompanyChrome>

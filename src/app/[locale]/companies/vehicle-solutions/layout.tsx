@@ -51,6 +51,7 @@ export default async function VehicleSolutionsLayout({
       locale={locale as AppLocale}
       rootDomain={rootDomain}
       logo={logoUrl || "/logos/vehicle_solutions.svg"}
+      nav={content.nav}
     >
       {children}
     </CompanyChrome>

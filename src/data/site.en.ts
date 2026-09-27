@@ -46,19 +46,34 @@ export const siteConfigEn: SiteConfig = {
   hero: [
     {
       title: "Welcome to FHS Enterprise",
-      subtitle: "Driven by innovation and a commitment to quality.",
+      subtitle: "Building a sustainable future across diverse sectors with a steadfast commitment to quality.",
+      videoSrc: "/videos/bd-agro-1.mp4",
+    },
+    {
+      title: "M/s. Bangladesh Auto Rice Mill",
+      subtitle: "Providing premium quality agricultural products and feeding the nation.",
+      videoSrc: "/videos/bd-agro-1.mp4",
+    },
+    {
+      title: "Vehicle Solutions",
+      subtitle: "Keeping you moving with reliable automotive parts, repairs, and expert services.",
+      videoSrc: "/videos/bd-agro-1.mp4",
+    },
+    {
+      title: "Daily Bazar",
+      subtitle: "Your trusted online shop for fresh, fast, and reliable daily needs and groceries.",
       videoSrc: "/videos/bd-agro-1.mp4",
     }
   ],
 
   about: {
     title: "About FHS Enterprise",
-    description: "FHS Enterprise is a growing conglomerate spanning multiple sectors, united by a shared commitment to quality, innovation, and sustainable growth.",
+    description: "FHS Enterprise is a rapidly growing conglomerate located in Fulbariya, Mymensingh. With a diverse portfolio spanning premium agricultural processing, advanced automotive solutions, and modern digital e-commerce, we are united by a shared commitment to quality, community empowerment, and sustainable growth.",
     points: [
-      "Industry leadership",
-      "Diversified sectors",
-      "Dedicated employees",
-      "Trusted products",
+      "Industry-leading agricultural processing",
+      "Reliable automotive parts & solutions",
+      "Fast and fresh digital e-commerce",
+      "Commitment to community development",
     ],
   },
 
@@ -92,9 +107,24 @@ export const siteConfigEn: SiteConfig = {
     },
     milestones: [
       {
+        year: "2010",
+        title: "The Beginning",
+        description: "FHS Enterprise started its journey with a strong commitment to delivering quality products and services to the local community.",
+      },
+      {
+        year: "2015",
+        title: "Operations Expanded",
+        description: "Expanded our operational capacity and laid the groundwork for a diverse portfolio of modern businesses.",
+      },
+      {
         year: "2020",
-        title: "Founded",
-        description: "FHS Enterprise established.",
+        title: "New Ventures",
+        description: "Officially consolidated as FHS Enterprise, launching exciting new ventures in automotive solutions and e-commerce.",
+      },
+      {
+        year: "2024",
+        title: "Market Leadership",
+        description: "Established as a leading and trusted name in the region across agriculture, logistics, and digital retail services.",
       }
     ],
     facilities: [],
@@ -128,8 +158,35 @@ export const siteConfigEn: SiteConfig = {
     },
   ],
 
-  productCategories: [],
-  stats: [],
+  productCategories: [
+    {
+      name: "Premium Rice & Agriculture",
+      company: "M/s. Bangladesh Auto Rice Mill",
+      subdomain: "auto-rice-mill",
+      items: ["Parboiled Rice", "Premium Rice", "Aromatic Rice"],
+      icon: "grain",
+    },
+    {
+      name: "Automotive Parts & Lubricants",
+      company: "Vehicle Solutions",
+      subdomain: "vehicle-solutions",
+      items: ["Spare Parts", "Lubricants", "Accessories"],
+      icon: "cog",
+    },
+    {
+      name: "Daily Bazar & Groceries",
+      company: "Daily Bazar",
+      subdomain: "daily-bazar.fhsenterprise.com",
+      items: ["Fresh Produce", "Daily Needs", "Groceries"],
+      icon: "leaf",
+    },
+  ],
+  stats: [
+    { label: "Years of Excellence", value: "10+", icon: "calendar" },
+    { label: "Business Concerns", value: "3", icon: "building" },
+    { label: "Happy Customers", value: "500+", icon: "users" },
+    { label: "Dedicated Support", value: "24/7", icon: "map-pin" },
+  ],
   news: [],
   mediaPages: {
     events: [],
