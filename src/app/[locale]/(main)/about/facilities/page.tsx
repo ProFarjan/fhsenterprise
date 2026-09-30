@@ -28,25 +28,34 @@ export default function FacilitiesPage() {
         {facilities.map((facility, index) => (
           <article
             key={facility.name}
-            className="group overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-2xl"
+            className="group overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-sm transition-all hover:-translate-y-1 hover:border-blue-200 hover:shadow-2xl"
           >
             <div className="relative aspect-[16/10] overflow-hidden">
               <Image
-                src={FACILITY_IMAGES[index % FACILITY_IMAGES.length]}
-                alt=""
+                src={facility.image ?? FACILITY_IMAGES[index % FACILITY_IMAGES.length]}
+                alt={facility.name}
                 fill
                 sizes="(min-width: 640px) 50vw, 100vw"
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-              <span className="absolute bottom-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-orange-700 backdrop-blur">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+              
+              {facility.capacity && (
+                <span className="absolute top-4 right-4 inline-flex items-center rounded-full bg-emerald-600/90 px-3 py-1 text-xs font-semibold text-white shadow-md backdrop-blur">
+                  {facility.capacity}
+                </span>
+              )}
+
+              <span className="absolute bottom-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3.5 py-1 text-xs font-semibold uppercase tracking-wide text-[#0045A0] shadow-sm backdrop-blur">
                 <PinIcon />
                 {facility.location}
               </span>
             </div>
             <div className="p-7">
-              <h3 className="text-xl font-bold text-neutral-900">{facility.name}</h3>
-              <p className="mt-2 leading-7 text-neutral-600">{facility.description}</p>
+              <h3 className="text-xl font-bold text-neutral-900 group-hover:text-[#0045A0] transition-colors">
+                {facility.name}
+              </h3>
+              <p className="mt-2.5 leading-7 text-neutral-600">{facility.description}</p>
             </div>
           </article>
         ))}

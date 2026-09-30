@@ -21,8 +21,8 @@ export default function MissionVisionPage() {
             className="grid items-center gap-10 lg:grid-cols-2 lg:gap-20"
           >
             <div className={index % 2 === 1 ? "lg:order-2" : ""}>
-              <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-orange-600">
-                <span className="h-px w-8 bg-orange-600" />
+              <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#0045A0]">
+                <span className="h-px w-8 bg-[#0045A0]" />
                 {band.label}
               </span>
               <p className="mt-6 text-2xl font-medium leading-relaxed text-neutral-800 sm:text-3xl sm:leading-[1.4]">
@@ -47,13 +47,13 @@ export default function MissionVisionPage() {
 
         {/* Core values */}
         <div className="rounded-3xl bg-neutral-950 p-10 sm:p-14">
-          <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-orange-500">
+          <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">
             {tAbout("coreValues")}
           </h3>
           <div className="mt-8 grid grid-cols-1 gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
             {missionVision.values.map((value, index) => (
               <div key={value} className="flex items-baseline gap-4 border-t border-white/10 pt-5">
-                <span className="font-mono text-sm text-orange-500">
+                <span className="font-mono text-sm text-emerald-400">
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <span className="text-lg font-semibold text-white">{value}</span>

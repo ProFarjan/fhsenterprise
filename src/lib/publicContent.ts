@@ -130,20 +130,25 @@ export async function getFaqs(
   locale: AppLocale,
   site: SiteKey = SiteKey.FHS_ENTERPRISE,
 ): Promise<FaqItem[]> {
-  const rows = await prisma.faqItem.findMany({
-    where: { site, isPublished: true },
-    orderBy: [{ order: "asc" }, { createdAt: "asc" }],
-    select: { questionEn: true, questionBn: true, answerEn: true, answerBn: true },
-  });
+  try {
+    const rows = await prisma.faqItem.findMany({
+      where: { site, isPublished: true },
+      orderBy: [{ order: "asc" }, { createdAt: "asc" }],
+      select: { questionEn: true, questionBn: true, answerEn: true, answerBn: true },
+    });
 
-  if (rows.length === 0) {
+    if (rows.length === 0) {
+      return getSiteConfig(locale).aboutPages.faqs;
+    }
+
+    return rows.map((row) => ({
+      question: (locale === "en" ? row.questionEn : row.questionBn) || row.questionEn || "",
+      answer: (locale === "en" ? row.answerEn : row.answerBn) || row.answerEn || "",
+    }));
+  } catch (error) {
+    console.error("Failed to load FAQs from DB, falling back to static config:", error);
     return getSiteConfig(locale).aboutPages.faqs;
   }
-
-  return rows.map((row) => ({
-    question: locale === "en" ? row.questionEn : row.questionBn,
-    answer: locale === "en" ? row.answerEn : row.answerBn,
-  }));
 }
 
 export type PublicEvent = {

@@ -25,10 +25,10 @@ export default function AboutTabs() {
           <Link
             key={tab.href}
             href={tab.href}
-            className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+            className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition-all ${
               isActive
-                ? "bg-neutral-900 text-white"
-                : "text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900"
+                ? "bg-[#0045A0] text-white shadow-sm ring-1 ring-[#0045A0]"
+                : "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900"
             }`}
           >
             {tab.label}

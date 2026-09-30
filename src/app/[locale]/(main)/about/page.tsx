@@ -1,11 +1,47 @@
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { getSiteConfig } from "@/data/site";
 import type { AppLocale } from "@/i18n/routing";
 
 export default function AboutOverviewPage() {
-  const { about } = getSiteConfig(useLocale() as AppLocale);
+  const locale = useLocale() as AppLocale;
+  const { about } = getSiteConfig(locale);
   const t = useTranslations("pageHeaders.about");
+  const tTabs = useTranslations("tabs");
+
+  const quickLinks = [
+    {
+      title: tTabs("history"),
+      description: locale === "bn" ? "আমাদের শুরু, রূপান্তর ও ফুলবাড়িয়ায় বিকাশ পর্ব।" : "Our roots, growth, and transformation in Fulbariya.",
+      href: "/about/history",
+    },
+    {
+      title: tTabs("founder"),
+      description: locale === "bn" ? "প্রতিষ্ঠাতা ও ব্যবস্থাপনা নেতৃত্বের অনুপ্রেরণাদায়ী দর্শন।" : "Visionary leadership and entrepreneurial guidance.",
+      href: "/about/founder",
+    },
+    {
+      title: tTabs("missionVision"),
+      description: locale === "bn" ? "ভবিষ্যতের পথচলা এবং নৈতিক ব্যবসায়িক মূল্যবোধ।" : "Our strategic goals, aspirations, and ethical values.",
+      href: "/about/mission-vision",
+    },
+    {
+      title: tTabs("milestones"),
+      description: locale === "bn" ? "২০১৪ থেকে ২০২৬ পর্যন্ত অর্জিত ঐতিহাসিক সাফল্য।" : "Key milestones from our inception to nationwide leadership.",
+      href: "/about/milestones",
+    },
+    {
+      title: tTabs("facilities"),
+      description: locale === "bn" ? "অত্যাধুনিক অটো রাইস মিল, ওয়ার্কশপ ও কোল্ড চেইন হাব।" : "State-of-the-art milling complex, workshops, and fulfillment hubs.",
+      href: "/about/facilities",
+    },
+    {
+      title: tTabs("faq"),
+      description: locale === "bn" ? "সাধারণ প্রশ্ন ও ব্যবসায়িক অংশীদারিত্বের তথ্য।" : "Common questions about our operations and partnership.",
+      href: "/about/faq",
+    },
+  ];
 
   return (
     <>
@@ -13,8 +49,8 @@ export default function AboutOverviewPage() {
       <section className="mx-auto max-w-6xl px-6 py-20 lg:px-8 lg:py-28">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
           <div>
-            <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-orange-600">
-              <span className="h-px w-8 bg-orange-600" />
+            <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#0045A0]">
+              <span className="h-px w-8 bg-[#0045A0]" />
               {t("eyebrow")}
             </span>
             <p className="mt-6 text-2xl font-medium leading-relaxed text-neutral-800 sm:text-[1.75rem] sm:leading-[1.5]">
@@ -39,7 +75,7 @@ export default function AboutOverviewPage() {
           <div className="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
             {about.points.map((point, index) => (
               <div key={point} className="group">
-                <span className="block text-5xl font-bold leading-none text-orange-500">
+                <span className="block text-5xl font-bold leading-none text-emerald-400 group-hover:text-emerald-300 transition-colors">
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <span className="mt-4 block h-px w-full bg-white/10" />
@@ -47,6 +83,32 @@ export default function AboutOverviewPage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Explore About subpages */}
+      <section className="mx-auto max-w-6xl px-6 py-20 lg:px-8 lg:py-24">
+        <div className="mb-12">
+          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#0045A0]">
+            {locale === "bn" ? "অন্বেষণ করুন" : "Explore"}
+          </span>
+          <h2 className="mt-2 text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl">
+            {locale === "bn" ? "আমাদের বিস্তারিত পথচলা" : "Discover More About Us"}
+          </h2>
+        </div>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {quickLinks.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="group relative rounded-2xl border border-neutral-200 bg-white p-7 shadow-sm transition-all hover:-translate-y-1 hover:border-blue-300 hover:shadow-xl"
+            >
+              <h3 className="text-xl font-bold text-neutral-900 group-hover:text-[#0045A0] transition-colors">
+                {item.title} →
+              </h3>
+              <p className="mt-3 text-sm leading-6 text-neutral-600">{item.description}</p>
+            </Link>
+          ))}
         </div>
       </section>
     </>

@@ -187,9 +187,13 @@
     "error": "Something went wrong."
   },
   "aboutPages": {
-    "mission": "Mission",
-    "vision": "Vision",
-    "coreValues": "Our Core Values"
+    "mission": "Our Mission",
+    "vision": "Our Vision",
+    "coreValues": "Our Core Values",
+    "subsidiaryLeadership": "Concern Leadership",
+    "capacity": "Capacity",
+    "faqsTitle": "Frequently Asked Questions",
+    "faqsSubtitle": "Find clear answers to common questions about FHS Enterprise, our subsidiaries, and operations."
   },
   "media": {
     "latestUpdate": "Latest Update",

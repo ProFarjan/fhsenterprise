@@ -26,7 +26,7 @@ export default function HistoryPage() {
           <h2 className="text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl">
             {history.title}
           </h2>
-          <span className="mt-5 block h-1 w-16 rounded-full bg-orange-600" />
+          <span className="mt-5 block h-1 w-16 rounded-full bg-[#0045A0]" />
           <div className="mt-8 space-y-6">
             {history.paragraphs.map((paragraph, index) => (
               <p

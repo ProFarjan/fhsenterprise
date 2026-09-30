@@ -93,11 +93,22 @@ export interface Facility {
   name: string;
   location: string;
   description: string;
+  image?: string;
+  capacity?: string;
 }
 
 export interface FaqItem {
   question: string;
   answer: string;
+}
+
+export interface ConcernLeader {
+  name: string;
+  title: string;
+  company: string;
+  image: string;
+  quote?: string;
+  bio: string[];
 }
 
 export interface FounderContent {
@@ -107,6 +118,7 @@ export interface FounderContent {
   quote: string;
   bio: string[];
   achievements: { label: string; value: string }[];
+  concernLeaders?: ConcernLeader[];
 }
 
 export interface AboutPagesContent {
