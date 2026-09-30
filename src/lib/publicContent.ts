@@ -58,20 +58,24 @@ export type PublicGalleryVideo = {
   id: number;
   title: string;
   thumbnail: string;
-  youtubeUrl: string;
+  youtubeUrl?: string;
+  videoUrl?: string;
+  description?: string;
 };
 
-export async function getMrGroupGallery(): Promise<{
+export async function getMrGroupGallery(locale: AppLocale = "en"): Promise<{
   photos: PublicGalleryPhoto[];
   videos: PublicGalleryVideo[];
 }> {
-  return getSiteGallery(SiteKey.FHS_ENTERPRISE);
+  return getSiteGallery(SiteKey.FHS_ENTERPRISE, locale);
 }
 
 // Same as getMrGroupGallery but parameterised by site — used by the
-// subsidiary company sites (filling station, agro, …) once they're wired to
-// the admin-managed MediaItem table.
-export async function getSiteGallery(site: SiteKey): Promise<{
+// subsidiary company sites once they're wired to the admin-managed MediaItem table.
+export async function getSiteGallery(
+  site: SiteKey,
+  locale: AppLocale = "en",
+): Promise<{
   photos: PublicGalleryPhoto[];
   videos: PublicGalleryVideo[];
 }> {
@@ -88,13 +92,30 @@ export async function getSiteGallery(site: SiteKey): Promise<{
     if (row.type === "IMAGE") {
       photos.push({ id: row.id, caption: row.title, image: `/api/media/${row.id}/image` });
     } else if (row.youtubeUrl) {
-      // A row created as VIDEO always has a youtubeUrl (enforced in
-      // createMediaAction) — the null check here is just for the type.
       const thumbnail = youtubeThumbnailUrl(row.youtubeUrl);
       if (thumbnail) {
         videos.push({ id: row.id, title: row.title, thumbnail, youtubeUrl: row.youtubeUrl });
       }
     }
+  }
+
+  // Fallback to static site gallery content when no database items exist
+  if (photos.length === 0 && videos.length === 0) {
+    const cfg = getSiteConfig(locale).mediaPages;
+    const fallbackPhotos: PublicGalleryPhoto[] = (cfg.galleryPhotos || []).map((p, idx) => ({
+      id: idx + 1,
+      caption: p.caption,
+      image: p.image,
+    }));
+    const fallbackVideos: PublicGalleryVideo[] = (cfg.galleryVideos || []).map((v, idx) => ({
+      id: idx + 1,
+      title: v.title,
+      thumbnail: v.thumbnail,
+      videoUrl: v.videoUrl,
+      youtubeUrl: v.youtubeUrl,
+      description: v.description,
+    }));
+    return { photos: fallbackPhotos, videos: fallbackVideos };
   }
 
   return { photos, videos };

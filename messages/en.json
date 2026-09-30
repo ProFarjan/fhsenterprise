@@ -138,6 +138,15 @@
         }
       ]
     },
+    "videoShowcase": {
+      "badge": "Video Gallery",
+      "headingPrefix": "Corporate",
+      "headingHighlight": "Videos & Operations",
+      "subtitle": "Discover our automated rice milling facilities, logistics hubs, and retail distribution in motion.",
+      "featuredBadge": "Featured Subsidiary",
+      "watchVideo": "Watch Video",
+      "viewAllMedia": "View All Media & Videos"
+    },
     "cta": {
       "badge": "Partner With Us",
       "title": "Ready to Partner with FHS Enterprise?",

@@ -135,6 +135,9 @@ export interface GalleryPhoto {
 export interface GalleryVideo {
   title: string;
   thumbnail: string;
+  videoUrl?: string;
+  youtubeUrl?: string;
+  description?: string;
 }
 
 export interface MediaPagesContent {

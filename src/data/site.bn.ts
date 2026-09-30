@@ -45,25 +45,20 @@ export const siteConfigBn: SiteConfig = {
 
   hero: [
     {
-      title: "এফএইচএস এন্টারপ্রাইজে স্বাগতম",
-      subtitle: "মানসম্মত সেবার দৃঢ় প্রতিশ্রুতি নিয়ে বিভিন্ন সেক্টরে একটি টেকসই ভবিষ্যৎ নির্মাণ।",
-      videoSrc: "/videos/bd-agro-1.mp4",
-    },
-    {
       title: "মেসার্স বাংলাদেশ অটো রাইস মিল",
-      subtitle: "প্রিমিয়াম মানের কৃষি পণ্য সরবরাহ এবং জাতির পুষ্টি নিশ্চিতকরণ।",
-      videoSrc: "/videos/bd-agro-1.mp4",
+      subtitle: "আধুনিক স্বয়ংক্রিয় রাইস মিলিং, স্বাস্থ্যসম্মত চাল প্রক্রিয়াকরণ এবং দেশের খাদ্য নিরাপত্তায় নির্ভরযোগ্য মানসম্পন্ন চাল সরবরাহ।",
+      videoSrc: "/videos/rice-mill.mp4",
     },
     {
       title: "ভেহিকেল সলিউশনস",
-      subtitle: "নির্ভরযোগ্য অটোমোটিভ পার্টস, মেরামত এবং বিশেষজ্ঞ সেবার মাধ্যমে আপনাকে এগিয়ে রাখা।",
-      videoSrc: "/videos/bd-agro-1.mp4",
+      subtitle: "সকল ধরনের গাড়ির আসল যন্ত্রাংশ, মেরামত সেবা, টায়ার ও প্রিমিয়াম লুব্রিকেন্ট সরবরাহের বিশ্বস্ত সমাধান।",
+      videoSrc: "/videos/vehicle-solutions.mp4",
     },
     {
-      title: "ডেইলি বাজার",
-      subtitle: "তাজা, দ্রুত এবং নির্ভরযোগ্য দৈনন্দিন প্রয়োজন ও মুদি পণ্যের জন্য আপনার বিশ্বস্ত অনলাইন শপ।",
-      videoSrc: "/videos/bd-agro-1.mp4",
-    }
+      title: "ডেইলি বাজার — আধুনিক সুপার শপ",
+      subtitle: "তাজা শাকসবজি, ফলমূল, নিত্যপ্রয়োজনীয় মুদি পণ্য ও দ্রুততম হোম ডেলিভারির আধুনিক সুপার শপ।",
+      videoSrc: "/videos/daily-bazar.mp4",
+    },
   ],
 
   about: {
@@ -190,8 +185,58 @@ export const siteConfigBn: SiteConfig = {
   news: [],
   mediaPages: {
     events: [],
-    galleryPhotos: [],
-    galleryVideos: [],
+    galleryPhotos: [
+      {
+        caption: "মেসার্স বাংলাদেশ অটো রাইস মিল — আধুনিক স্বয়ংক্রিয় চাল প্রক্রিয়াকরণ কারখানা",
+        image: "/images/gallery/harvest.jpg",
+        height: 600,
+      },
+      {
+        caption: "প্রতিষ্ঠাতা মোঃ সাইফুল ইসলাম বুলবুল ধান প্রক্রিয়াকরণ ও গুণমান পরিদর্শনে",
+        image: "/images/gallery/bulbul.jpeg",
+        height: 600,
+      },
+      {
+        caption: "ফখরুল হাসান সুটন, প্রোপ্রাইটর, এফএইচএস এন্টারপ্রাইজ",
+        image: "/images/gallery/suton.jpeg",
+        height: 600,
+      },
+      {
+        caption: "এফএইচএস এন্টারপ্রাইজ হেডকোয়ার্টার্স ও ইন্ডাস্ট্রিয়াল কমপ্লেক্স",
+        image: "/images/gallery/fhs_history.jpg",
+        height: 600,
+      },
+      {
+        caption: "ভেহিকেল সলিউশনস — পরিবহন বহর ও অটোমোটিভ সেন্টার",
+        image: "/images/gallery/distribution.jpg",
+        height: 600,
+      },
+      {
+        caption: "ডেইলি বাজার — তাজা মুদি পণ্য ও দ্রুত ডেলিভারি কেন্দ্র",
+        image: "/images/gallery/product.jpg",
+        height: 600,
+      },
+    ],
+    galleryVideos: [
+      {
+        title: "মেসার্স বাংলাদেশ অটো রাইস মিল — স্বয়ংক্রিয় চাল প্রক্রিয়াকরণ ও প্যাকেজিং",
+        thumbnail: "/images/gallery/harvest.jpg",
+        videoUrl: "/videos/rice-mill.mp4",
+        description: "ময়মনসিংহের ফুলবাড়িয়ায় অবস্থিত আমাদের অত্যাধুনিক স্বয়ংক্রিয় রাইস মিলের উৎপাদন ও গুণমান পরীক্ষা কার্যক্রম।",
+      },
+      {
+        title: "ভেহিকেল সলিউশনস — অটোমোটিভ মেরামত, টায়ার ও লুব্রিকেন্ট সেবা",
+        thumbnail: "/images/gallery/distribution.jpg",
+        videoUrl: "/videos/vehicle-solutions.mp4",
+        description: "সকল ধরনের যানবাহনের আসল যন্ত্রাংশ, মেরামত ও ইঞ্জিন সুরক্ষার সম্পূর্ণ সমাধান।",
+      },
+      {
+        title: "ডেইলি বাজার — আধুনিক সুপার শপ ও দ্রুত অনলাইন হোম ডেলিভারি",
+        thumbnail: "/images/gallery/product.jpg",
+        videoUrl: "/videos/daily-bazar.mp4",
+        description: "তাজা শাকসবজি, ফলমূল, নিত্যপ্রয়োজনীয় মুদি সামগ্রী ও আধুনিক সুপার শপ কেনাকাটার অভিজ্ঞতা সরাসরি ক্রেতার দ্বারে পৌঁছে দেয়ার বিশ্বস্ত মাধ্যম।",
+      },
+    ],
   },
   sustainabilityPages: {
     overviewDescription: "Sustainability at FHS Enterprise.",

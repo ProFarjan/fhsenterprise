@@ -45,25 +45,20 @@ export const siteConfigEn: SiteConfig = {
 
   hero: [
     {
-      title: "Welcome to FHS Enterprise",
-      subtitle: "Building a sustainable future across diverse sectors with a steadfast commitment to quality.",
-      videoSrc: "/videos/bd-agro-1.mp4",
-    },
-    {
       title: "M/s. Bangladesh Auto Rice Mill",
-      subtitle: "Providing premium quality agricultural products and feeding the nation.",
-      videoSrc: "/videos/bd-agro-1.mp4",
+      subtitle: "Industry-leading automated rice milling, hygienic grain processing, and premium food supply feeding the nation.",
+      videoSrc: "/videos/rice-mill.mp4",
     },
     {
       title: "Vehicle Solutions",
-      subtitle: "Keeping you moving with reliable automotive parts, repairs, and expert services.",
-      videoSrc: "/videos/bd-agro-1.mp4",
+      subtitle: "Keeping you moving with dependable automotive parts, tyre servicing, lubricant supply, and expert vehicle repairs.",
+      videoSrc: "/videos/vehicle-solutions.mp4",
     },
     {
-      title: "Daily Bazar",
-      subtitle: "Your trusted online shop for fresh, fast, and reliable daily needs and groceries.",
-      videoSrc: "/videos/bd-agro-1.mp4",
-    }
+      title: "Daily Bazar — Modern Super Shop",
+      subtitle: "Your premier destination for fresh groceries, premium household essentials, and seamless online shopping with fast doorstep delivery.",
+      videoSrc: "/videos/daily-bazar.mp4",
+    },
   ],
 
   about: {
@@ -190,8 +185,58 @@ export const siteConfigEn: SiteConfig = {
   news: [],
   mediaPages: {
     events: [],
-    galleryPhotos: [],
-    galleryVideos: [],
+    galleryPhotos: [
+      {
+        caption: "M/s. Bangladesh Auto Rice Mill — Modern Automated Milling Facility",
+        image: "/images/gallery/harvest.jpg",
+        height: 600,
+      },
+      {
+        caption: "Founder Md. Saiful Islam Bulbul inspecting grain processing quality",
+        image: "/images/gallery/bulbul.jpeg",
+        height: 600,
+      },
+      {
+        caption: "Fakhrul Hasan Suton, Proprietor of FHS Enterprise",
+        image: "/images/gallery/suton.jpeg",
+        height: 600,
+      },
+      {
+        caption: "FHS Enterprise Headquarters & Industrial Complex",
+        image: "/images/gallery/fhs_history.jpg",
+        height: 600,
+      },
+      {
+        caption: "Vehicle Solutions — Transport Fleet & Automotive Hub",
+        image: "/images/gallery/distribution.jpg",
+        height: 600,
+      },
+      {
+        caption: "Daily Bazar — Fresh Grocery Supply Chain & Delivery Center",
+        image: "/images/gallery/product.jpg",
+        height: 600,
+      },
+    ],
+    galleryVideos: [
+      {
+        title: "M/s. Bangladesh Auto Rice Mill — Automated Processing & Quality Packaging",
+        thumbnail: "/images/gallery/harvest.jpg",
+        videoUrl: "/videos/rice-mill.mp4",
+        description: "An inside look at our state-of-the-art automated rice mill in Fulbariya, Mymensingh, ensuring hygienic processing and premium quality grain.",
+      },
+      {
+        title: "Vehicle Solutions — Commercial Fleet Care, Tyres & Lubricant Services",
+        thumbnail: "/images/gallery/distribution.jpg",
+        videoUrl: "/videos/vehicle-solutions.mp4",
+        description: "Comprehensive vehicle maintenance, genuine parts, tyre servicing, and industrial lubricants keeping the region moving.",
+      },
+      {
+        title: "Daily Bazar — Modern Super Shop & Express Online Delivery",
+        thumbnail: "/images/gallery/product.jpg",
+        videoUrl: "/videos/daily-bazar.mp4",
+        description: "Explore our modern super shop experience with fully stocked aisles of fresh vegetables, packaged groceries, and doorstep delivery via daily-bazar.fhsenterprise.com.",
+      },
+    ],
   },
   sustainabilityPages: {
     overviewDescription: "Sustainability at FHS Enterprise.",

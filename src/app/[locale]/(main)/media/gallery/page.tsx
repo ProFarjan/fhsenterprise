@@ -2,9 +2,16 @@ import { getTranslations } from "next-intl/server";
 import { getMrGroupGallery } from "@/lib/publicContent";
 import GalleryTabs from "@/components/sections/media/GalleryTabs";
 
-export default async function GalleryPage() {
+import type { AppLocale } from "@/i18n/routing";
+
+export default async function GalleryPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   const t = await getTranslations("media");
-  const { photos, videos } = await getMrGroupGallery();
+  const { photos, videos } = await getMrGroupGallery(locale as AppLocale);
 
   return (
     <section className="mx-auto max-w-6xl px-6 lg:px-8">

@@ -4,6 +4,7 @@ import Companies from "@/components/sections/Companies";
 import WhyChooseUs from "@/components/sections/WhyChooseUs";
 import ProductCategories from "@/components/sections/ProductCategories";
 import Stats from "@/components/sections/Stats";
+import VideoShowcase from "@/components/sections/VideoShowcase";
 import Testimonials from "@/components/sections/Testimonials";
 import CallToAction from "@/components/sections/CallToAction";
 import LatestNews from "@/components/sections/LatestNews";
@@ -94,6 +95,7 @@ export default async function Home({
       <Companies companies={companies} />
       <WhyChooseUs />
       <ProductCategories />
+      <VideoShowcase />
       <Stats />
       <Testimonials />
       <CallToAction />
