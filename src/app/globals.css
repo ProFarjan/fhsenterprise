@@ -8,6 +8,12 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-brand-blue: #0045a0;
+  --color-brand-blue-hover: #003680;
+  --color-brand-blue-light: #e6f0ff;
+  --color-brand-green: #097b33;
+  --color-brand-green-hover: #076228;
+  --color-brand-green-light: #e6f7ec;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   /* Serif display face for the MR Agro subdomain (loaded in its layout).

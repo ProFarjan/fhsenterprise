@@ -35,29 +35,37 @@ export default function Stats() {
 
   return (
     <section className="relative overflow-hidden bg-white py-24">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(234,88,12,0.07),_transparent_55%)]" />
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(9,123,51,0.06),_transparent_55%)]" />
 
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <span className="inline-block rounded-full border border-orange-200 bg-orange-50 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-orange-600">
+          <span className="inline-block rounded-full border border-[#0045a0]/20 bg-[#0045a0]/5 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-[#0045a0]">
             {t("badge")}
           </span>
           <h2 className="mt-5 text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl">
-            {t("headingPrefix")} <span className="text-orange-600">{t("headingHighlight")}</span>
+            {t("headingPrefix")} <span className="text-[#0045a0]">{t("headingHighlight")}</span>
           </h2>
+          <div className="mt-3 flex items-center justify-center gap-2">
+            <span className="h-1 w-12 rounded-full bg-[#0045a0]" />
+            <span className="h-1 w-8 rounded-full bg-[#097b33]" />
+          </div>
         </div>
 
         <dl className="mt-14 grid grid-cols-2 gap-5 sm:grid-cols-4">
-          {stats.map((stat) => (
+          {stats.map((stat, idx) => (
             <div
               key={stat.label}
-              className="group flex flex-col items-center gap-3 rounded-2xl border border-neutral-200 bg-neutral-50 px-6 py-10 text-center transition-all hover:-translate-y-1 hover:border-orange-200 hover:bg-white hover:shadow-xl"
+              className="group flex flex-col items-center gap-3 rounded-3xl border border-neutral-200 bg-neutral-50 px-6 py-10 text-center transition-all hover:-translate-y-1 hover:border-[#0045a0]/30 hover:bg-white hover:shadow-xl"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-orange-600 text-white transition-transform group-hover:scale-110">
+              <div
+                className={`flex h-14 w-14 items-center justify-center rounded-2xl text-white transition-transform group-hover:scale-110 shadow-sm ${
+                  idx % 2 === 0 ? "bg-[#0045a0]" : "bg-[#097b33]"
+                }`}
+              >
                 <StatIconGlyph icon={stat.icon} />
               </div>
-              <dt className="text-3xl font-bold text-neutral-900 sm:text-4xl">{stat.value}</dt>
-              <dd className="text-sm font-medium text-neutral-600">{stat.label}</dd>
+              <dt className="text-3xl font-extrabold text-neutral-900 sm:text-4xl">{stat.value}</dt>
+              <dd className="text-sm font-semibold text-neutral-600">{stat.label}</dd>
             </div>
           ))}
         </dl>

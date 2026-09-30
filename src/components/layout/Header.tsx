@@ -38,13 +38,13 @@ export default function Header() {
   const isTransparent = isHome && !isScrolled;
 
   const linkColor = isTransparent
-    ? "text-white hover:text-orange-400"
-    : "text-neutral-700 hover:text-orange-600";
+    ? "text-white hover:text-emerald-300"
+    : "text-neutral-700 hover:text-[#0045a0]";
 
   // Highlight for the current page, tuned for each navbar background.
   const activeColor = isTransparent
-    ? "font-semibold text-orange-400"
-    : "font-semibold text-orange-600";
+    ? "font-semibold text-emerald-300"
+    : "font-semibold text-[#0045a0]";
 
   return (
     <header
@@ -67,7 +67,7 @@ export default function Header() {
                 key={social.label}
                 href={social.href}
                 aria-label={social.label}
-                className="text-white/80 transition-colors hover:text-orange-400"
+                className="text-white/80 transition-colors hover:text-emerald-300"
               >
                 <SocialIcon label={social.label} />
               </Link>
@@ -75,7 +75,7 @@ export default function Header() {
           </div>
           <Link
             href="/contact"
-            className="text-xs font-medium text-white/80 transition-colors hover:text-orange-400"
+            className="text-xs font-medium text-white/80 transition-colors hover:text-emerald-300"
           >
             {t("contactUs")}
           </Link>
@@ -128,9 +128,9 @@ export default function Header() {
                       key={child.href}
                       href={child.href}
                       aria-current={isActive(child.href) ? "page" : undefined}
-                      className={`block px-4 py-2 text-sm hover:bg-neutral-50 hover:text-orange-600 ${
+                      className={`block px-4 py-2 text-sm hover:bg-neutral-50 hover:text-[#0045a0] ${
                         isActive(child.href)
-                          ? "font-semibold text-orange-600"
+                          ? "font-semibold text-[#0045a0]"
                           : "text-neutral-700"
                       }`}
                     >
@@ -158,7 +158,7 @@ export default function Header() {
           <LanguageSwitcher transparent={isTransparent} />
           <Link
             href="/contact"
-            className="rounded-md bg-orange-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-orange-500"
+            className="rounded-full bg-[#0045a0] px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#003680]"
           >
             {t("contactUs")}
           </Link>
@@ -204,7 +204,7 @@ export default function Header() {
                       setOpenMobileSection((open) => (open === item.href ? null : item.href))
                     }
                     className={`flex w-full items-center justify-between py-2 text-sm font-medium ${
-                      isActive(item.href) ? "text-orange-600" : "text-neutral-700"
+                      isActive(item.href) ? "text-[#0045a0]" : "text-neutral-700"
                     }`}
                   >
                     {item.label}
@@ -231,9 +231,9 @@ export default function Header() {
                           href={child.href}
                           onClick={() => setIsMenuOpen(false)}
                           aria-current={isActive(child.href) ? "page" : undefined}
-                          className={`py-1.5 text-sm hover:text-orange-600 ${
+                          className={`py-1.5 text-sm hover:text-[#0045a0] ${
                             isActive(child.href)
-                              ? "font-semibold text-orange-600"
+                              ? "font-semibold text-[#0045a0]"
                               : "text-neutral-600"
                           }`}
                         >

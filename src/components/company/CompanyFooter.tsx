@@ -22,7 +22,7 @@ export default async function CompanyFooter({
         <p className="text-xs text-neutral-500">
           {t("partOf")}{" "}
           <a href={`//${rootDomain}/${locale}`} className="font-semibold text-orange-500">
-            MR Group
+            FHS Enterprise
           </a>
         </p>
       </div>

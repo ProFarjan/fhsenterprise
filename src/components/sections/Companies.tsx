@@ -1,6 +1,5 @@
 "use client";
 
-import { useRef, useState } from "react";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
@@ -8,7 +7,7 @@ import { companyUrl } from "@/lib/companies";
 import type { AppLocale } from "@/i18n/routing";
 import type { Company } from "@/types/content";
 
-function ArrowIcon({ direction }: { direction: "left" | "right" }) {
+function ArrowIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -16,13 +15,9 @@ function ArrowIcon({ direction }: { direction: "left" | "right" }) {
       viewBox="0 0 24 24"
       strokeWidth={2}
       stroke="currentColor"
-      className="h-4 w-4"
+      className="h-4 w-4 transition-transform group-hover:translate-x-1"
     >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d={direction === "left" ? "M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" : "M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"}
-      />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
     </svg>
   );
 }
@@ -30,91 +25,111 @@ function ArrowIcon({ direction }: { direction: "left" | "right" }) {
 export default function Companies({ companies }: { companies: Company[] }) {
   const locale = useLocale() as AppLocale;
   const t = useTranslations("home.companies");
-  const scrollerRef = useRef<HTMLDivElement>(null);
-  const [current, setCurrent] = useState(1);
-  const total = companies.length;
-
-  const cardStep = () => {
-    const el = scrollerRef.current;
-    const card = el?.firstElementChild as HTMLElement | null;
-    return card ? card.offsetWidth + 24 : 200;
-  };
-
-  const scroll = (dir: 1 | -1) => {
-    scrollerRef.current?.scrollBy({ left: dir * cardStep(), behavior: "smooth" });
-  };
-
-  const handleScroll = () => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    const index = Math.min(total, Math.max(1, Math.round(el.scrollLeft / cardStep()) + 1));
-    setCurrent(index);
-  };
+  const tCommon = useTranslations("common");
 
   return (
     <section id="companies" className="bg-neutral-50 py-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-          <div>
-            <h2 className="text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl">
-              {t("headingPrefix")} <span className="text-orange-600">{t("headingHighlight")}</span>
-            </h2>
-            <p className="mt-2 text-lg text-neutral-600">{t("subheading")}</p>
+        {/* Section header */}
+        <div className="text-center">
+          <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#0045a0]">
+            <span className="h-px w-8 bg-[#097b33]" />
+            {t("headingPrefix")}
+            <span className="h-px w-8 bg-[#097b33]" />
+          </span>
+          <h2 className="mt-4 text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl">
+            {t("headingPrefix")} <span className="text-[#0045a0]">{t("headingHighlight")}</span>
+          </h2>
+          <div className="mt-3 flex items-center justify-center gap-2">
+            <span className="h-1 w-12 rounded-full bg-[#0045a0]" />
+            <span className="h-1 w-8 rounded-full bg-[#097b33]" />
           </div>
-          <p className="max-w-md text-sm leading-6 text-neutral-600">{t("description")}</p>
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-neutral-600">{t("description")}</p>
         </div>
 
-        <div
-          ref={scrollerRef}
-          onScroll={handleScroll}
-          className="mt-14 flex gap-6 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-        >
+        {/* FHS Enterprise — Featured parent company card */}
+        <div className="mt-16">
+          <a
+            href={`/${locale}`}
+            className="group relative flex h-80 flex-col justify-end overflow-hidden rounded-3xl shadow-lg transition-all hover:-translate-y-1 hover:shadow-2xl lg:h-96"
+          >
+            <Image
+              src="/images/gallery/fhs_history.jpg"
+              alt="FHS Enterprise"
+              fill
+              sizes="100vw"
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/10" />
+
+            {/* Logo badge */}
+            <div className="absolute left-6 top-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/95 p-2 shadow-lg">
+              <Image src="/logos/fhs_logo.png" alt="FHS Enterprise logo" width={48} height={48} className="object-contain" />
+            </div>
+
+            <div className="relative flex flex-col gap-3 p-8">
+              <span className="inline-block w-fit rounded-full bg-[#0045a0] px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-white shadow">
+                Parent Company
+              </span>
+              <h3 className="text-3xl font-bold text-white sm:text-4xl">FHS Enterprise</h3>
+              <p className="max-w-2xl text-base leading-7 text-neutral-200">
+                A rapidly growing conglomerate located in Fulbariya, Mymensingh — spanning premium agricultural processing, advanced automotive solutions, and modern digital e-commerce.
+              </p>
+            </div>
+          </a>
+        </div>
+
+        {/* Subsidiary companies grid */}
+        <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {companies.map((company) => (
             <a
               key={company.name}
               href={companyUrl(company.subdomain, locale)}
               target={company.subdomain.includes(".") ? "_blank" : undefined}
-              className="group flex h-40 w-40 flex-none items-center justify-center rounded-2xl bg-white p-6 shadow-sm ring-1 ring-neutral-200 transition-shadow hover:shadow-lg sm:h-44 sm:w-44"
+              className="group relative flex h-80 flex-col justify-end overflow-hidden rounded-2xl shadow-sm transition-all hover:-translate-y-1 hover:shadow-2xl"
             >
               <Image
-                src={company.logo}
-                alt={`${company.name} logo`}
-                width={160}
-                height={160}
-                className="h-full w-full object-contain"
+                src={company.image}
+                alt=""
+                fill
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
+
+              {/* Scrim */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/5" />
+
+              {/* Logo badge */}
+              <div className="absolute left-5 top-5 flex h-12 w-12 items-center justify-center rounded-xl bg-white/95 p-2 shadow-md">
+                <Image src={company.logo} alt={`${company.name} logo`} width={28} height={28} className="object-contain" />
+              </div>
+
+              <div className="relative flex flex-col gap-2 p-6">
+                <span className="inline-block w-fit rounded-full bg-[#097b33]/80 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white backdrop-blur-sm">
+                  {company.sector}
+                </span>
+                <h3 className="text-xl font-bold text-white">{company.name}</h3>
+                <p className="line-clamp-2 text-sm leading-6 text-neutral-200">
+                  {company.description}
+                </p>
+                <span className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-white group-hover:text-emerald-300 transition-colors">
+                  {tCommon("learnMore")}
+                  <ArrowIcon />
+                </span>
+              </div>
             </a>
           ))}
         </div>
 
-        <div className="mt-8 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => scroll(-1)}
-              aria-label={t("scrollPrev")}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-orange-300 text-orange-600 transition-colors hover:bg-orange-50"
-            >
-              <ArrowIcon direction="left" />
-            </button>
-            <button
-              type="button"
-              onClick={() => scroll(1)}
-              aria-label={t("scrollNext")}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-orange-300 text-orange-600 transition-colors hover:bg-orange-50"
-            >
-              <ArrowIcon direction="right" />
-            </button>
-            <Link
-              href="/companies"
-              className="ml-2 text-sm font-semibold text-orange-600 transition-colors hover:text-orange-500"
-            >
-              {t("seeAll")}
-            </Link>
-          </div>
-          <p className="text-sm text-neutral-500">
-            <span className="font-semibold text-neutral-900">{current}</span>/{total}
-          </p>
+        {/* View all link */}
+        <div className="mt-12 text-center">
+          <Link
+            href="/companies"
+            className="inline-flex items-center gap-2 rounded-full bg-[#0045a0] px-8 py-3.5 text-sm font-semibold text-white shadow-md transition-colors hover:bg-[#003680]"
+          >
+            {t("seeAll")}
+            <ArrowIcon />
+          </Link>
         </div>
       </div>
     </section>

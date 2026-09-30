@@ -40,44 +40,52 @@ export default function ProductCategories() {
 
   return (
     <section className="relative overflow-hidden bg-white py-24">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_rgba(234,88,12,0.07),_transparent_55%)]" />
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_rgba(0,69,160,0.06),_transparent_55%)]" />
 
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <span className="inline-block rounded-full border border-orange-200 bg-orange-50 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-orange-600">
+            <span className="inline-block rounded-full border border-[#0045a0]/20 bg-[#0045a0]/5 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-[#0045a0]">
               {t("badge")}
             </span>
             <h2 className="mt-5 text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl">
-              {t("headingPrefix")} <span className="text-orange-600">{t("headingHighlight")}</span>
+              {t("headingPrefix")} <span className="text-[#0045a0]">{t("headingHighlight")}</span>
             </h2>
+            <div className="mt-3 flex items-center gap-2">
+              <span className="h-1 w-12 rounded-full bg-[#0045a0]" />
+              <span className="h-1 w-8 rounded-full bg-[#097b33]" />
+            </div>
             <p className="mt-2 text-lg text-neutral-600">{t("subheading")}</p>
           </div>
           <p className="max-w-md text-sm leading-6 text-neutral-600">{t("description")}</p>
         </div>
 
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {productCategories.map((category) => (
+        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {productCategories.map((category, idx) => (
             <div
               key={category.name}
-              className="group flex flex-col gap-4 rounded-2xl border border-neutral-200 bg-neutral-50 p-6 transition-all hover:-translate-y-1 hover:border-orange-200 hover:bg-white hover:shadow-xl"
+              className="group flex flex-col gap-4 rounded-3xl border border-neutral-200 bg-neutral-50 p-7 transition-all hover:-translate-y-1 hover:border-[#0045a0]/40 hover:bg-white hover:shadow-xl"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-orange-600 text-white transition-transform group-hover:scale-110">
+              <div
+                className={`flex h-12 w-12 items-center justify-center rounded-2xl text-white transition-transform group-hover:scale-110 shadow-sm ${
+                  idx % 2 === 0 ? "bg-[#0045a0]" : "bg-[#097b33]"
+                }`}
+              >
                 <CategoryIcon icon={category.icon} />
               </div>
 
               <div>
-                <h3 className="text-base font-semibold leading-snug text-neutral-900">
+                <h3 className="text-lg font-bold leading-snug text-neutral-900">
                   {category.name}
                 </h3>
-                <p className="mt-1 text-xs font-medium text-orange-600">{category.company}</p>
+                <p className="mt-1 text-xs font-semibold text-[#097b33]">{category.company}</p>
               </div>
 
-              <ul className="mt-auto flex flex-wrap gap-1.5">
+              <ul className="mt-auto flex flex-wrap gap-1.5 pt-2">
                 {category.items.map((item) => (
                   <li
                     key={item}
-                    className="rounded-full bg-white px-2.5 py-1 text-xs text-neutral-600 ring-1 ring-neutral-200 transition-colors group-hover:bg-orange-50 group-hover:text-orange-700 group-hover:ring-orange-100"
+                    className="rounded-full bg-white px-3 py-1 text-xs font-medium text-neutral-700 ring-1 ring-neutral-200 transition-colors group-hover:bg-[#0045a0]/5 group-hover:text-[#0045a0] group-hover:ring-[#0045a0]/20"
                   >
                     {item}
                   </li>

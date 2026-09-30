@@ -49,7 +49,7 @@
     "companies": {
       "eyebrow": "Our Portfolio",
       "title": "Companies of FHS Enterprise",
-      "description": "A diversified family of businesses spanning agriculture, energy, food, textiles, and more — united under one group."
+      "description": "A diversified family of businesses spanning agricultural rice milling, automotive solutions, and digital e-commerce — united under FHS Enterprise."
     }
   },
   "common": {
@@ -73,17 +73,77 @@
       "scrollNext": "Scroll next",
       "seeAll": "See All"
     },
+    "whyChooseUs": {
+      "badge": "Why Choose Us",
+      "title": "Why Choose FHS Enterprise",
+      "subtitle": "We are dedicated to providing the best services across multiple sectors, driven by our commitment to quality, integrity, and community empowerment.",
+      "features": {
+        "quality": {
+          "title": "Quality Assurance",
+          "description": "We maintain the highest standards in every product and service we deliver."
+        },
+        "experience": {
+          "title": "Trusted Experience",
+          "description": "Over 10 years of proven excellence serving communities with dedication."
+        },
+        "portfolio": {
+          "title": "Diverse Portfolio",
+          "description": "From rice milling to automotive parts and online grocery retail, we cover essential sectors."
+        },
+        "local": {
+          "title": "Local Expertise",
+          "description": "Deep roots in Fulbariya, Mymensingh with an expanding regional and national reach."
+        },
+        "customer": {
+          "title": "Customer First",
+          "description": "24/7 dedicated support and a relentless focus on customer satisfaction."
+        },
+        "sustainability": {
+          "title": "Sustainable Growth",
+          "description": "Committed to eco-friendly practices, ethical trade, and community development."
+        }
+      }
+    },
     "products": {
       "badge": "What We Do",
       "headingPrefix": "Our Products",
-      "headingHighlight": "& Supplies",
-      "subheading": "eight companies, one supply chain",
-      "description": "FHS Enterprise works across agriculture, energy, and industrial supply — feed and agro medicine for farmers, machinery and lubricants for the field, and LPG, ammonia, and fuel for homes and industry."
+      "headingHighlight": "& Services",
+      "subheading": "integrated supply & community service",
+      "description": "FHS Enterprise delivers premium quality across rice processing, automotive parts, tyres, lubricants, vehicle repair services, and online grocery e-commerce through Daily Bazar."
     },
     "stats": {
       "badge": "By The Numbers",
       "headingPrefix": "Our Impact",
       "headingHighlight": "at a Glance"
+    },
+    "testimonials": {
+      "badge": "Client Feedback",
+      "title": "What Our Partners & Customers Say",
+      "subtitle": "Real experiences from business partners, logistics managers, and retail customers who rely on FHS Enterprise every day.",
+      "items": [
+        {
+          "quote": "FHS Enterprise has been an instrumental partner in scaling our distribution network. Their Auto Rice Mill provides consistent, top-tier quality that our customers love.",
+          "author": "Kamrul Islam",
+          "role": "Local Distributor"
+        },
+        {
+          "quote": "Vehicle Solutions saved us when our delivery fleet broke down. Their quick turnaround and genuine parts ensured our business didn't suffer any downtime.",
+          "author": "Rafiq Ahmed",
+          "role": "Logistics Manager"
+        },
+        {
+          "quote": "Daily Bazar completely changed how we source our daily goods. Fast, reliable, and deeply connected to the needs of the Fulbariya community.",
+          "author": "Tariq Rahman",
+          "role": "Retail Partner"
+        }
+      ]
+    },
+    "cta": {
+      "badge": "Partner With Us",
+      "title": "Ready to Partner with FHS Enterprise?",
+      "subtitle": "Join us in building a sustainable future. Explore our diverse businesses or get in touch with our team in Fulbariya, Mymensingh today.",
+      "contactBtn": "Contact Us",
+      "companiesBtn": "Explore Companies"
     },
     "news": {
       "badge": "Media Center",

@@ -84,7 +84,7 @@ export default function Hero() {
                 onClick={() => setIndex(i)}
                 aria-label={t("goToSlide", { n: i + 1 })}
                 className={`h-2 rounded-full transition-all ${
-                  i === index ? "w-6 bg-orange-500" : "w-2 bg-white/50 hover:bg-white/80"
+                  i === index ? "w-6 bg-[#097b33]" : "w-2 bg-white/50 hover:bg-white/80"
                 }`}
               />
             ))}
@@ -103,7 +103,7 @@ export default function Hero() {
               type="button"
               onClick={goNext}
               aria-label={t("nextSlide")}
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-600 text-white shadow-md transition-colors hover:bg-orange-500"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-[#0045a0] text-white shadow-md transition-colors hover:bg-[#003680]"
             >
               <ArrowIcon direction="right" />
             </button>

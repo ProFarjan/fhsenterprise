@@ -32,7 +32,7 @@ export default function Footer() {
                   key={social.label}
                   href={social.href}
                   aria-label={social.label}
-                  className="text-neutral-400 transition-colors hover:text-orange-500"
+                  className="text-neutral-400 transition-colors hover:text-emerald-400"
                 >
                   <SocialIcon label={social.label} />
                 </Link>
@@ -47,7 +47,7 @@ export default function Footer() {
             <ul className="mt-4 space-y-2">
               {siteConfig.nav.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className="text-sm text-neutral-400 hover:text-orange-500">
+                  <Link href={item.href} className="text-sm text-neutral-400 hover:text-emerald-400">
                     {item.label}
                   </Link>
                 </li>

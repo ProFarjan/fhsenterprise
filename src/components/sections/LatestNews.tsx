@@ -46,12 +46,16 @@ export default async function LatestNews() {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <span className="inline-block rounded-full border border-orange-200 bg-orange-50 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-orange-600">
+            <span className="inline-block rounded-full border border-[#0045a0]/20 bg-[#0045a0]/5 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-[#0045a0]">
               {t("badge")}
             </span>
             <h2 className="mt-5 text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl">
-              {t("headingPrefix")} <span className="text-orange-600">{t("headingHighlight")}</span>
+              {t("headingPrefix")} <span className="text-[#0045a0]">{t("headingHighlight")}</span>
             </h2>
+            <div className="mt-3 flex items-center gap-2">
+              <span className="h-1 w-12 rounded-full bg-[#0045a0]" />
+              <span className="h-1 w-8 rounded-full bg-[#097b33]" />
+            </div>
           </div>
           <p className="max-w-md text-sm leading-6 text-neutral-600">{t("description")}</p>
         </div>
@@ -61,9 +65,9 @@ export default async function LatestNews() {
             <Link
               key={item.id}
               href={item.href}
-              className="group flex flex-col overflow-hidden rounded-2xl bg-white ring-1 ring-neutral-200 transition-all hover:-translate-y-1 hover:shadow-xl"
+              className="group flex flex-col overflow-hidden rounded-3xl bg-white ring-1 ring-neutral-200 transition-all hover:-translate-y-1 hover:shadow-xl"
             >
-              <div className="relative h-44">
+              <div className="relative h-48">
                 <Image
                   src={item.image}
                   alt=""
@@ -73,14 +77,14 @@ export default async function LatestNews() {
                 />
               </div>
               <div className="flex flex-1 flex-col gap-3 p-6">
-                <time dateTime={item.date} className="text-xs font-medium uppercase tracking-wide text-orange-600">
+                <time dateTime={item.date} className="text-xs font-semibold uppercase tracking-wide text-[#097b33]">
                   {formatDate(item.date, locale)}
                 </time>
-                <h3 className="text-lg font-semibold leading-snug text-neutral-900">
+                <h3 className="text-lg font-bold leading-snug text-neutral-900">
                   {item.title}
                 </h3>
                 <p className="flex-1 text-sm leading-6 text-neutral-600">{item.excerpt}</p>
-                <span className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-orange-600">
+                <span className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-[#0045a0] group-hover:text-[#003680]">
                   {tCommon("readMore")}
                   <ArrowIcon />
                 </span>
@@ -92,7 +96,7 @@ export default async function LatestNews() {
         <div className="mt-12 text-center">
           <Link
             href="/media/news"
-            className="inline-block rounded-md border border-orange-300 px-6 py-3 text-sm font-semibold text-orange-600 transition-colors hover:bg-orange-50"
+            className="inline-block rounded-full border-2 border-[#0045a0] px-8 py-3 text-sm font-semibold text-[#0045a0] transition-colors hover:bg-[#0045a0] hover:text-white"
           >
             {t("viewAll")}
           </Link>

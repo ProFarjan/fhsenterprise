@@ -17,32 +17,40 @@ export default function Contact() {
 
   return (
     <section id="contact" className="relative overflow-hidden bg-white py-24">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_left,_rgba(234,88,12,0.07),_transparent_55%)]" />
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_left,_rgba(0,69,160,0.06),_transparent_55%)]" />
 
       <div className="mx-auto max-w-5xl px-6 text-center lg:px-8">
-        <span className="inline-block rounded-full border border-orange-200 bg-orange-50 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-orange-600">
+        <span className="inline-block rounded-full border border-[#0045a0]/20 bg-[#0045a0]/5 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-[#0045a0]">
           {t("badge")}
         </span>
         <h2 className="mt-5 text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl">
           {contact.title}
         </h2>
+        <div className="mt-3 flex items-center justify-center gap-2">
+          <span className="h-1 w-12 rounded-full bg-[#0045a0]" />
+          <span className="h-1 w-8 rounded-full bg-[#097b33]" />
+        </div>
         <p className="mx-auto mt-4 max-w-xl text-lg text-neutral-600">{contact.description}</p>
 
         <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-3">
-          {infoItems.map((item) => {
+          {infoItems.map((item, idx) => {
             const Icon = item.icon;
             return (
               <div
                 key={item.label}
-                className="group flex flex-col items-center gap-3 rounded-2xl border border-neutral-200 bg-neutral-50 px-6 py-8 text-center transition-all hover:-translate-y-1 hover:border-orange-200 hover:bg-white hover:shadow-xl"
+                className="group flex flex-col items-center gap-3 rounded-3xl border border-neutral-200 bg-neutral-50 px-6 py-8 text-center transition-all hover:-translate-y-1 hover:border-[#0045a0]/30 hover:bg-white hover:shadow-xl"
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-orange-600 text-white transition-transform group-hover:scale-110">
+                <div
+                  className={`flex h-12 w-12 items-center justify-center rounded-2xl text-white transition-transform group-hover:scale-110 shadow-sm ${
+                    idx === 1 ? "bg-[#097b33]" : "bg-[#0045a0]"
+                  }`}
+                >
                   <Icon />
                 </div>
                 <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
                   {item.label}
                 </p>
-                <p className="text-sm text-neutral-800">{item.value}</p>
+                <p className="text-sm font-medium text-neutral-800">{item.value}</p>
               </div>
             );
           })}
@@ -50,7 +58,7 @@ export default function Contact() {
 
         <Link
           href="/contact"
-          className="mt-12 inline-flex items-center gap-2 rounded-md bg-orange-600 px-7 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-orange-500"
+          className="mt-12 inline-flex items-center gap-2 rounded-full bg-[#0045a0] px-8 py-3.5 text-sm font-semibold text-white shadow-md transition-colors hover:bg-[#003680]"
         >
           {tCommon("sendMessage")}
           <svg
