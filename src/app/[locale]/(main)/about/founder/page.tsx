@@ -1,15 +1,71 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { getSiteConfig } from "@/data/site";
+import { buildPageMetadata, getPersonJsonLd } from "@/lib/seo";
+import Breadcrumbs from "@/components/navigation/Breadcrumbs";
 import type { AppLocale } from "@/i18n/routing";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return buildPageMetadata({
+    locale,
+    path: "/about/founder",
+    title:
+      locale === "bn"
+        ? "প্রতিষ্ঠাতা ও নেতৃত্ব — ফখরুল হাসান সুটন | এফএইচএস এন্টারপ্রাইজ"
+        : "Founder & Leadership — Fakhrul Hasan Suton | FHS Enterprise",
+    description:
+      locale === "bn"
+        ? "এফএইচএস এন্টারপ্রাইজের প্রতিষ্ঠাতা ও প্রোপাইটার ফখরুল হাসান সুটন এবং মেসার্স বাংলাদেশ অটো রাইস মিলের প্রতিষ্ঠাতা মো: সাইফুল ইসলাম বুলবুল-এর জীবন ও নেতৃত্ব দর্শন।"
+        : "Learn about Fakhrul Hasan Suton (Proprietor, FHS Enterprise) and Md. Saiful Islam Bulbul (Founder & Director, M/s. Bangladesh Auto Rice Mill) — their vision and leadership in Fulbariya.",
+    keywords: [
+      "Fakhrul Hasan Suton",
+      "Md Saiful Islam Bulbul",
+      "FHS Enterprise founder",
+      "Bangladesh Auto Rice Mill founder",
+      "Proprietor FHS Enterprise",
+    ],
+    image: "/images/gallery/suton.jpeg",
+    type: "profile",
+  });
+}
 
 export default function FounderPage() {
   const locale = useLocale() as AppLocale;
   const { founder } = getSiteConfig(locale).aboutPages;
   const tAbout = useTranslations("aboutPages");
 
+  const sutonSchema = getPersonJsonLd({
+    name: founder.name,
+    jobTitle: founder.title,
+    image: founder.image,
+    worksFor: "FHS Enterprise",
+    description: founder.bio.join(" "),
+  });
+
   return (
-    <section className="mx-auto max-w-6xl px-6 py-20 lg:px-8 lg:py-28">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(sutonSchema) }}
+      />
+      <div className="mx-auto max-w-6xl px-6 pt-6 lg:px-8">
+        <Breadcrumbs
+          locale={locale}
+          items={[
+            { label: locale === "bn" ? "হোম" : "Home", href: "/" },
+            { label: locale === "bn" ? "আমাদের সম্পর্কে" : "About Us", href: "/about" },
+            { label: founder.name },
+          ]}
+        />
+      </div>
+
+      <section className="mx-auto max-w-6xl px-6 py-12 lg:px-8 lg:py-20">
       {/* Primary Founder / Proprietor */}
       <div className="grid gap-12 lg:grid-cols-2 lg:items-start lg:gap-20">
         {/* Sticky image */}
@@ -125,6 +181,7 @@ export default function FounderPage() {
           </div>
         </div>
       )}
-    </section>
+      </section>
+    </>
   );
 }

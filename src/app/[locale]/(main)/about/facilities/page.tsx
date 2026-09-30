@@ -1,7 +1,37 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { useLocale } from "next-intl";
 import { getSiteConfig } from "@/data/site";
+import { buildPageMetadata } from "@/lib/seo";
+import Breadcrumbs from "@/components/navigation/Breadcrumbs";
 import type { AppLocale } from "@/i18n/routing";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return buildPageMetadata({
+    locale,
+    path: "/about/facilities",
+    title:
+      locale === "bn"
+        ? "আমাদের স্থাপনাসমূহ ও কারখানা | এফএইচএস এন্টারপ্রাইজ"
+        : "Facilities & Infrastructure | FHS Enterprise",
+    description:
+      locale === "bn"
+        ? "ময়মনসিংহের ফুলবাড়িয়ায় এফএইচএস এন্টারপ্রাইজের স্বয়ংক্রিয় রাইস মিল কমপ্লেক্স, ভেহিকেল সলিউশনস ওয়ার্কশপ, ডেইলি বাজার কোল্ড হাব এবং কর্পোরেট হেডকোয়ার্টার।"
+        : "Discover the modern infrastructure of FHS Enterprise — our automated rice milling plant, automotive diagnostic workshop, and cold chain fulfillment center in Fulbariya.",
+    keywords: [
+      "FHS Enterprise facilities",
+      "Bangladesh Auto Rice Mill plant",
+      "Vehicle Solutions workshop",
+      "Fulbariya manufacturing plant",
+    ],
+    image: "/images/facilities/rice-mill-plant.jpg",
+  });
+}
 
 const FACILITY_IMAGES = [
   "/images/gallery/feed-fac.png",
@@ -20,10 +50,23 @@ function PinIcon() {
 }
 
 export default function FacilitiesPage() {
-  const { facilities } = getSiteConfig(useLocale() as AppLocale).aboutPages;
+  const locale = useLocale() as AppLocale;
+  const { facilities } = getSiteConfig(locale).aboutPages;
 
   return (
-    <section className="mx-auto max-w-6xl px-6 py-20 lg:px-8 lg:py-28">
+    <>
+      <div className="mx-auto max-w-6xl px-6 pt-6 lg:px-8">
+        <Breadcrumbs
+          locale={locale}
+          items={[
+            { label: locale === "bn" ? "হোম" : "Home", href: "/" },
+            { label: locale === "bn" ? "আমাদের সম্পর্কে" : "About Us", href: "/about" },
+            { label: locale === "bn" ? "স্থাপনাসমূহ" : "Facilities" },
+          ]}
+        />
+      </div>
+
+      <section className="mx-auto max-w-6xl px-6 py-12 lg:px-8 lg:py-20">
       <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
         {facilities.map((facility, index) => (
           <article
@@ -60,6 +103,7 @@ export default function FacilitiesPage() {
           </article>
         ))}
       </div>
-    </section>
+      </section>
+    </>
   );
 }

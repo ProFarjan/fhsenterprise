@@ -14,6 +14,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/about/facilities",
     "/about/faq",
     "/companies",
+    "/companies/auto-rice-mill",
+    "/companies/vehicle-solutions",
     "/media",
     "/media/news",
     "/media/events",

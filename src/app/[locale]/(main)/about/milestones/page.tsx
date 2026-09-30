@@ -1,12 +1,54 @@
+import type { Metadata } from "next";
 import { useLocale } from "next-intl";
 import { getSiteConfig } from "@/data/site";
+import { buildPageMetadata } from "@/lib/seo";
+import Breadcrumbs from "@/components/navigation/Breadcrumbs";
 import type { AppLocale } from "@/i18n/routing";
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return buildPageMetadata({
+    locale,
+    path: "/about/milestones",
+    title:
+      locale === "bn"
+        ? "আমাদের মাইলফলক ও সাফল্য | এফএইচএস এন্টারপ্রাইজ"
+        : "Corporate Milestones & Timeline | FHS Enterprise",
+    description:
+      locale === "bn"
+        ? "২০১৪ থেকে ২০২৬ পর্যন্ত এফএইচএস এন্টারপ্রাইজ, মেসার্স বাংলাদেশ অটো রাইস মিল, ভেহিকেল সলিউশনস এবং ডেইলি বাজারের উল্লেখযোগ্য মাইলফলক।"
+        : "Key milestones of FHS Enterprise from 2014 through 2026 — automated milling milestones, automotive expansion, and e-commerce launch.",
+    keywords: [
+      "FHS Enterprise milestones",
+      "corporate timeline",
+      "Bangladesh Auto Rice Mill timeline",
+      "business achievements Fulbariya",
+    ],
+  });
+}
+
 export default function MilestonesPage() {
-  const { milestones } = getSiteConfig(useLocale() as AppLocale).aboutPages;
+  const locale = useLocale() as AppLocale;
+  const { milestones } = getSiteConfig(locale).aboutPages;
 
   return (
-    <section className="mx-auto max-w-4xl px-6 py-20 lg:px-8 lg:py-28">
+    <>
+      <div className="mx-auto max-w-4xl px-6 pt-6 lg:px-8">
+        <Breadcrumbs
+          locale={locale}
+          items={[
+            { label: locale === "bn" ? "হোম" : "Home", href: "/" },
+            { label: locale === "bn" ? "আমাদের সম্পর্কে" : "About Us", href: "/about" },
+            { label: locale === "bn" ? "মাইলফলক" : "Milestones" },
+          ]}
+        />
+      </div>
+
+      <section className="mx-auto max-w-4xl px-6 py-12 lg:px-8 lg:py-20">
       <ol className="relative">
         {/* Spine */}
         <span className="absolute left-2 top-3 h-[calc(100%-2rem)] w-0.5 bg-gradient-to-b from-[#0045A0] via-blue-300 to-transparent sm:left-[7.5rem]" />
@@ -34,6 +76,7 @@ export default function MilestonesPage() {
           </li>
         ))}
       </ol>
-    </section>
+      </section>
+    </>
   );
 }

@@ -25,7 +25,7 @@ export default function SustainabilityTabs() {
             href={tab.href}
             className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
               isActive
-                ? "bg-orange-600 text-white"
+                ? "bg-[#0045A0] text-white shadow-sm ring-1 ring-[#0045A0]"
                 : "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900"
             }`}
           >

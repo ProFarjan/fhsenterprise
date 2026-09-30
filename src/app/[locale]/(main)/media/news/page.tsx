@@ -1,8 +1,36 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getMrGroupNews } from "@/lib/publicContent";
+import { buildPageMetadata } from "@/lib/seo";
 import type { AppLocale } from "@/i18n/routing";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return buildPageMetadata({
+    locale,
+    path: "/media/news",
+    title:
+      locale === "bn"
+        ? "সংবাদ ও সাম্প্রতিক ঘোষণা | এফএইচএস এন্টারপ্রাইজ"
+        : "News & Announcements | FHS Enterprise",
+    description:
+      locale === "bn"
+        ? "এফএইচএস এন্টারপ্রাইজ, মেসার্স বাংলাদেশ অটো রাইস মিল, ভেহিকেল সলিউশনস ও ডেইলি বাজারের সর্বশেষ সংবাদ ও প্রেস বিজ্ঞপ্তি।"
+        : "Stay informed with the latest corporate press releases, milestones, and announcements from FHS Enterprise.",
+    keywords: [
+      "FHS Enterprise news",
+      "Bangladesh Auto Rice Mill updates",
+      "Fulbariya business news",
+    ],
+    image: "/images/events/summit.jpg",
+  });
+}
 
 function ArrowIcon() {
   return (

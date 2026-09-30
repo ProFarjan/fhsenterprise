@@ -1,8 +1,39 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { getSiteConfig } from "@/data/site";
+import { buildPageMetadata, SITE_URL } from "@/lib/seo";
+import Breadcrumbs from "@/components/navigation/Breadcrumbs";
 import type { AppLocale } from "@/i18n/routing";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return buildPageMetadata({
+    locale,
+    path: "/about",
+    title:
+      locale === "bn"
+        ? "আমাদের পরিচিতি ও রূপরেখা | এফএইচএস এন্টারপ্রাইজ"
+        : "About FHS Enterprise | Overview, Concerns & Vision",
+    description:
+      locale === "bn"
+        ? "এফএইচএস এন্টারপ্রাইজ ময়মনসিংহের ফুলবাড়িয়ায় অবস্থিত একটি অগ্রগামী গ্রুপ অব কোম্পানিজ — মেসার্স বাংলাদেশ অটো রাইস মিল, ভেহিকেল সলিউশনস এবং ডেইলি বাজার সুপার শপ।"
+        : "Learn about FHS Enterprise in Fulbariya, Mymensingh. A diversified group operating M/s. Bangladesh Auto Rice Mill, Vehicle Solutions, and Daily Bazar.",
+    keywords: [
+      "About FHS Enterprise",
+      "FHS Enterprise Fulbariya",
+      "M/s Bangladesh Auto Rice Mill",
+      "Vehicle Solutions Mymensingh",
+      "Daily Bazar super shop",
+    ],
+    image: "/images/gallery/overview.png",
+  });
+}
 
 export default function AboutOverviewPage() {
   const locale = useLocale() as AppLocale;
@@ -43,10 +74,39 @@ export default function AboutOverviewPage() {
     },
   ];
 
+  const aboutSchema = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    name: locale === "bn" ? "এফএইচএস এন্টারপ্রাইজ সম্পর্কে" : "About FHS Enterprise",
+    url: `${SITE_URL}/${locale}/about`,
+    description: about.description,
+    mainEntity: {
+      "@type": "Organization",
+      name: "FHS Enterprise",
+      alternateName: "এফএইচএস এন্টারপ্রাইজ",
+      url: SITE_URL,
+      logo: `${SITE_URL}/logos/fhs_logo.png`,
+    },
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutSchema) }}
+      />
+      <div className="mx-auto max-w-6xl px-6 pt-6 lg:px-8">
+        <Breadcrumbs
+          locale={locale}
+          items={[
+            { label: locale === "bn" ? "হোম" : "Home", href: "/" },
+            { label: t("title") },
+          ]}
+        />
+      </div>
+
       {/* Intro band: text + image */}
-      <section className="mx-auto max-w-6xl px-6 py-20 lg:px-8 lg:py-28">
+      <section className="mx-auto max-w-6xl px-6 py-12 lg:px-8 lg:py-20">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
           <div>
             <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#0045A0]">

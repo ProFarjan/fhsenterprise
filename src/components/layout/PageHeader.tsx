@@ -17,8 +17,8 @@ export default function PageHeader({
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/55 to-black/25" />
       <div className="relative mx-auto w-full max-w-6xl px-6 pb-16 pt-40 lg:px-8 lg:pb-24">
         {eyebrow && (
-          <div className="inline-flex items-center gap-2.5 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-orange-300 backdrop-blur">
-            <span className="h-1.5 w-1.5 rounded-full bg-orange-500" />
+          <div className="inline-flex items-center gap-2.5 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-blue-200 backdrop-blur">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
             {eyebrow}
           </div>
         )}

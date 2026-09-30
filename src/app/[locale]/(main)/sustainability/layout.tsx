@@ -1,9 +1,41 @@
-import { useTranslations } from "next-intl";
+import type { Metadata } from "next";
+import { useLocale, useTranslations } from "next-intl";
 import PageHeader from "@/components/layout/PageHeader";
 import SustainabilityTabs from "@/components/sections/sustainability/SustainabilityTabs";
+import Breadcrumbs from "@/components/navigation/Breadcrumbs";
+import { buildPageMetadata } from "@/lib/seo";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return buildPageMetadata({
+    locale,
+    path: "/sustainability",
+    title:
+      locale === "bn"
+        ? "টেকসই উন্নয়ন ও সামাজিক দায়বদ্ধতা | এফএইচএস এন্টারপ্রাইজ"
+        : "Sustainability & Social Responsibility | FHS Enterprise",
+    description:
+      locale === "bn"
+        ? "এফএইচএস এন্টারপ্রাইজের স্বাস্থ্য, শিক্ষা, পরিবেশ সুরক্ষা ও কমিউনিটি উন্নয়নে ধারাবাহিক সামাজিক কার্যক্রম ও উদ্যোগসমূহ।"
+        : "Discover FHS Enterprise's commitment to community welfare, environmental stewardship, education, and health in Fulbariya, Mymensingh.",
+    keywords: [
+      "FHS Enterprise sustainability",
+      "community development Fulbariya",
+      "green initiatives Bangladesh",
+      "corporate social responsibility",
+    ],
+    image: "/images/sustainability/environment.jpg",
+  });
+}
 
 export default function SustainabilityLayout({ children }: { children: React.ReactNode }) {
   const t = useTranslations("pageHeaders.sustainability");
+  const locale = useLocale();
+
   return (
     <div className="flex-1 bg-white">
       <PageHeader
@@ -12,7 +44,16 @@ export default function SustainabilityLayout({ children }: { children: React.Rea
         description={t("description")}
         image="/images/sustainability/environment.jpg"
       />
-      <div className="mx-auto max-w-7xl px-6 py-10 lg:px-8">
+      <div className="mx-auto max-w-7xl px-6 pt-4 lg:px-8">
+        <Breadcrumbs
+          locale={locale}
+          items={[
+            { label: locale === "bn" ? "হোম" : "Home", href: "/" },
+            { label: t("title") },
+          ]}
+        />
+      </div>
+      <div className="mx-auto max-w-7xl px-6 py-6 lg:px-8">
         <SustainabilityTabs />
       </div>
       <div className="pb-24">{children}</div>

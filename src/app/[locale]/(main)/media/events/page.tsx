@@ -1,7 +1,35 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { getLocale, getTranslations } from "next-intl/server";
 import { getMrGroupEvents } from "@/lib/publicContent";
+import { buildPageMetadata } from "@/lib/seo";
 import type { AppLocale } from "@/i18n/routing";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return buildPageMetadata({
+    locale,
+    path: "/media/events",
+    title:
+      locale === "bn"
+        ? "ইভেন্ট ও কার্যক্রম | এফএইচএস এন্টারপ্রাইজ"
+        : "Corporate Events & Community Summits | FHS Enterprise",
+    description:
+      locale === "bn"
+        ? "এফএইচএস এন্টারপ্রাইজ আয়োজিত কৃষক সম্মেলন, উদ্বোধনী অনুষ্ঠান, কমিউনিটি উন্নয়ন কার্যক্রম ও ব্যবসায়িক সেমিনার।"
+        : "Discover upcoming and past summits, factory inaugurations, and community programs organized by FHS Enterprise.",
+    keywords: [
+      "FHS Enterprise events",
+      "Bangladesh Auto Rice Mill summit",
+      "Fulbariya community event",
+    ],
+    image: "/images/events/summit.jpg",
+  });
+}
 
 function LocationIcon() {
   return (
