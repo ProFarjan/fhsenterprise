@@ -47,7 +47,7 @@ export const siteConfigEn: SiteConfig = {
     {
       title: "M/s. Bangladesh Auto Rice Mill",
       subtitle: "Industry-leading automated rice milling, hygienic grain processing, and premium food supply feeding the nation.",
-      videoSrc: "/videos/rice-mill.mp4",
+      videoSrc: "/videos/Auto_rice_mill_operation.mp4",
     },
     {
       title: "Vehicle Solutions",
@@ -314,7 +314,7 @@ export const siteConfigEn: SiteConfig = {
       {
         title: "M/s. Bangladesh Auto Rice Mill — Automated Processing & Quality Packaging",
         thumbnail: "/images/gallery/harvest.jpg",
-        videoUrl: "/videos/rice-mill.mp4",
+        videoUrl: "/videos/Auto_rice_mill_operation.mp4",
         description: "An inside look at our state-of-the-art automated rice mill in Fulbariya, Mymensingh, ensuring hygienic processing and premium quality grain.",
       },
       {

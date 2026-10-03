@@ -47,7 +47,7 @@ export const siteConfigBn: SiteConfig = {
     {
       title: "মেসার্স বাংলাদেশ অটো রাইস মিল",
       subtitle: "আধুনিক স্বয়ংক্রিয় রাইস মিলিং, স্বাস্থ্যসম্মত চাল প্রক্রিয়াকরণ এবং দেশের খাদ্য নিরাপত্তায় নির্ভরযোগ্য মানসম্পন্ন চাল সরবরাহ।",
-      videoSrc: "/videos/rice-mill.mp4",
+      videoSrc: "/videos/Auto_rice_mill_operation.mp4",
     },
     {
       title: "ভেহিকেল সলিউশনস",
@@ -314,7 +314,7 @@ export const siteConfigBn: SiteConfig = {
       {
         title: "মেসার্স বাংলাদেশ অটো রাইস মিল — স্বয়ংক্রিয় চাল প্রক্রিয়াকরণ ও প্যাকেজিং",
         thumbnail: "/images/gallery/harvest.jpg",
-        videoUrl: "/videos/rice-mill.mp4",
+        videoUrl: "/videos/Auto_rice_mill_operation.mp4",
         description: "ময়মনসিংহের ফুলবাড়িয়ায় অবস্থিত আমাদের অত্যাধুনিক স্বয়ংক্রিয় রাইস মিলের উৎপাদন ও গুণমান পরীক্ষা কার্যক্রম।",
       },
       {
