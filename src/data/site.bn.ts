@@ -52,12 +52,12 @@ export const siteConfigBn: SiteConfig = {
     {
       title: "ভেহিকেল সলিউশনস",
       subtitle: "সকল ধরনের গাড়ির আসল যন্ত্রাংশ, মেরামত সেবা, টায়ার ও প্রিমিয়াম লুব্রিকেন্ট সরবরাহের বিশ্বস্ত সমাধান।",
-      videoSrc: "/videos/vehicle-solutions.mp4",
+      videoSrc: "/videos/vehicle_solution.mp4",
     },
     {
       title: "ডেইলি বাজার — আধুনিক সুপার শপ",
       subtitle: "তাজা শাকসবজি, ফলমূল, নিত্যপ্রয়োজনীয় মুদি পণ্য ও দ্রুততম হোম ডেলিভারির আধুনিক সুপার শপ।",
-      videoSrc: "/videos/daily-bazar.mp4",
+      videoSrc: "/videos/daily_bazar.mp4",
     },
   ],
 
@@ -320,13 +320,13 @@ export const siteConfigBn: SiteConfig = {
       {
         title: "ভেহিকেল সলিউশনস — অটোমোটিভ মেরামত, টায়ার ও লুব্রিকেন্ট সেবা",
         thumbnail: "/images/gallery/distribution.jpg",
-        videoUrl: "/videos/vehicle-solutions.mp4",
+        videoUrl: "/videos/vehicle_solution.mp4",
         description: "সকল ধরনের যানবাহনের আসল যন্ত্রাংশ, মেরামত ও ইঞ্জিন সুরক্ষার সম্পূর্ণ সমাধান।",
       },
       {
         title: "ডেইলি বাজার — আধুনিক সুপার শপ ও দ্রুত অনলাইন হোম ডেলিভারি",
         thumbnail: "/images/gallery/product.jpg",
-        videoUrl: "/videos/daily-bazar.mp4",
+        videoUrl: "/videos/daily_bazar.mp4",
         description: "তাজা শাকসবজি, ফলমূল, নিত্যপ্রয়োজনীয় মুদি সামগ্রী ও আধুনিক সুপার শপ কেনাকাটার অভিজ্ঞতা সরাসরি ক্রেতার দ্বারে পৌঁছে দেয়ার বিশ্বস্ত মাধ্যম।",
       },
     ],

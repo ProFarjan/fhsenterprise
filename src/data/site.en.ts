@@ -52,12 +52,12 @@ export const siteConfigEn: SiteConfig = {
     {
       title: "Vehicle Solutions",
       subtitle: "Keeping you moving with dependable automotive parts, tyre servicing, lubricant supply, and expert vehicle repairs.",
-      videoSrc: "/videos/vehicle-solutions.mp4",
+      videoSrc: "/videos/vehicle_solution.mp4",
     },
     {
       title: "Daily Bazar — Modern Super Shop",
       subtitle: "Your premier destination for fresh groceries, premium household essentials, and seamless online shopping with fast doorstep delivery.",
-      videoSrc: "/videos/daily-bazar.mp4",
+      videoSrc: "/videos/daily_bazar.mp4",
     },
   ],
 
@@ -320,13 +320,13 @@ export const siteConfigEn: SiteConfig = {
       {
         title: "Vehicle Solutions — Commercial Fleet Care, Tyres & Lubricant Services",
         thumbnail: "/images/gallery/distribution.jpg",
-        videoUrl: "/videos/vehicle-solutions.mp4",
+        videoUrl: "/videos/vehicle_solution.mp4",
         description: "Comprehensive vehicle maintenance, genuine parts, tyre servicing, and industrial lubricants keeping the region moving.",
       },
       {
         title: "Daily Bazar — Modern Super Shop & Express Online Delivery",
         thumbnail: "/images/gallery/product.jpg",
-        videoUrl: "/videos/daily-bazar.mp4",
+        videoUrl: "/videos/daily_bazar.mp4",
         description: "Explore our modern super shop experience with fully stocked aisles of fresh vegetables, packaged groceries, and doorstep delivery via daily-bazar.fhsenterprise.com.",
       },
     ],
