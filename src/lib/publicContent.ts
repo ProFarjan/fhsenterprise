@@ -192,7 +192,11 @@ const BANNER_FALLBACK: Record<string, string> = {
   "filling-station": "/images/companies/filling-station.jpg",
   "agro-medicine": "/images/companies/Chemical.png",
   feed: "/images/companies/feed.jpg",
-  tech: "/images/companies/agri-tech-banner.svg",
+  "auto-rice-mill": "/images/companies/agro-banner.png",
+  "vehicle-solutions": "/images/companies/mr-lube-banner.svg",
+  "vehiclesolutions.fhsenterprise.com": "/images/companies/mr-lube-banner.svg",
+  "daily-bazar.fhsenterprise.com": "/images/companies/feed.jpg",
+  "dailybazar.fhsenterprise.com": "/images/companies/feed.jpg",
   lube: "/images/companies/mr-lube-banner.svg",
   mahin: "/images/companies/mahin-banner.svg",
   rahim: "/images/companies/rahim-banner.svg",
@@ -202,7 +206,9 @@ const LOGO_FALLBACK = "/logos/fhs_logo.png";
 const COMPANY_LOGO_FALLBACK: Record<string, string> = {
   "auto-rice-mill": "/logos/rice-mill.png",
   "vehicle-solutions": "/logos/vehicle_solutions.svg",
+  "vehiclesolutions.fhsenterprise.com": "/logos/vehicle_solutions.svg",
   "daily-bazar.fhsenterprise.com": "/logos/daily_bazar.svg",
+  "dailybazar.fhsenterprise.com": "/logos/daily_bazar.svg",
 };
 
 // Published subsidiary companies for the parent site's company cards (see

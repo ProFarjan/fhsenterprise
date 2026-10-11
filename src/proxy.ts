@@ -20,7 +20,28 @@ function companySubdomain(host: string): string | null {
 }
 
 export function proxy(request: NextRequest) {
-  const subdomain = companySubdomain(request.headers.get("host") ?? "");
+  const host = request.headers.get("host") ?? "";
+  const hostname = host.split(":")[0].toLowerCase();
+
+  // Directly redirect external company subdomains to their destination URLs
+  if (
+    hostname === `vehiclesolutions.${ROOT_DOMAIN}` ||
+    hostname === "vehiclesolutions.fhsenterprise.com" ||
+    hostname === "vehicle-solutions.fhsenterprise.com"
+  ) {
+    return NextResponse.redirect("https://vehiclesolutions.fhsenterprise.com", 307);
+  }
+
+  if (
+    hostname === `dailybazar.${ROOT_DOMAIN}` ||
+    hostname === `daily-bazar.${ROOT_DOMAIN}` ||
+    hostname === "dailybazar.fhsenterprise.com" ||
+    hostname === "daily-bazar.fhsenterprise.com"
+  ) {
+    return NextResponse.redirect("https://dailybazar.fhsenterprise.com", 307);
+  }
+
+  const subdomain = companySubdomain(host);
   if (!subdomain) return handleI18n(request);
 
   const segments = request.nextUrl.pathname.split("/").filter(Boolean);
@@ -30,9 +51,14 @@ export function proxy(request: NextRequest) {
     return handleI18n(request);
   }
 
+  const internalSubdomain =
+    subdomain === "autorice" || subdomain === "autorice-mill"
+      ? "auto-rice-mill"
+      : subdomain;
+
   // Rewrite (URL stays clean) to the hidden internal company path.
   const url = request.nextUrl.clone();
-  url.pathname = `/${maybeLocale}/companies/${subdomain}/${rest.join("/")}`.replace(/\/+$/, "");
+  url.pathname = `/${maybeLocale}/companies/${internalSubdomain}/${rest.join("/")}`.replace(/\/+$/, "");
   return NextResponse.rewrite(url);
 }
 

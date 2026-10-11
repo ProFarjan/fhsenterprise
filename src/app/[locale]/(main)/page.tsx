@@ -72,14 +72,14 @@ export default async function Home({
         name: "Vehicle Solutions",
         description:
           "All kinds of vehicle parts, tyre, lubricant, accessories, and repairing services.",
-        url: "https://vehicle-solutions.fhsenterprise.com",
+        url: "https://vehiclesolutions.fhsenterprise.com",
       },
       {
         "@type": "Organization",
         name: "Daily Bazar",
         description:
           "Online e-commerce platform for fresh groceries, daily needs, and bazar goods.",
-        url: "https://daily-bazar.fhsenterprise.com",
+        url: "https://dailybazar.fhsenterprise.com",
       },
     ],
   };

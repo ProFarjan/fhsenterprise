@@ -38,6 +38,40 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "6mb",
     },
   },
+  async redirects() {
+    return [
+      {
+        source: "/companies/vehicle-solutions",
+        destination: "https://vehiclesolutions.fhsenterprise.com",
+        permanent: false,
+      },
+      {
+        source: "/:locale/companies/vehicle-solutions",
+        destination: "https://vehiclesolutions.fhsenterprise.com",
+        permanent: false,
+      },
+      {
+        source: "/companies/daily-bazar",
+        destination: "https://dailybazar.fhsenterprise.com",
+        permanent: false,
+      },
+      {
+        source: "/:locale/companies/daily-bazar",
+        destination: "https://dailybazar.fhsenterprise.com",
+        permanent: false,
+      },
+      {
+        source: "/companies/dailybazar",
+        destination: "https://dailybazar.fhsenterprise.com",
+        permanent: false,
+      },
+      {
+        source: "/:locale/companies/dailybazar",
+        destination: "https://dailybazar.fhsenterprise.com",
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default withNextIntl(nextConfig);

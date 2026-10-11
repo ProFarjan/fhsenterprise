@@ -210,7 +210,7 @@ export const siteConfigEn: SiteConfig = {
       },
       {
         question: "How does Daily Bazar work for retail customers and home delivery?",
-        answer: "Daily Bazar operates both as a physical modern super shop in Fulbariya and an online e-commerce platform at daily-bazar.fhsenterprise.com. Customers can purchase farm-fresh vegetables, dairy, cooking essentials, and packaged consumer goods with same-day express doorstep delivery.",
+        answer: "Daily Bazar operates both as a physical modern super shop in Fulbariya and an online e-commerce platform at dailybazar.fhsenterprise.com. Customers can purchase farm-fresh vegetables, dairy, cooking essentials, and packaged consumer goods with same-day express doorstep delivery.",
       },
       {
         question: "How can distributors, businesses, or partners collaborate with FHS Enterprise?",
@@ -234,7 +234,7 @@ export const siteConfigEn: SiteConfig = {
       description: "Vehicle parts, repairing, tyre, lubricant, and accessories.",
       logo: "/logos/fhs_logo.png",
       image: "/images/companies/mr-lube-banner.svg",
-      subdomain: "vehicle-solutions",
+      subdomain: "vehiclesolutions.fhsenterprise.com",
     },
     {
       name: "Daily Bazar",
@@ -242,7 +242,7 @@ export const siteConfigEn: SiteConfig = {
       description: "Online ecommerce shop for all kinds of bazar goods.",
       logo: "/logos/fhs_logo.png",
       image: "/images/companies/feed.jpg",
-      subdomain: "daily-bazar.fhsenterprise.com",
+      subdomain: "dailybazar.fhsenterprise.com",
     },
   ],
 
@@ -257,14 +257,14 @@ export const siteConfigEn: SiteConfig = {
     {
       name: "Automotive Parts & Lubricants",
       company: "Vehicle Solutions",
-      subdomain: "vehicle-solutions",
+      subdomain: "vehiclesolutions.fhsenterprise.com",
       items: ["Spare Parts", "Lubricants", "Accessories"],
       icon: "cog",
     },
     {
       name: "Daily Bazar & Groceries",
       company: "Daily Bazar",
-      subdomain: "daily-bazar.fhsenterprise.com",
+      subdomain: "dailybazar.fhsenterprise.com",
       items: ["Fresh Produce", "Daily Needs", "Groceries"],
       icon: "leaf",
     },
@@ -327,7 +327,7 @@ export const siteConfigEn: SiteConfig = {
         title: "Daily Bazar — Modern Super Shop & Express Online Delivery",
         thumbnail: "/images/gallery/product.jpg",
         videoUrl: "/videos/daily_bazar.mp4",
-        description: "Explore our modern super shop experience with fully stocked aisles of fresh vegetables, packaged groceries, and doorstep delivery via daily-bazar.fhsenterprise.com.",
+        description: "Explore our modern super shop experience with fully stocked aisles of fresh vegetables, packaged groceries, and doorstep delivery via dailybazar.fhsenterprise.com.",
       },
     ],
   },

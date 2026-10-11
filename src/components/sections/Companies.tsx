@@ -86,6 +86,7 @@ export default function Companies({ companies }: { companies: Company[] }) {
               key={company.name}
               href={companyUrl(company.subdomain, locale)}
               target={company.subdomain.includes(".") ? "_blank" : undefined}
+              rel={company.subdomain.includes(".") ? "noopener noreferrer" : undefined}
               className="group relative flex h-80 flex-col justify-end overflow-hidden rounded-2xl shadow-sm transition-all hover:-translate-y-1 hover:shadow-2xl"
             >
               <Image

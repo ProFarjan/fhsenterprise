@@ -210,7 +210,7 @@ export const siteConfigBn: SiteConfig = {
       },
       {
         question: "ডেইলি বাজার থেকে সাধারণ গ্রাহকরা কীভাবে কেনাকাটা করতে পারেন?",
-        answer: "গ্রাহকরা ফুলবাড়িয়ায় আমাদের ফিজিক্যাল সুপার শপে সরাসরি এসে কেনাকাটা করতে পারেন অথবা আমাদের ওয়েবসাইট daily-bazar.fhsenterprise.com এর মাধ্যমে অনলাইনে অর্ডার করে দ্রুততম সময়ে হোম ডেলিভারি সুবিধা উপভোগ করতে পারেন।",
+        answer: "গ্রাহকরা ফুলবাড়িয়ায় আমাদের ফিজিক্যাল সুপার শপে সরাসরি এসে কেনাকাটা করতে পারেন অথবা আমাদের ওয়েবসাইট dailybazar.fhsenterprise.com এর মাধ্যমে অনলাইনে অর্ডার করে দ্রুততম সময়ে হোম ডেলিভারি সুবিধা উপভোগ করতে পারেন।",
       },
       {
         question: "পাইকারি ক্রেতা বা ব্যবসায়িক অংশীদাররা কীভাবে যোগাযোগ করতে পারেন?",
@@ -234,7 +234,7 @@ export const siteConfigBn: SiteConfig = {
       description: "Vehicle parts, repairing, tyre, lubricant, and accessories.",
       logo: "/logos/fhs_logo.png",
       image: "/images/companies/mr-lube-banner.svg",
-      subdomain: "vehicle-solutions",
+      subdomain: "vehiclesolutions.fhsenterprise.com",
     },
     {
       name: "ডেইলি বাজার",
@@ -242,7 +242,7 @@ export const siteConfigBn: SiteConfig = {
       description: "Online ecommerce shop for all kinds of bazar goods.",
       logo: "/logos/fhs_logo.png",
       image: "/images/companies/feed.jpg",
-      subdomain: "daily-bazar.fhsenterprise.com",
+      subdomain: "dailybazar.fhsenterprise.com",
     },
   ],
 
@@ -257,14 +257,14 @@ export const siteConfigBn: SiteConfig = {
     {
       name: "অটোমোটিভ পার্টস ও লুব্রিকেন্ট",
       company: "ভেহিকেল সলিউশনস",
-      subdomain: "vehicle-solutions",
+      subdomain: "vehiclesolutions.fhsenterprise.com",
       items: ["খুচরা যন্ত্রাংশ", "লুব্রিকেন্ট", "অ্যাক্সেসরিজ"],
       icon: "cog",
     },
     {
       name: "ডেইলি বাজার ও মুদি",
       company: "ডেইলি বাজার",
-      subdomain: "daily-bazar.fhsenterprise.com",
+      subdomain: "dailybazar.fhsenterprise.com",
       items: ["তাজা পণ্য", "দৈনন্দিন প্রয়োজন", "মুদি"],
       icon: "leaf",
     },
