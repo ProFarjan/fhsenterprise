@@ -225,7 +225,7 @@ export const siteConfigBn: SiteConfig = {
       sector: "রাইস মিল",
       description: "Processing and distributing high-quality rice.",
       logo: "/logos/fhs_logo.png",
-      image: "/images/companies/agro-banner.png",
+      image: "/images/companies/rice-mill-bg.jpg",
       subdomain: "auto-rice-mill",
     },
     {
@@ -233,7 +233,7 @@ export const siteConfigBn: SiteConfig = {
       sector: "Automotive Services",
       description: "Vehicle parts, repairing, tyre, lubricant, and accessories.",
       logo: "/logos/fhs_logo.png",
-      image: "/images/companies/mr-lube-banner.svg",
+      image: "/images/companies/vehicle-solutions-bg.jpg",
       subdomain: "vehiclesolutions.fhsenterprise.com",
     },
     {
@@ -241,7 +241,7 @@ export const siteConfigBn: SiteConfig = {
       sector: "Ecommerce",
       description: "Online ecommerce shop for all kinds of bazar goods.",
       logo: "/logos/fhs_logo.png",
-      image: "/images/companies/feed.jpg",
+      image: "/images/companies/daily-bazar-bg.jpg",
       subdomain: "dailybazar.fhsenterprise.com",
     },
   ],
