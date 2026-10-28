@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { getLocale, getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getParentNews } from "@/lib/publicContent";
 import type { AppLocale } from "@/i18n/routing";
@@ -51,8 +51,17 @@ function formatDate(iso: string, locale: AppLocale) {
   });
 }
 
-export default async function MediaOverviewPage() {
-  const locale = (await getLocale()) as AppLocale;
+// Prerendered; refreshed at most every 5 minutes (admin edits revalidate immediately).
+export const revalidate = 300;
+
+export default async function MediaOverviewPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale: routeLocale } = await params;
+  setRequestLocale(routeLocale);
+  const locale = routeLocale as AppLocale;
   const t = await getTranslations("tabs");
   const tMedia = await getTranslations("media");
   const tCommon = await getTranslations("common");
@@ -78,7 +87,7 @@ export default async function MediaOverviewPage() {
             </div>
             <h3 className="text-lg font-semibold text-neutral-900">{title}</h3>
             <p className="text-sm leading-6 text-neutral-600">{description}</p>
-            <span className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-orange-600">
+            <span className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-orange-700">
               {tCommon("explore")}
               <ArrowIcon />
             </span>
@@ -96,15 +105,15 @@ export default async function MediaOverviewPage() {
             className="group mt-4 flex flex-col overflow-hidden rounded-2xl bg-white ring-1 ring-neutral-200 transition-all hover:shadow-xl sm:flex-row"
           >
             <div className="relative h-56 flex-none sm:h-auto sm:w-80">
-              <Image src={latest.image} alt="" fill className="object-cover" />
+              <Image src={latest.image} alt="" fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
             </div>
             <div className="flex flex-1 flex-col justify-center gap-2 p-7">
-              <time dateTime={latest.date} className="text-xs font-semibold uppercase tracking-wide text-orange-600">
+              <time dateTime={latest.date} className="text-xs font-semibold uppercase tracking-wide text-orange-700">
                 {formatDate(latest.date, locale)}
               </time>
               <h3 className="text-xl font-bold text-neutral-900">{latest.title}</h3>
               <p className="text-neutral-600">{latest.excerpt}</p>
-              <span className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-orange-600">
+              <span className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-orange-700">
                 {tCommon("readMore")}
                 <ArrowIcon />
               </span>

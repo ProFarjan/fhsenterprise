@@ -6,6 +6,7 @@ import { setRequestLocale } from "next-intl/server";
 import { Geist, Geist_Mono, Noto_Sans_Bengali } from "next/font/google";
 import { getSiteConfig } from "@/data/site";
 import { routing, type AppLocale } from "@/i18n/routing";
+import { SITE_DESCRIPTION, buildPageMetadata } from "@/lib/seo";
 import "../globals.css";
 
 const geistSans = Geist({
@@ -34,12 +35,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const site = getSiteConfig(locale as AppLocale);
-  const siteUrl = "https://fhsenterprise.com";
-  const title = `${site.groupName} | ${site.tagline}`;
-  const description =
-    locale === "bn"
-      ? "এফএইচএস এন্টারপ্রাইজ — ময়মনসিংহের ফুলবাড়িয়ায় অবস্থিত একটি বৈচিত্র্যময় ব্যবসা প্রতিষ্ঠান। প্রিমিয়াম চাল উৎপাদন, গাড়ির যন্ত্রাংশ ও সেবা, এবং ডেইলি বাজার অনলাইন শপিং। মেসার্স বাংলাদেশ অটো রাইস মিল, ভেহিকেল সলিউশনস এবং ডেইলি বাজার আমাদের সিস্টার কনসার্ন।"
-      : "FHS Enterprise — A diversified business conglomerate in Fulbariya, Mymensingh, Bangladesh. Premium rice milling (M/s. Bangladesh Auto Rice Mill), automotive parts & services (Vehicle Solutions), and online grocery shopping (Daily Bazar). Over 10 years of trusted excellence.";
+  const description = locale === "bn" ? SITE_DESCRIPTION.bn : SITE_DESCRIPTION.en;
   const keywords =
     locale === "bn"
       ? [
@@ -72,59 +68,15 @@ export async function generateMetadata({
           "fhsenterprise.com",
         ];
 
-  return {
-    title,
+  // Site-wide defaults; every page that exports its own generateMetadata
+  // replaces these via buildPageMetadata.
+  return buildPageMetadata({
+    locale,
+    path: "/",
+    title: `${site.groupName} | ${site.tagline}`,
     description,
     keywords,
-    authors: [{ name: "FHS Enterprise" }],
-    creator: "FHS Enterprise",
-    publisher: "FHS Enterprise",
-    metadataBase: new URL(siteUrl),
-    alternates: {
-      canonical: `${siteUrl}/${locale}`,
-      languages: {
-        en: `${siteUrl}/en`,
-        bn: `${siteUrl}/bn`,
-      },
-    },
-    openGraph: {
-      type: "website",
-      locale: locale === "bn" ? "bn_BD" : "en_US",
-      url: `${siteUrl}/${locale}`,
-      siteName: "FHS Enterprise",
-      title,
-      description,
-      images: [
-        {
-          url: `${siteUrl}/logos/fhs_logo.png`,
-          width: 1200,
-          height: 630,
-          alt: "FHS Enterprise — Building industries. Empowering communities.",
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [`${siteUrl}/logos/fhs_logo.png`],
-    },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        "max-video-preview": -1,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-      },
-    },
-    other: {
-      "geo.region": "BD-35",
-      "geo.placename": "Fulbariya, Mymensingh",
-    },
-  };
+  });
 }
 
 export default async function LocaleLayout({

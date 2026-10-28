@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getParentGallery } from "@/lib/publicContent";
 import GalleryTabs from "@/components/sections/media/GalleryTabs";
 import { buildPageMetadata } from "@/lib/seo";
@@ -32,12 +32,16 @@ export async function generateMetadata({
   });
 }
 
+// Prerendered; refreshed at most every 5 minutes (admin edits revalidate immediately).
+export const revalidate = 300;
+
 export default async function GalleryPage({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("media");
   const { photos, videos } = await getParentGallery(locale as AppLocale);
 

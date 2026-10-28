@@ -1,10 +1,18 @@
 import type { MetadataRoute } from "next";
 import { getSiteConfig } from "@/data/site";
+import { SITE_URL } from "@/lib/seo";
+import { routing } from "@/i18n/routing";
 
+// Every public page, once per locale, each pointing at its translation (hreflang)
+// and at the default-locale version as "x-default".
+//
+// Deliberately NOT listed:
+//  - lastModified / changeFrequency: there is no real per-page modification date
+//    to report, and a made-up one ("always today", "daily") teaches crawlers to
+//    ignore the field. Omitting them is accurate; search engines work fine.
+//  - the subsidiary microsites: they live on their own subdomains (a different
+//    host), so they can't be listed in this host's sitemap.
 export default function sitemap(): MetadataRoute.Sitemap {
-  const siteUrl = "https://fhsenterprise.com";
-  const now = new Date();
-
   const publicRoutes = [
     "",
     "/about",
@@ -15,7 +23,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/about/facilities",
     "/about/faq",
     "/companies",
-    "/companies/auto-rice-mill",
     "/media",
     "/media/news",
     "/media/events",
@@ -24,43 +31,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Only pillars that have content render a page (the rest 404).
     ...getSiteConfig("en").sustainabilityPages.pillars.map((p) => `/sustainability/${p.slug}`),
     "/contact",
+    "/privacy",
+    "/terms",
   ];
 
-  const sitemapEntries: MetadataRoute.Sitemap = [];
+  const priorityFor = (route: string) =>
+    route === "" ? 1.0 : route === "/companies" || route === "/about" ? 0.9 : route === "/contact" || route.startsWith("/media") ? 0.8 : 0.7;
 
-  for (const route of publicRoutes) {
-    // Priority assignment
-    let priority = 0.7;
-    let changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"] = "weekly";
-
-    if (route === "") {
-      priority = 1.0;
-      changeFrequency = "daily";
-    } else if (route === "/companies" || route === "/about") {
-      priority = 0.9;
-      changeFrequency = "daily";
-    } else if (route === "/contact" || route.startsWith("/media")) {
-      priority = 0.8;
-      changeFrequency = "daily";
-    }
-
-    // Both English and Bengali paths
-    for (const locale of ["en", "bn"]) {
-      const url = `${siteUrl}/${locale}${route}`;
-      sitemapEntries.push({
-        url,
-        lastModified: now,
-        changeFrequency,
-        priority,
-        alternates: {
-          languages: {
-            en: `${siteUrl}/en${route}`,
-            bn: `${siteUrl}/bn${route}`,
-          },
-        },
-      });
-    }
-  }
-
-  return sitemapEntries;
+  return publicRoutes.flatMap((route) => {
+    const languages = {
+      ...Object.fromEntries(routing.locales.map((l) => [l, `${SITE_URL}/${l}${route}`])),
+      "x-default": `${SITE_URL}/${routing.defaultLocale}${route}`,
+    };
+    return routing.locales.map((locale) => ({
+      url: `${SITE_URL}/${locale}${route}`,
+      priority: priorityFor(route),
+      alternates: { languages },
+    }));
+  });
 }

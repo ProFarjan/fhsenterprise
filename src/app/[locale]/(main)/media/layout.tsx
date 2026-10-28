@@ -4,6 +4,7 @@ import PageHeader from "@/components/layout/PageHeader";
 import MediaTabs from "@/components/sections/media/MediaTabs";
 import Breadcrumbs from "@/components/navigation/Breadcrumbs";
 import { buildPageMetadata } from "@/lib/seo";
+import { setRequestLocale } from "next-intl/server";
 
 export async function generateMetadata({
   params,
@@ -32,7 +33,7 @@ export async function generateMetadata({
   });
 }
 
-export default function MediaLayout({ children }: { children: React.ReactNode }) {
+function MediaLayoutContent({ children }: { children: React.ReactNode }) {
   const t = useTranslations("pageHeaders.media");
   const locale = useLocale();
 
@@ -59,4 +60,19 @@ export default function MediaLayout({ children }: { children: React.ReactNode })
       <div className="pb-24">{children}</div>
     </div>
   );
+}
+
+// next-intl needs the request locale set before any of its APIs run, and Next
+// renders layouts and pages in parallel — so each one sets it itself. That is
+// also what lets the page be prerendered instead of rendered on every request.
+export default async function MediaLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  return <MediaLayoutContent>{children}</MediaLayoutContent>;
 }

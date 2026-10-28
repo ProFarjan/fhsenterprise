@@ -8,7 +8,17 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 # FHS Enterprise — Comprehensive Project Documentation
 
-> This document is the single source of truth for AI coding agents working on this project.
+> **Superseded in parts — read [`CLAUDE.md`](CLAUDE.md) first.** `CLAUDE.md` is the maintained
+> technical reference; [`OPERATIONS.md`](OPERATIONS.md) covers deployment and backups. This file was
+> written earlier and a number of its statements are now **out of date**, notably: the legacy
+> subsidiary components, types and CSS palettes now live under `legacy/subsidiaries/` (not in
+> `src/`); `prisma.config.ts` is at the repo root; only the FAQ and gallery reads fall back to static
+> data when the database is empty (all reads survive a database outage); the contact form now
+> stores messages and `/admin/messages` and the dashboard show real data; rate limiting now exists
+> (in memory); the placeholder phone number is no longer shown; and the SiteKey migration history was
+> reconciled. Where this file and `CLAUDE.md` disagree, `CLAUDE.md` is correct.
+>
+> This document was the single source of truth for AI coding agents working on this project.
 > Every fact below has been verified directly from the codebase. Sections marked **[UNVERIFIED]** need manual confirmation.
 
 ---

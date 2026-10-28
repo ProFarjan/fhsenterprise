@@ -23,9 +23,21 @@ function withAvailablePillarLinks(config: SiteConfig): SiteConfig {
   return { ...config, nav };
 }
 
+// A social link whose href is still the "#" placeholder would render as a dead
+// icon (and, through the locale-aware Link, navigate to /bn#). Only real URLs
+// are exposed to the UI and to the structured data's `sameAs`.
+function withRealSocials(config: SiteConfig): SiteConfig {
+  return {
+    ...config,
+    socials: config.socials.filter((s) => /^https?:\/\//.test(s.href)),
+  };
+}
+
+const prepare = (config: SiteConfig) => withRealSocials(withAvailablePillarLinks(config));
+
 const configs: Record<AppLocale, SiteConfig> = {
-  en: withAvailablePillarLinks(siteConfigEn),
-  bn: withAvailablePillarLinks(siteConfigBn),
+  en: prepare(siteConfigEn),
+  bn: prepare(siteConfigBn),
 };
 
 // Locale-keyed content loader. Components call this instead of importing a

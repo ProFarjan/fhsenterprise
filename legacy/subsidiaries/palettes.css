@@ -1,0 +1,179 @@
+/* Brand palettes and display fonts of the retired subsidiary microsites
+   (agro, filling, agromed, feed, agritech, mrlube, mahin, rahim).
+
+   Removed from src/app/globals.css so every visitor's stylesheet no longer
+   carries ~60 KB of CSS for sites that are not served. To bring a subsidiary
+   back, paste the block(s) it needs into globals.css (the font variables
+   belong inside the existing `@theme inline { ... }` block), after moving its
+   components back — see README.md in this folder. */
+
+/* ---- Display fonts: add inside `@theme inline { }` -------------------------- */
+@theme inline {
+  /* Serif display face for the MR Agro subdomain (loaded in its layout).
+     Falls back to Georgia elsewhere, so this stays scoped to agro in practice. */
+  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  /* Heavy geometric sans used for the MR Filling Station subdomain's oversized
+     display headings (loaded in its layout, wired via `font-fuel`). Falls back
+     to a bold system sans elsewhere, so this stays scoped to filling in practice. */
+  --font-fuel: var(--font-archivo), "Arial Black", "Helvetica Neue", Arial, sans-serif;
+  /* Friendly, rounded geometric sans for the MR Agro Medicine subdomain's
+     headings (loaded in its layout, wired via `font-vet`). Falls back to a
+     humanist system sans elsewhere, so this stays scoped to agro-medicine. */
+  --font-vet: var(--font-poppins), "Segoe UI", system-ui, sans-serif;
+  /* Modern geometric sans used for the MR Feed subdomain's display headings
+     (loaded in its layout, wired via `font-feed`). Falls back to a system sans
+     elsewhere, so this stays scoped to feed in practice. */
+  --font-feed: var(--font-sora), "Segoe UI", system-ui, Arial, sans-serif;
+  /* Condensed technical/industrial sans used for the MR Agri Technology
+     subdomain's display headings (loaded in its layout, wired via
+     `font-agri`). Falls back to a system sans elsewhere, so this stays
+     scoped to agri-tech in practice. */
+  --font-agri: var(--font-rajdhani), "Segoe UI", system-ui, Arial, sans-serif;
+  /* Wide industrial/motorsport sans used for the MR Lube subdomain's display
+     headings (loaded in its layout, wired via `font-lube`). Falls back to a
+     system sans elsewhere, so this stays scoped to mr-lube in practice. */
+  --font-lube: var(--font-saira), "Segoe UI", system-ui, Arial, sans-serif;
+  /* Clean, friendly geometric sans used for the Mahin Enterprise LPG
+     subdomain's display headings (loaded in its layout, wired via
+     `font-mahin`). Falls back to a system sans elsewhere, so this stays
+     scoped to mahin in practice. */
+  --font-mahin: var(--font-outfit), "Segoe UI", system-ui, Arial, sans-serif;
+  /* Technical, scientific geometric sans used for the Rahim Enterprise
+     ammonia subdomain's display headings (loaded in its layout, wired via
+     `font-rahim`). Falls back to a system sans elsewhere, so this stays
+     scoped to rahim in practice. */
+  --font-rahim: var(--font-space-grotesk), "Segoe UI", system-ui, Arial, sans-serif;
+}
+
+/* ---- Brand palettes ----------------------------------------------------- */
+/* MR Agro brand palette — a forest-green / cream / sky system for the
+   agro.<domain> site (src/app/[locale]/companies/agro). Kept out of the
+   MR Group orange theme on purpose. */
+@theme {
+  --color-agro-forest: #16351e;
+  --color-agro-green: #1f4a2e;
+  --color-agro-leaf: #2c6e49;
+  --color-agro-leaf-light: #3d8b60;
+  --color-agro-cream: #ece9dd;
+  --color-agro-cream-dark: #ddd8c6;
+  --color-agro-sky: #c8dcea;
+  --color-agro-gold: #e0b04a;
+}
+
+/* MR Filling Station brand palette — a deep petrol-blue / sky / mist system for
+   the filling-station.<domain> site (src/app/[locale]/companies/filling-station).
+   A rich blue brand colour (energy + trust) replaces the earlier near-black ink
+   for better visibility, keeping its Soltera-inspired, high-contrast layout.
+   Kept out of the MR Group orange theme on purpose. */
+@theme {
+  --color-fuel-ink: #0b2b57;
+  --color-fuel-slate: #123a72;
+  --color-fuel-steel: #51637f;
+  --color-fuel-blue: #2f6bef;
+  --color-fuel-blue-dark: #1e4fd0;
+  --color-fuel-sky: #d6e6ff;
+  --color-fuel-mist: #eef3fb;
+  --color-fuel-line: #dbe4f1;
+}
+
+/* MR Agro Medicine brand palette — a clean teal / lime healthcare system for
+   the agro-medicine.<domain> animal-health site
+   (src/app/[locale]/companies/agro-medicine). Clinical teal with a fresh lime
+   accent, deliberately distinct from MR Agro's forest green and MR Filling's
+   ink/blue. */
+@theme {
+  --color-vet-teal: #0d9488;
+  --color-vet-teal-dark: #0f766e;
+  --color-vet-deep: #124b46;
+  --color-vet-teal-light: #99f6e4;
+  --color-vet-lime: #84cc16;
+  --color-vet-lime-dark: #4d7c0f;
+  --color-vet-mist: #f0fdfa;
+  --color-vet-cloud: #f6faf9;
+  --color-vet-line: #dcecea;
+  --color-vet-ink: #0f2b28;
+}
+
+/* MR Feed brand palette — a warm amber / espresso / wheat-cream system for the
+   feed.<domain> site (src/app/[locale]/companies/feed). Evokes grain, mill, and
+   premium animal nutrition. Kept out of the MR Group orange theme on purpose. */
+@theme {
+  --color-feed-bark: #1c1206;
+  --color-feed-espresso: #2c1d0d;
+  --color-feed-brown: #4a3115;
+  --color-feed-umber: #6b4a22;
+  --color-feed-amber: #c2721a;
+  --color-feed-amber-dark: #a25c11;
+  --color-feed-gold: #e2a53c;
+  --color-feed-wheat: #d8bb7c;
+  --color-feed-cream: #f7f1e4;
+  --color-feed-cream-dark: #ece0c9;
+  --color-feed-sand: #efe6d3;
+}
+
+/* MR Agri Technology brand palette — an industrial steel / graphite system
+   with a safety-amber accent for the tech.<domain> farm machinery &
+   tools site (src/app/[locale]/companies/tech). Deliberately distinct
+   from MR Agro's forest green and MR Feed's warm espresso — reads as
+   machinery and technology rather than crop trading. */
+@theme {
+  --color-agri-graphite: #14181c;
+  --color-agri-steel: #1f2933;
+  --color-agri-steel-light: #334352;
+  --color-agri-slate: #52606d;
+  --color-agri-amber: #f0a202;
+  --color-agri-amber-dark: #c97f00;
+  --color-agri-gold: #ffc94a;
+  --color-agri-cream: #f3f1ea;
+  --color-agri-cream-dark: #e4e0d3;
+  --color-agri-line: #dde2e6;
+}
+
+/* MR Lube brand palette — a warm-white / charcoal system with a racing-red
+   accent for the lube.<domain> lubricants site
+   (src/app/[locale]/companies/lube). A bright, motorsport-inspired light
+   theme: soft off-white sections and charcoal text, with racing red as the
+   signature accent and a charcoal footer/CTA for contrast. */
+@theme {
+  --color-lube-cream: #faf8f6;
+  --color-lube-cream-dark: #efece8;
+  --color-lube-line: #e4ded7;
+  --color-lube-ink: #20232a;
+  --color-lube-slate: #5b6270;
+  --color-lube-red: #e11d2a;
+  --color-lube-red-dark: #b3121d;
+}
+
+/* Mahin Enterprise brand palette — a bright light theme with a deep-navy
+   ink and a flame-orange accent for the mahin.<domain> LPG site
+   (src/app/[locale]/companies/mahin). Reads as gas / flame / energy, and is
+   the only navy-and-orange subsidiary theme — distinct from the Filling
+   Station's petrol-blue and MR Lube's warm-white-and-red. */
+@theme {
+  --color-mahin-mist: #f4f6f9;
+  --color-mahin-cloud: #e9edf3;
+  --color-mahin-line: #e0e5ec;
+  --color-mahin-navy: #132033;
+  --color-mahin-navy-light: #24354f;
+  --color-mahin-slate: #566178;
+  --color-mahin-flame: #f26a1b;
+  --color-mahin-flame-dark: #d4560f;
+  --color-mahin-ember: #ffb673;
+}
+
+/* Rahim Enterprise brand palette — a bright light theme with a deep-slate
+   ink and a cool-cyan accent for the rahim.<domain> ammonia site
+   (src/app/[locale]/companies/rahim). Reads as refrigeration / cold-storage
+   and industrial gas — the only cyan-and-slate subsidiary theme, distinct
+   from the Filling Station's petrol-blue and Mahin's navy-and-orange. */
+@theme {
+  --color-rahim-frost: #f1f5f7;
+  --color-rahim-cloud: #e4ebee;
+  --color-rahim-line: #d6e0e5;
+  --color-rahim-slate: #0f2430;
+  --color-rahim-slate-light: #244050;
+  --color-rahim-steel: #4d6472;
+  --color-rahim-cyan: #0891b2;
+  --color-rahim-cyan-dark: #0e7490;
+  --color-rahim-ice: #7dd3e8;
+}

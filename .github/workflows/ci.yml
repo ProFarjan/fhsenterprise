@@ -1,0 +1,42 @@
+name: CI
+
+# Runs the same three checks you should run locally before pushing:
+#   npm run lint  ->  npm run typecheck  ->  npm run build
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+# Cancel a superseded run of the same branch/PR.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      # The build does not need a working database: every public page falls back to
+      # static content when it cannot reach one (and logs that it did). This URL
+      # only has to be well-formed so `prisma generate` and the client can start.
+      DATABASE_URL: mysql://ci:ci@127.0.0.1:3306/ci
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type-check
+        run: npm run typecheck
+
+      - name: Build
+        run: npm run build

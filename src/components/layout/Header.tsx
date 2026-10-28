@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { getSiteConfig } from "@/data/site";
 import type { AppLocale } from "@/i18n/routing";
-import SocialIcon from "@/components/icons/SocialIcon";
+import SocialLink from "@/components/icons/SocialLink";
 import LanguageSwitcher from "@/components/layout/LanguageSwitcher";
 
 export default function Header() {
@@ -24,6 +24,17 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openMobileSection, setOpenMobileSection] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
+  const mobileNavId = useId();
+
+  // Escape closes the mobile menu (and the button that opened it keeps focus).
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsMenuOpen(false);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [isMenuOpen]);
 
   useEffect(() => {
     if (!isHome) return;
@@ -47,6 +58,14 @@ export default function Header() {
     : "font-semibold text-[#0045a0]";
 
   return (
+    <>
+    {/* First Tab stop on every page: lets keyboard users jump past the navigation. */}
+    <a
+      href="#main"
+      className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-[#0045a0] focus:shadow-lg focus:ring-2 focus:ring-[#0045a0]"
+    >
+      {t("skipToContent")}
+    </a>
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
         isTransparent
@@ -63,14 +82,12 @@ export default function Header() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2 lg:px-8">
           <div className="flex items-center gap-4">
             {siteConfig.socials.map((social) => (
-              <Link
+              <SocialLink
                 key={social.label}
+                label={social.label}
                 href={social.href}
-                aria-label={social.label}
                 className="text-white/80 transition-colors hover:text-emerald-300"
-              >
-                <SocialIcon label={social.label} />
-              </Link>
+              />
             ))}
           </div>
           <Link
@@ -87,8 +104,8 @@ export default function Header() {
           <Image
             src="/logos/fhs_logo.png"
             alt={siteConfig.groupName}
-            width={400}
-            height={400}
+            width={1266}
+            height={370}
             priority
             className="h-12 w-auto sm:h-14 object-contain"
           />
@@ -121,8 +138,9 @@ export default function Header() {
                   </svg>
                 </Link>
 
-                {/* Dropdown — always solid white for legibility regardless of navbar state */}
-                <div className="invisible absolute left-0 top-full z-50 min-w-56 rounded-lg border border-neutral-200 bg-white py-2 opacity-0 shadow-xl transition-all duration-150 group-hover:visible group-hover:opacity-100">
+                {/* Dropdown — always solid white for legibility regardless of navbar state.
+                    focus-within keeps it open (and its links reachable) for keyboard users. */}
+                <div className="invisible absolute left-0 top-full z-50 min-w-56 rounded-lg border border-neutral-200 bg-white py-2 opacity-0 shadow-xl transition-all duration-150 group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
                   {item.children.map((child) => (
                     <Link
                       key={child.href}
@@ -173,6 +191,7 @@ export default function Header() {
           }`}
           aria-label={t("toggleMenu")}
           aria-expanded={isMenuOpen}
+          aria-controls={mobileNavId}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -193,7 +212,7 @@ export default function Header() {
 
       {/* Mobile nav panel — solid white regardless of navbar state */}
       {isMenuOpen && (
-        <nav className="border-t border-neutral-200 bg-white px-6 pb-4 text-neutral-900 lg:hidden">
+        <nav id={mobileNavId} className="border-t border-neutral-200 bg-white px-6 pb-4 text-neutral-900 lg:hidden">
           <div className="flex flex-col gap-1 pt-4">
             {siteConfig.nav.map((item) =>
               item.children ? (
@@ -203,6 +222,7 @@ export default function Header() {
                     onClick={() =>
                       setOpenMobileSection((open) => (open === item.href ? null : item.href))
                     }
+                    aria-expanded={openMobileSection === item.href}
                     className={`flex w-full items-center justify-between py-2 text-sm font-medium ${
                       isActive(item.href) ? "text-[#0045a0]" : "text-neutral-700"
                     }`}
@@ -249,8 +269,8 @@ export default function Header() {
                   href={item.href}
                   onClick={() => setIsMenuOpen(false)}
                   aria-current={isActive(item.href) ? "page" : undefined}
-                  className={`py-2 text-sm font-medium hover:text-orange-600 ${
-                    isActive(item.href) ? "font-semibold text-orange-600" : "text-neutral-700"
+                  className={`py-2 text-sm font-medium hover:text-[#0045a0] ${
+                    isActive(item.href) ? "font-semibold text-[#0045a0]" : "text-neutral-700"
                   }`}
                 >
                   {item.label}
@@ -264,7 +284,7 @@ export default function Header() {
             <Link
               href="/contact"
               onClick={() => setIsMenuOpen(false)}
-              className="mt-2 rounded-md bg-orange-600 px-5 py-2.5 text-center text-sm font-semibold text-white hover:bg-orange-500"
+              className="mt-2 rounded-md bg-[#0045a0] px-5 py-2.5 text-center text-sm font-semibold text-white hover:bg-[#003680]"
             >
               {t("contactUs")}
             </Link>
@@ -272,5 +292,6 @@ export default function Header() {
         </nav>
       )}
     </header>
+    </>
   );
 }

@@ -30,6 +30,15 @@ export default async function CompanyChrome({
 }) {
   const t = await getTranslations({ locale, namespace: "companySite" });
 
+  // Nav hrefs in the company data are written as "/#about". On a subdomain that
+  // resolves to "/", where the locale-redirect sends everyone to the default
+  // language — an English visitor would be bounced to /bn. Keep the visitor's
+  // locale: "/#about" -> "/en#about".
+  const localizedNav = nav?.map((item) => ({
+    ...item,
+    href: item.href.startsWith("/") ? `/${locale}${item.href.slice(1)}` : item.href,
+  }));
+
   return (
     <div className="flex min-h-full flex-1 flex-col bg-white text-neutral-900">
       <header className="sticky top-0 z-50 bg-white border-b border-neutral-200">
@@ -45,9 +54,12 @@ export default async function CompanyChrome({
             <span className="text-lg font-bold tracking-tight">{name}</span>
           </a>
 
-          {nav && nav.length > 0 && (
-            <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-neutral-600">
-              {nav.map((item) => (
+          {localizedNav && localizedNav.length > 0 && (
+            <nav
+              aria-label={name}
+              className="hidden md:flex items-center gap-8 text-sm font-medium text-neutral-600"
+            >
+              {localizedNav.map((item) => (
                 <a key={item.label} href={item.href} className="hover:text-neutral-900 transition-colors">
                   {item.label}
                 </a>
@@ -66,6 +78,22 @@ export default async function CompanyChrome({
           </div>
         </div>
       </header>
+
+      {/* Below md the links above are hidden; this scrollable row keeps the same
+          navigation available on phones. */}
+      {localizedNav && localizedNav.length > 0 && (
+        <nav aria-label={name} className="border-b border-neutral-200 bg-white md:hidden">
+          <ul className="flex gap-6 overflow-x-auto px-6 py-3 text-sm font-medium text-neutral-600">
+            {localizedNav.map((item) => (
+              <li key={item.label} className="shrink-0">
+                <a href={item.href} className="hover:text-neutral-900">
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
 
       {children}
 

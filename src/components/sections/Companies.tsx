@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { companyUrl } from "@/lib/companies";
+import { getSiteConfig } from "@/data/site";
 import type { AppLocale } from "@/i18n/routing";
 import type { Company } from "@/types/content";
 
@@ -26,6 +27,7 @@ export default function Companies({ companies }: { companies: Company[] }) {
   const locale = useLocale() as AppLocale;
   const t = useTranslations("home.companies");
   const tCommon = useTranslations("common");
+  const siteName = getSiteConfig(locale).groupName;
 
   return (
     <section id="companies" className="bg-neutral-50 py-24">
@@ -55,7 +57,7 @@ export default function Companies({ companies }: { companies: Company[] }) {
           >
             <Image
               src="/images/gallery/fhs_history.jpg"
-              alt="FHS Enterprise"
+              alt=""
               fill
               sizes="100vw"
               className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -64,17 +66,15 @@ export default function Companies({ companies }: { companies: Company[] }) {
 
             {/* Logo badge */}
             <div className="absolute left-6 top-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/95 p-2 shadow-lg">
-              <Image src="/logos/fhs_logo.png" alt="FHS Enterprise logo" width={48} height={48} className="object-contain" />
+              <Image src="/logos/fhs_logo.png" alt={t("parentLogoAlt")} width={1266} height={370} className="h-auto w-full object-contain" />
             </div>
 
             <div className="relative flex flex-col gap-3 p-8">
               <span className="inline-block w-fit rounded-full bg-[#0045a0] px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-white shadow">
-                Parent Company
+                {t("parentBadge")}
               </span>
-              <h3 className="text-3xl font-bold text-white sm:text-4xl">FHS Enterprise</h3>
-              <p className="max-w-2xl text-base leading-7 text-neutral-200">
-                A rapidly growing conglomerate located in Fulbariya, Mymensingh — spanning premium agricultural processing, advanced automotive solutions, and modern digital e-commerce.
-              </p>
+              <h3 className="text-3xl font-bold text-white sm:text-4xl">{siteName}</h3>
+              <p className="max-w-2xl text-base leading-7 text-neutral-200">{t("parentDescription")}</p>
             </div>
           </a>
         </div>
@@ -102,7 +102,7 @@ export default function Companies({ companies }: { companies: Company[] }) {
 
               {/* Logo badge */}
               <div className="absolute left-5 top-5 flex h-12 w-12 items-center justify-center rounded-xl bg-white/95 p-2 shadow-md">
-                <Image src={company.logo} alt={`${company.name} logo`} width={28} height={28} className="object-contain" />
+                <Image src={company.logo} alt={t("companyLogoAlt", { name: company.name })} width={28} height={28} className="object-contain" />
               </div>
 
               <div className="relative flex flex-col gap-2 p-6">

@@ -62,12 +62,22 @@ export default async function CompanyHomePage({
         <dl className="mt-6 space-y-2 text-sm text-neutral-600">
           <div className="flex gap-2">
             <dt className="font-semibold text-neutral-900">{t("email")}:</dt>
-            <dd>{content.contact.email}</dd>
+            <dd>
+              <a href={`mailto:${content.contact.email}`} className="hover:underline">
+                {content.contact.email}
+              </a>
+            </dd>
           </div>
-          <div className="flex gap-2">
-            <dt className="font-semibold text-neutral-900">{t("phone")}:</dt>
-            <dd>{content.contact.phone}</dd>
-          </div>
+          {content.contact.phone && (
+            <div className="flex gap-2">
+              <dt className="font-semibold text-neutral-900">{t("phone")}:</dt>
+              <dd>
+                <a href={`tel:${content.contact.phone.replace(/[^+\d]/g, "")}`} className="hover:underline">
+                  {content.contact.phone}
+                </a>
+              </dd>
+            </div>
+          )}
           <div className="flex gap-2">
             <dt className="font-semibold text-neutral-900">{t("address")}:</dt>
             <dd>{content.contact.address}</dd>

@@ -35,6 +35,7 @@ export default function SustainabilityTabs({ slugs }: { slugs: string[] }) {
           <Link
             key={tab.href}
             href={tab.href}
+            aria-current={isActive ? "page" : undefined}
             className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
               isActive
                 ? "bg-[#0045A0] text-white shadow-sm ring-1 ring-[#0045A0]"

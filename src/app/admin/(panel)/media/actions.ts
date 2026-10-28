@@ -7,7 +7,8 @@ import { isSiteKey } from "@/lib/sites";
 import { isValidYoutubeUrl } from "@/lib/youtube";
 import { isImageValidationError, readAndValidateImage } from "@/lib/imageUpload";
 import { MediaType, SiteKey } from "@/generated/prisma/enums";
-import { routing } from "@/i18n/routing";
+import { formString } from "@/lib/formData";
+import { revalidateLocalized } from "@/lib/revalidate";
 import {
   LIMITS,
   describeActionError,
@@ -24,27 +25,15 @@ export type EventFormState = { error?: string; success?: boolean };
 // to Server Actions — Next.js treats every action as its own reachable POST
 // endpoint, so each one re-verifies the session itself.
 
-// The public pages that read site content straight out of the database
-// (see src/app/[locale]/(main)/media/, the filling-station gallery at
-// src/app/[locale]/companies/filling-station/gallery/, and the agro gallery
-// at src/app/[locale]/companies/agro/gallery/). Next only revalidates on
-// demand — without this, a newly created/deleted item wouldn't show up on
-// the live site until something else invalidated the route's cache. Only
-// FHS_ENTERPRISE is wired to public pages so far.
+// The public pages that read site content straight out of the database are the
+// parent site's media pages (src/app/[locale]/(main)/media/ and the homepage's
+// latest-news strip). Only FHS_ENTERPRISE content is shown on public pages;
+// the subsidiaries' own sites don't render media from the database. Next only
+// revalidates on demand, so without this a newly created/deleted item wouldn't
+// appear until the page's 5-minute revalidate window passed.
 function revalidatePublicMediaPaths(site: string) {
-  for (const locale of routing.locales) {
-    if (site === SiteKey.FHS_ENTERPRISE) {
-      revalidatePath(`/${locale}`);
-      revalidatePath(`/${locale}/media`);
-      revalidatePath(`/${locale}/media/news`);
-      revalidatePath(`/${locale}/media/gallery`);
-      revalidatePath(`/${locale}/media/events`);
-    } else if (site === SiteKey.AUTO_RICE_MILL) {
-      revalidatePath(`/${locale}/companies/auto-rice-mill/gallery`);
-    } else if (site === SiteKey.VEHICLE_SOLUTIONS) {
-      revalidatePath(`/${locale}/companies/vehicle-solutions/gallery`);
-    }
-  }
+  if (site !== SiteKey.FHS_ENTERPRISE) return;
+  revalidateLocalized("/", "/media", "/media/news", "/media/gallery", "/media/events");
 }
 
 export async function createMediaAction(
@@ -54,7 +43,7 @@ export async function createMediaAction(
   const admin = await requireAdmin();
 
   const site = String(formData.get("site") ?? "");
-  const title = String(formData.get("title") ?? "").trim();
+  const title = formString(formData, "title");
   const type = String(formData.get("type") ?? "");
 
   if (!isSiteKey(site)) return { error: "Choose a site." };
@@ -66,7 +55,7 @@ export async function createMediaAction(
   }
 
   if (type === MediaType.VIDEO) {
-    const youtubeUrl = String(formData.get("youtubeUrl") ?? "").trim();
+    const youtubeUrl = formString(formData, "youtubeUrl");
     if (!isValidYoutubeUrl(youtubeUrl)) {
       return { error: "Enter a valid YouTube link." };
     }
@@ -126,8 +115,8 @@ export async function createNewsAction(
   const admin = await requireAdmin();
 
   const site = String(formData.get("site") ?? "");
-  const title = String(formData.get("title") ?? "").trim();
-  const excerpt = String(formData.get("excerpt") ?? "").trim();
+  const title = formString(formData, "title");
+  const excerpt = formString(formData, "excerpt");
   const dateRaw = String(formData.get("date") ?? "");
 
   if (!isSiteKey(site)) return { error: "Choose a site." };
@@ -187,9 +176,9 @@ export async function createEventAction(
   const admin = await requireAdmin();
 
   const site = String(formData.get("site") ?? "");
-  const title = String(formData.get("title") ?? "").trim();
-  const location = String(formData.get("location") ?? "").trim();
-  const description = String(formData.get("description") ?? "").trim();
+  const title = formString(formData, "title");
+  const location = formString(formData, "location");
+  const description = formString(formData, "description");
   const dateRaw = String(formData.get("date") ?? "");
 
   if (!isSiteKey(site)) return { error: "Choose a site." };

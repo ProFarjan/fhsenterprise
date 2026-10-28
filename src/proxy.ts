@@ -1,7 +1,8 @@
 import createMiddleware from "next-intl/middleware";
 import { NextResponse, type NextRequest } from "next/server";
 import { routing } from "./i18n/routing";
-import { COMPANY_SUBDOMAINS, getRootDomain } from "./lib/companies";
+import { COMPANY_SUBDOMAINS, getRootDomain, resolveCompanySlug } from "./lib/companies";
+import { EXTERNAL_COMPANIES } from "./lib/externalCompanies";
 
 // Next.js 16 renamed `middleware.ts` to `proxy.ts` (the exported function is
 // still a plain (req) => Response handler, so next-intl's middleware factory
@@ -13,15 +14,16 @@ const handleI18n = createMiddleware(routing);
 // cards can never disagree.
 const ROOT_DOMAIN = getRootDomain().split(":")[0].toLowerCase();
 
-// Subsidiaries that run as their own deployments. Requests for these hosts (and
-// their aliases) are sent to the canonical URL.
-const EXTERNAL_COMPANY_URLS: Record<string, string> = {
-  [`vehiclesolutions.${ROOT_DOMAIN}`]: "https://vehiclesolutions.fhsenterprise.com",
-  "vehicle-solutions.fhsenterprise.com": "https://vehiclesolutions.fhsenterprise.com",
-  [`dailybazar.${ROOT_DOMAIN}`]: "https://dailybazar.fhsenterprise.com",
-  [`daily-bazar.${ROOT_DOMAIN}`]: "https://dailybazar.fhsenterprise.com",
-  "daily-bazar.fhsenterprise.com": "https://dailybazar.fhsenterprise.com",
-};
+// Subsidiaries that run as their own deployments: every <host>.<root domain>
+// (and <host>.fhsenterprise.com, for a differing local root) -> the canonical URL.
+const EXTERNAL_COMPANY_URLS: Record<string, string> = {};
+for (const company of EXTERNAL_COMPANIES) {
+  for (const host of company.hosts) {
+    for (const domain of new Set([ROOT_DOMAIN, "fhsenterprise.com"])) {
+      EXTERNAL_COMPANY_URLS[`${host}.${domain}`] = company.url;
+    }
+  }
+}
 
 // "auto-rice-mill.fhsenterprise.com" -> "auto-rice-mill"; "fhsenterprise.com" / "www.fhsenterprise.com" -> null.
 // `hostname` must already be lower-cased and port-free.
@@ -53,10 +55,7 @@ export function proxy(request: NextRequest) {
     return handleI18n(request);
   }
 
-  const internalSubdomain =
-    subdomain === "autorice" || subdomain === "autorice-mill"
-      ? "auto-rice-mill"
-      : subdomain;
+  const internalSubdomain = resolveCompanySlug(subdomain);
 
   // Rewrite (URL stays clean) to the hidden internal company path.
   const url = request.nextUrl.clone();

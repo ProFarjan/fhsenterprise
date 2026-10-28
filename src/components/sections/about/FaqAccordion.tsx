@@ -1,21 +1,21 @@
 "use client";
 
-import { useState } from "react";
-import { useLocale, useTranslations } from "next-intl";
+import { useId, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { FaqItem } from "@/types/content";
 
 // The interactive accordion for the About > FAQ page.
 export default function FaqAccordion({ faqs }: { faqs: FaqItem[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
-  const locale = useLocale();
   const t = useTranslations("aboutPages");
+  const baseId = useId();
 
   return (
     <section className="mx-auto max-w-3xl px-6 py-20 lg:px-8 lg:py-28">
       <div className="mb-12 text-center">
         <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#0045A0]">
-          FAQ
+          {t("faqEyebrow")}
         </span>
         <h2 className="mt-2 text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl">
           {t("faqsTitle")}
@@ -40,7 +40,9 @@ export default function FaqAccordion({ faqs }: { faqs: FaqItem[] }) {
               <button
                 type="button"
                 onClick={() => setOpenIndex(isOpen ? null : index)}
+                id={`${baseId}-q${index}`}
                 aria-expanded={isOpen}
+                aria-controls={`${baseId}-a${index}`}
                 className="flex w-full items-center gap-5 px-6 py-6 text-left"
               >
                 <span className="font-mono text-sm font-semibold text-[#0045A0]">
@@ -68,7 +70,12 @@ export default function FaqAccordion({ faqs }: { faqs: FaqItem[] }) {
                   </svg>
                 </span>
               </button>
+              {/* inert: a collapsed answer is hidden from keyboard and screen readers too. */}
               <div
+                id={`${baseId}-a${index}`}
+                role="region"
+                aria-labelledby={`${baseId}-q${index}`}
+                inert={!isOpen}
                 className={`grid transition-all duration-300 ease-in-out ${
                   isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
                 }`}
@@ -83,20 +90,14 @@ export default function FaqAccordion({ faqs }: { faqs: FaqItem[] }) {
       </div>
 
       <div className="mt-14 rounded-2xl border border-blue-100 bg-blue-50/50 p-8 text-center sm:p-10">
-        <h3 className="text-xl font-bold text-neutral-900">
-          {locale === "bn" ? "আরও কিছু জানতে চান?" : "Still Have Questions?"}
-        </h3>
-        <p className="mt-2 text-sm text-neutral-600 sm:text-base">
-          {locale === "bn"
-            ? "আপনার কাঙ্ক্ষিত উত্তরটি খুঁজে পাননি? যেকোনো জিজ্ঞাসা বা ব্যবসায়িক অংশীদারিত্বের জন্য আমাদের ফুলবাড়িয়া কার্যালয়ে যোগাযোগ করুন।"
-            : "Can't find the answer you're looking for? Feel free to reach out directly to our corporate team in Fulbariya."}
-        </p>
+        <h3 className="text-xl font-bold text-neutral-900">{t("stillHaveQuestions")}</h3>
+        <p className="mt-2 text-sm text-neutral-600 sm:text-base">{t("stillHaveQuestionsBody")}</p>
         <div className="mt-6">
           <Link
             href="/contact"
             className="inline-flex items-center rounded-full bg-[#0045A0] px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#003882] transition-colors"
           >
-            {locale === "bn" ? "যোগাযোগ করুন →" : "Contact FHS Enterprise →"}
+            {t("contactCta")}
           </Link>
         </div>
       </div>

@@ -16,7 +16,7 @@ export default function Breadcrumbs({
 }) {
   const schemaItems = items.map((item) => ({
     name: item.label,
-    path: item.href ?? "",
+    path: item.href,
   }));
 
   const jsonLd = getBreadcrumbJsonLd(schemaItems, locale);

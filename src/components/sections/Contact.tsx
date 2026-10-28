@@ -9,10 +9,20 @@ export default function Contact() {
   const t = useTranslations("home.contact");
   const tCommon = useTranslations("common");
 
-  const infoItems = [
+  // Rows without a value (no public phone number yet) are left out entirely.
+  const infoItems: { label: string; value: string; icon: typeof MapPinIcon; href?: string }[] = [
     { label: tCommon("address"), value: contact.address, icon: MapPinIcon },
-    { label: tCommon("email"), value: contact.email, icon: MailIcon },
-    { label: tCommon("phone"), value: contact.phone, icon: PhoneIcon },
+    { label: tCommon("email"), value: contact.email, icon: MailIcon, href: `mailto:${contact.email}` },
+    ...(contact.phone
+      ? [
+          {
+            label: tCommon("phone"),
+            value: contact.phone,
+            icon: PhoneIcon,
+            href: `tel:${contact.phone.replace(/[^+\d]/g, "")}`,
+          },
+        ]
+      : []),
   ];
 
   return (
@@ -32,7 +42,11 @@ export default function Contact() {
         </div>
         <p className="mx-auto mt-4 max-w-xl text-lg text-neutral-600">{contact.description}</p>
 
-        <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-3">
+        <div
+          className={`mt-12 grid grid-cols-1 gap-5 ${
+            infoItems.length === 3 ? "sm:grid-cols-3" : "mx-auto max-w-2xl sm:grid-cols-2"
+          }`}
+        >
           {infoItems.map((item, idx) => {
             const Icon = item.icon;
             return (
@@ -50,7 +64,13 @@ export default function Contact() {
                 <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
                   {item.label}
                 </p>
-                <p className="text-sm font-medium text-neutral-800">{item.value}</p>
+                {item.href ? (
+                  <a href={item.href} className="text-sm font-medium text-neutral-800 hover:text-[#0045a0] hover:underline">
+                    {item.value}
+                  </a>
+                ) : (
+                  <p className="text-sm font-medium text-neutral-800">{item.value}</p>
+                )}
               </div>
             );
           })}

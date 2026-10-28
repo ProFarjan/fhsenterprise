@@ -1,4 +1,13 @@
-import type { CompanySiteContent } from "@/types/company";
+import type { CompanySiteContent, CompanyTheme } from "@/types/company";
+
+// Accent colours for the microsite's chrome (header/footer) and homepage.
+export const autoRiceMillTheme: CompanyTheme = {
+  accentBg: "bg-orange-600",
+  accentBgHover: "hover:bg-orange-500",
+  accentText: "text-orange-600",
+  accentBorder: "border-orange-200",
+  heroFrom: "from-orange-950",
+};
 
 export const autoRiceMillContent: Record<"en" | "bn", CompanySiteContent> = {
   en: {
@@ -32,7 +41,7 @@ export const autoRiceMillContent: Record<"en" | "bn", CompanySiteContent> = {
     contact: {
       heading: "Contact Us",
       email: "rice@fhsenterprise.com",
-      phone: "+880 123456789",
+      phone: null, // TODO(real data)
       address: "Fulbariya, Mymensingh, Bangladesh",
     },
   },
@@ -67,7 +76,7 @@ export const autoRiceMillContent: Record<"en" | "bn", CompanySiteContent> = {
     contact: {
       heading: "যোগাযোগ করুন",
       email: "rice@fhsenterprise.com",
-      phone: "+880 123456789",
+      phone: null, // TODO(real data)
       address: "ফুলবাড়িয়া, ময়মনসিংহ, বাংলাদেশ",
     },
   },

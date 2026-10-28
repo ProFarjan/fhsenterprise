@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Retired subsidiary sites, parked outside src/ (see legacy/subsidiaries/README.md).
+    "legacy/**",
+    // One-off tooling kept for reference, not application code.
+    "scripts/archive/**",
   ]),
 ]);
 

@@ -6,6 +6,7 @@ import Breadcrumbs from "@/components/navigation/Breadcrumbs";
 import { getSiteConfig } from "@/data/site";
 import type { AppLocale } from "@/i18n/routing";
 import { buildPageMetadata } from "@/lib/seo";
+import { setRequestLocale } from "next-intl/server";
 
 export async function generateMetadata({
   params,
@@ -34,7 +35,7 @@ export async function generateMetadata({
   });
 }
 
-export default function SustainabilityLayout({ children }: { children: React.ReactNode }) {
+function SustainabilityLayoutContent({ children }: { children: React.ReactNode }) {
   const t = useTranslations("pageHeaders.sustainability");
   const locale = useLocale();
   const { pillars } = getSiteConfig(locale as AppLocale).sustainabilityPages;
@@ -62,4 +63,19 @@ export default function SustainabilityLayout({ children }: { children: React.Rea
       <div className="pb-24">{children}</div>
     </div>
   );
+}
+
+// next-intl needs the request locale set before any of its APIs run, and Next
+// renders layouts and pages in parallel — so each one sets it itself. That is
+// also what lets the page be prerendered instead of rendered on every request.
+export default async function SustainabilityLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  return <SustainabilityLayoutContent>{children}</SustainabilityLayoutContent>;
 }

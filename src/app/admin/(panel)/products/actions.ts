@@ -4,7 +4,9 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/session";
 import { isSiteKey } from "@/lib/sites";
-import { isImageValidationError, readAndValidateImage } from "@/lib/imageUpload";
+import { isImageValidationError, readAndValidateImage, readOptionalImage } from "@/lib/imageUpload";
+import { formString } from "@/lib/formData";
+import { slugify } from "@/lib/slug";
 import { isValidCategory } from "@/lib/productCategories";
 import { Prisma } from "@/generated/prisma/client";
 import {
@@ -25,15 +27,6 @@ export type ProductFormState = { error?: string; success?: boolean };
 // Product yet (see the model's comment in prisma/schema.prisma), so there is
 // no revalidatePublicPaths() here the way Media/Companies have one. Only the
 // admin list itself needs revalidating.
-
-function slugify(name: string): string {
-  return name
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .slice(0, 200);
-}
 
 // One benefit per line — blank lines dropped.
 function parseBenefits(raw: string): string[] {
@@ -69,10 +62,10 @@ export async function createProductAction(
   const admin = await requireAdmin();
 
   const site = String(formData.get("site") ?? "");
-  const category = String(formData.get("category") ?? "").trim();
-  const name = String(formData.get("name") ?? "").trim();
-  const tagline = String(formData.get("tagline") ?? "").trim();
-  const description = String(formData.get("description") ?? "").trim();
+  const category = formString(formData, "category");
+  const name = formString(formData, "name");
+  const tagline = formString(formData, "tagline");
+  const description = formString(formData, "description");
   const benefitsRaw = String(formData.get("benefits") ?? "");
   const specsRaw = String(formData.get("specs") ?? "");
   const isPublished = formData.get("isPublished") === "on";
@@ -153,10 +146,10 @@ export async function updateProductAction(
   const current = await prisma.product.findUnique({ where: { id }, select: { site: true } });
   if (!current) return { error: "Unknown product." };
 
-  const category = String(formData.get("category") ?? "").trim();
-  const name = String(formData.get("name") ?? "").trim();
-  const tagline = String(formData.get("tagline") ?? "").trim();
-  const description = String(formData.get("description") ?? "").trim();
+  const category = formString(formData, "category");
+  const name = formString(formData, "name");
+  const tagline = formString(formData, "tagline");
+  const description = formString(formData, "description");
   const benefitsRaw = String(formData.get("benefits") ?? "");
   const specsRaw = String(formData.get("specs") ?? "");
   const isPublished = formData.get("isPublished") === "on";
@@ -177,13 +170,8 @@ export async function updateProductAction(
   if (tooLong) return { error: tooLong };
 
   // Replacing the image is optional — an empty file input keeps the current one.
-  const file = formData.get("image");
-  let image: { data: Uint8Array<ArrayBuffer>; mimeType: string } | null = null;
-  if (file instanceof File && file.size > 0) {
-    const validated = await readAndValidateImage(file);
-    if (isImageValidationError(validated)) return { error: validated.error };
-    image = validated;
-  }
+  const image = await readOptionalImage(formData, "image");
+  if (image && isImageValidationError(image)) return { error: image.error };
 
   const benefits = parseBenefits(benefitsRaw);
   const specs = parseSpecs(specsRaw);

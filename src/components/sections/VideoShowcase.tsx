@@ -7,19 +7,12 @@ import { Link } from "@/i18n/navigation";
 import { getSiteConfig } from "@/data/site";
 import type { AppLocale } from "@/i18n/routing";
 import type { GalleryVideo } from "@/types/content";
+import VideoModal from "@/components/ui/VideoModal";
 
 function PlayIcon({ size = "w-6 h-6" }: { size?: string }) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={`ml-0.5 ${size}`}>
       <path d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11-6.86a1 1 0 0 0 0-1.72l-11-6.86a1 1 0 0 0-1.5.86Z" />
-    </svg>
-  );
-}
-
-function CloseIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
     </svg>
   );
 }
@@ -65,8 +58,7 @@ export default function VideoShowcase() {
           {/* Main Featured Video: Highlighted Auto Rice Mill */}
           {featuredVideo && (
             <div
-              onClick={() => setActiveVideo(featuredVideo)}
-              className="lg:col-span-2 group relative flex flex-col justify-end overflow-hidden rounded-3xl bg-neutral-950 border border-neutral-800 shadow-2xl cursor-pointer min-h-[420px] lg:min-h-[500px] transition-all hover:border-[#0045a0]/60 hover:shadow-[#0045a0]/20"
+              className="lg:col-span-2 group relative flex flex-col justify-end overflow-hidden rounded-3xl bg-neutral-950 border border-neutral-800 shadow-2xl min-h-[420px] lg:min-h-[500px] transition-all hover:border-[#0045a0]/60 hover:shadow-[#0045a0]/20"
             >
               <Image
                 src={featuredVideo.thumbnail}
@@ -84,7 +76,7 @@ export default function VideoShowcase() {
                   {t("featuredBadge")}
                 </span>
                 <span className="rounded-full bg-white/20 backdrop-blur-sm px-3 py-1 text-xs font-semibold text-white">
-                  M/s. Bangladesh Auto Rice Mill
+                  {t("companyRiceMill")}
                 </span>
               </div>
 
@@ -110,9 +102,17 @@ export default function VideoShowcase() {
                 )}
                 <div className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-emerald-400">
                   <span>{t("watchVideo")}</span>
-                  <span className="group-hover:translate-x-1 transition-transform">→</span>
+                  <span className="group-hover:translate-x-1 transition-transform" aria-hidden="true">→</span>
                 </div>
               </div>
+              {/* Whole card is one real button (keyboard + screen-reader reachable). */}
+              <button
+                type="button"
+                onClick={() => setActiveVideo(featuredVideo)}
+                aria-haspopup="dialog"
+                aria-label={`${t("watchVideo")}: ${featuredVideo.title}`}
+                className="absolute inset-0 z-20 cursor-pointer rounded-3xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
+              />
             </div>
           )}
 
@@ -121,8 +121,7 @@ export default function VideoShowcase() {
             {companionVideos.map((video, idx) => (
               <div
                 key={video.title}
-                onClick={() => setActiveVideo(video)}
-                className="group relative flex flex-col justify-end overflow-hidden rounded-3xl bg-neutral-950 border border-neutral-800 shadow-xl cursor-pointer min-h-[230px] flex-1 transition-all hover:border-[#097b33]/60"
+                className="group relative flex flex-col justify-end overflow-hidden rounded-3xl bg-neutral-950 border border-neutral-800 shadow-xl min-h-[230px] flex-1 transition-all hover:border-[#097b33]/60"
               >
                 <Image
                   src={video.thumbnail}
@@ -143,16 +142,24 @@ export default function VideoShowcase() {
 
                 <div className="relative p-6 z-10">
                   <span className="inline-block w-fit rounded-full bg-[#0045a0]/80 backdrop-blur-sm px-2.5 py-0.5 text-xs font-semibold text-white mb-2">
-                    {idx === 0 ? "Vehicle Solutions" : "Daily Bazar"}
+                    {idx === 0 ? t("companyVehicle") : t("companyBazar")}
                   </span>
                   <h4 className="text-lg font-bold text-white group-hover:text-emerald-400 transition-colors line-clamp-2">
                     {video.title}
                   </h4>
                   <div className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-400">
                     <span>{t("watchVideo")}</span>
-                    <span>→</span>
+                    <span aria-hidden="true">→</span>
                   </div>
                 </div>
+                {/* Whole card is one real button (keyboard + screen-reader reachable). */}
+                <button
+                  type="button"
+                  onClick={() => setActiveVideo(video)}
+                  aria-haspopup="dialog"
+                  aria-label={`${t("watchVideo")}: ${video.title}`}
+                  className="absolute inset-0 z-20 cursor-pointer rounded-3xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
+                />
               </div>
             ))}
           </div>
@@ -165,63 +172,12 @@ export default function VideoShowcase() {
             className="inline-flex items-center gap-2 rounded-full border border-neutral-700 bg-neutral-800/80 px-8 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:bg-[#0045a0] hover:border-[#0045a0] shadow-md"
           >
             {t("viewAllMedia")}
-            <span>→</span>
+            <span aria-hidden="true">→</span>
           </Link>
         </div>
       </div>
 
-      {/* Video Modal Player */}
-      {activeVideo && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
-          onClick={() => setActiveVideo(null)}
-        >
-          <div
-            className="relative w-full max-w-4xl overflow-hidden rounded-3xl bg-neutral-950 p-4 shadow-2xl border border-neutral-800"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              type="button"
-              onClick={() => setActiveVideo(null)}
-              className="absolute top-4 right-4 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
-              aria-label="Close video player"
-            >
-              <CloseIcon />
-            </button>
-
-            <div className="relative aspect-video w-full overflow-hidden rounded-2xl bg-black">
-              {activeVideo.videoUrl ? (
-                <video
-                  src={activeVideo.videoUrl}
-                  controls
-                  autoPlay
-                  playsInline
-                  className="h-full w-full object-contain"
-                />
-              ) : activeVideo.youtubeUrl ? (
-                <iframe
-                  src={activeVideo.youtubeUrl.replace("watch?v=", "embed/")}
-                  title={activeVideo.title}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="h-full w-full border-0"
-                />
-              ) : null}
-            </div>
-
-            <div className="mt-4 p-2 text-white">
-              <h3 className="text-xl font-bold">{activeVideo.title}</h3>
-              {activeVideo.description && (
-                <p className="mt-2 text-sm text-neutral-300 leading-relaxed">
-                  {activeVideo.description}
-                </p>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+      {activeVideo && <VideoModal video={activeVideo} onClose={() => setActiveVideo(null)} />}
     </section>
   );
 }

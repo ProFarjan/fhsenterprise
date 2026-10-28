@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { getLocale, getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getParentNews } from "@/lib/publicContent";
 import { buildPageMetadata } from "@/lib/seo";
@@ -55,8 +55,17 @@ function formatDate(iso: string, locale: AppLocale) {
   });
 }
 
-export default async function NewsPage() {
-  const locale = (await getLocale()) as AppLocale;
+// Prerendered; refreshed at most every 5 minutes (admin edits revalidate immediately).
+export const revalidate = 300;
+
+export default async function NewsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale: routeLocale } = await params;
+  setRequestLocale(routeLocale);
+  const locale = routeLocale as AppLocale;
   const tMedia = await getTranslations("media");
   const tCommon = await getTranslations("common");
   const [featured, ...rest] = await getParentNews();
@@ -87,7 +96,7 @@ export default async function NewsPage() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
         <div className="relative flex flex-col gap-3 p-8">
-          <span className="w-fit rounded-full bg-orange-600 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
+          <span className="w-fit rounded-full bg-orange-700 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
             {tMedia("featured")}
           </span>
           <time dateTime={featured.date} className="text-xs font-semibold uppercase tracking-wide text-orange-300">
@@ -120,12 +129,12 @@ export default async function NewsPage() {
                 />
               </div>
               <div className="flex flex-1 flex-col gap-2 p-6">
-                <time dateTime={item.date} className="text-xs font-semibold uppercase tracking-wide text-orange-600">
+                <time dateTime={item.date} className="text-xs font-semibold uppercase tracking-wide text-orange-700">
                   {formatDate(item.date, locale)}
                 </time>
                 <h3 className="text-lg font-semibold text-neutral-900">{item.title}</h3>
                 <p className="flex-1 text-sm leading-6 text-neutral-600">{item.excerpt}</p>
-                <span className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-orange-600">
+                <span className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-orange-700">
                   {tCommon("readMore")}
                   <ArrowIcon />
                 </span>

@@ -76,6 +76,17 @@ export function sniffImageMimeType(bytes: Uint8Array): string | null {
   return null;
 }
 
+// For edit forms where choosing a new file is optional: null = no file chosen
+// (keep the current image), an error object = invalid file, else the validated image.
+export async function readOptionalImage(
+  formData: FormData,
+  field: string,
+): Promise<ValidatedImage | ImageValidationError | null> {
+  const file = formData.get(field);
+  if (!(file instanceof File) || file.size === 0) return null;
+  return readAndValidateImage(file);
+}
+
 export function isImageValidationError(
   value: ValidatedImage | ImageValidationError,
 ): value is ImageValidationError {

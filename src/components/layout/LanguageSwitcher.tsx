@@ -41,6 +41,8 @@ export default function LanguageSwitcher({
             href={pathname}
             locale={option.locale}
             aria-label={option.full}
+            lang={option.locale}
+            hrefLang={option.locale}
             aria-current={isActive ? "true" : undefined}
             className={`relative z-10 flex h-7 w-9 items-center justify-center rounded-full text-xs font-semibold transition-colors duration-300 ${
               isActive

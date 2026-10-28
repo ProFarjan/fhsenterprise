@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, type SubmitEvent } from "react";
+import { useEffect, useRef, useState, type SubmitEvent } from "react";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -12,6 +13,13 @@ export default function ContactForm() {
   const t = useTranslations("form");
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const successRef = useRef<HTMLDivElement>(null);
+
+  // The form is replaced by the confirmation, so keyboard/screen-reader focus
+  // would be lost on a removed element — move it to the confirmation instead.
+  useEffect(() => {
+    if (status === "success") successRef.current?.focus();
+  }, [status]);
 
   async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -53,13 +61,18 @@ export default function ContactForm() {
 
   if (status === "success") {
     return (
-      <div className="rounded-2xl border border-orange-200 bg-orange-50 p-8 text-center">
+      <div
+        ref={successRef}
+        role="status"
+        tabIndex={-1}
+        className="rounded-2xl border border-orange-200 bg-orange-50 p-8 text-center focus:outline-none"
+      >
         <p className="text-lg font-semibold text-neutral-900">{t("successTitle")}</p>
         <p className="mt-2 text-neutral-600">{t("successBody")}</p>
         <button
           type="button"
           onClick={() => setStatus("idle")}
-          className="mt-5 text-sm font-semibold text-orange-600 hover:text-orange-500"
+          className="mt-5 text-sm font-semibold text-orange-700 hover:text-orange-600"
         >
           {t("sendAnother")}
         </button>
@@ -78,42 +91,54 @@ export default function ContactForm() {
         <label htmlFor="name" className="text-sm font-medium text-neutral-700">
           {t("name")}
         </label>
-        <input id="name" name="name" type="text" required className={inputClasses} />
+        <input id="name" name="name" type="text" required autoComplete="name" maxLength={100} className={inputClasses} />
       </div>
       <div>
         <label htmlFor="email" className="text-sm font-medium text-neutral-700">
           {t("email")}
         </label>
-        <input id="email" name="email" type="email" required className={inputClasses} />
+        <input id="email" name="email" type="email" required autoComplete="email" maxLength={254} className={inputClasses} />
       </div>
       <div>
         <label htmlFor="phone" className="text-sm font-medium text-neutral-700">
           {t("phone")}
         </label>
-        <input id="phone" name="phone" type="tel" className={inputClasses} />
+        <input id="phone" name="phone" type="tel" autoComplete="tel" maxLength={30} className={inputClasses} />
       </div>
       <div>
         <label htmlFor="subject" className="text-sm font-medium text-neutral-700">
           {t("subject")}
         </label>
-        <input id="subject" name="subject" type="text" required className={inputClasses} />
+        <input id="subject" name="subject" type="text" required maxLength={200} className={inputClasses} />
       </div>
       <div className="sm:col-span-2">
         <label htmlFor="message" className="text-sm font-medium text-neutral-700">
           {t("message")}
         </label>
-        <textarea id="message" name="message" rows={5} required className={inputClasses} />
+        <textarea id="message" name="message" rows={5} required maxLength={5000} className={inputClasses} />
       </div>
 
       {status === "error" && (
-        <p className="text-sm text-red-600 sm:col-span-2">{errorMessage}</p>
+        <p role="alert" className="text-sm text-red-700 sm:col-span-2">
+          {errorMessage}
+        </p>
       )}
+
+      <p className="text-xs text-neutral-500 sm:col-span-2">
+        {t.rich("privacyNote", {
+          link: (chunks) => (
+            <Link href="/privacy" className="font-medium underline hover:text-neutral-700">
+              {chunks}
+            </Link>
+          ),
+        })}
+      </p>
 
       <div className="sm:col-span-2">
         <button
           type="submit"
           disabled={status === "submitting"}
-          className="rounded-md bg-orange-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-orange-500 disabled:cursor-not-allowed disabled:opacity-60"
+          className="rounded-md bg-orange-700 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {status === "submitting" ? t("sending") : t("submit")}
         </button>

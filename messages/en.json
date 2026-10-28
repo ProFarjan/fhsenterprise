@@ -2,17 +2,24 @@
   "nav": {
     "contactUs": "Contact Us",
     "toggleMenu": "Toggle navigation menu",
-    "language": "Language"
+    "language": "Language",
+    "skipToContent": "Skip to main content"
   },
   "hero": {
     "goToSlide": "Go to slide {n}",
     "prevSlide": "Previous slide",
-    "nextSlide": "Next slide"
+    "nextSlide": "Next slide",
+    "concerns": "FHS Enterprise Concerns",
+    "carouselLabel": "Featured businesses",
+    "pauseSlideshow": "Pause slideshow",
+    "playSlideshow": "Play slideshow"
   },
   "footer": {
     "navigation": "Navigation",
     "contact": "Contact",
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use"
   },
   "tabs": {
     "overview": "Overview",
@@ -60,10 +67,16 @@
     "address": "Address",
     "email": "Email",
     "phone": "Phone",
-    "all": "All"
+    "all": "All",
+    "featured": "Featured",
+    "watchVideo": "Watch Video",
+    "closeVideo": "Close video player",
+    "opensInNewTab": "opens in a new tab"
   },
   "home": {
-    "about": { "badge": "Who We Are" },
+    "about": {
+      "badge": "Who We Are"
+    },
     "companies": {
       "headingPrefix": "Our",
       "headingHighlight": "Companies",
@@ -71,7 +84,11 @@
       "description": "Explore a selection from across our growing portfolio of companies. We're on a mission to serve every industry and make everyday life better.",
       "scrollPrev": "Scroll previous",
       "scrollNext": "Scroll next",
-      "seeAll": "See All"
+      "seeAll": "See All",
+      "parentBadge": "Parent Company",
+      "parentDescription": "A rapidly growing conglomerate located in Fulbariya, Mymensingh — spanning premium agricultural processing, advanced automotive solutions, and modern digital e-commerce.",
+      "parentLogoAlt": "FHS Enterprise logo",
+      "companyLogoAlt": "{name} logo"
     },
     "whyChooseUs": {
       "badge": "Why Choose Us",
@@ -145,7 +162,10 @@
       "subtitle": "Discover our automated rice milling facilities, logistics hubs, and retail distribution in motion.",
       "featuredBadge": "Featured Subsidiary",
       "watchVideo": "Watch Video",
-      "viewAllMedia": "View All Media & Videos"
+      "viewAllMedia": "View All Media & Videos",
+      "companyRiceMill": "M/s. Bangladesh Auto Rice Mill",
+      "companyVehicle": "Vehicle Solutions",
+      "companyBazar": "Daily Bazar"
     },
     "cta": {
       "badge": "Partner With Us",
@@ -161,7 +181,9 @@
       "description": "Stay up to date with announcements, milestones, and stories from across the FHS Enterprise family of companies.",
       "viewAll": "View All News"
     },
-    "contact": { "badge": "Get in Touch" }
+    "contact": {
+      "badge": "Get in Touch"
+    }
   },
   "explorer": {
     "companies": "Companies",
@@ -184,7 +206,8 @@
     "successTitle": "Message sent!",
     "successBody": "Thanks for reaching out — we'll get back to you soon.",
     "sendAnother": "Send another message",
-    "error": "Something went wrong."
+    "error": "Something went wrong.",
+    "privacyNote": "We use your details only to reply to your enquiry. See our <link>Privacy Policy</link>."
   },
   "aboutPages": {
     "mission": "Our Mission",
@@ -193,7 +216,11 @@
     "subsidiaryLeadership": "Concern Leadership",
     "capacity": "Capacity",
     "faqsTitle": "Frequently Asked Questions",
-    "faqsSubtitle": "Find clear answers to common questions about FHS Enterprise, our subsidiaries, and operations."
+    "faqsSubtitle": "Find clear answers to common questions about FHS Enterprise, our subsidiaries, and operations.",
+    "faqEyebrow": "FAQ",
+    "stillHaveQuestions": "Still Have Questions?",
+    "stillHaveQuestionsBody": "Can't find the answer you're looking for? Feel free to reach out directly to our corporate team in Fulbariya.",
+    "contactCta": "Contact FHS Enterprise →"
   },
   "media": {
     "latestUpdate": "Latest Update",
@@ -234,5 +261,9 @@
     "title": "Page not found",
     "description": "The page you're looking for doesn't exist or has moved.",
     "home": "Go to homepage"
+  },
+  "legal": {
+    "home": "Home",
+    "updated": "Last updated"
   }
 }

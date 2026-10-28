@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { getSiteConfig } from "@/data/site";
 import type { AppLocale } from "@/i18n/routing";
 import type { SustainabilityIcon } from "@/types/content";
+import { setRequestLocale } from "next-intl/server";
 
 const ICON_PATHS: Record<SustainabilityIcon, string> = {
   heart: "M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z",
@@ -35,7 +36,7 @@ function ArrowIcon() {
   );
 }
 
-export default function SustainabilityOverviewPage() {
+function SustainabilityOverviewPageContent() {
   const { overviewDescription, pillars } = getSiteConfig(useLocale() as AppLocale).sustainabilityPages;
   const t = useTranslations("common");
 
@@ -55,7 +56,7 @@ export default function SustainabilityOverviewPage() {
             </div>
             <h3 className="text-lg font-semibold text-neutral-900">{pillar.title}</h3>
             <p className="text-sm leading-6 text-neutral-600">{pillar.summary}</p>
-            <span className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-orange-600">
+            <span className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-orange-700">
               {t("explore")}
               <ArrowIcon />
             </span>
@@ -64,4 +65,17 @@ export default function SustainabilityOverviewPage() {
       </div>
     </section>
   );
+}
+
+// next-intl needs the request locale set before any of its APIs run, and Next
+// renders layouts and pages in parallel — so each one sets it itself. That is
+// also what lets the page be prerendered instead of rendered on every request.
+export default async function SustainabilityOverviewPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  return <SustainabilityOverviewPageContent />;
 }

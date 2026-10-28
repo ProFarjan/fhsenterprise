@@ -1,8 +1,9 @@
 import type { SiteConfig } from "@/types/content";
+import { ORGANIZATION } from "./organization";
 
 export const siteConfigBn: SiteConfig = {
-  groupName: "FHS Enterprise",
-  tagline: "Building industries. Empowering communities.",
+  groupName: "এফএইচএস এন্টারপ্রাইজ",
+  tagline: "শিল্প গড়ি, সমাজকে শক্তিশালী করি।",
 
   nav: [
     { label: "হোম", href: "/" },
@@ -48,16 +49,19 @@ export const siteConfigBn: SiteConfig = {
       title: "মেসার্স বাংলাদেশ অটো রাইস মিল",
       subtitle: "আধুনিক স্বয়ংক্রিয় রাইস মিলিং, স্বাস্থ্যসম্মত চাল প্রক্রিয়াকরণ এবং দেশের খাদ্য নিরাপত্তায় নির্ভরযোগ্য মানসম্পন্ন চাল সরবরাহ।",
       videoSrc: "/videos/Auto_rice_mill_operation.mp4",
+      poster: "/images/companies/rice-mill-bg.jpg",
     },
     {
       title: "ভেহিকেল সলিউশনস",
       subtitle: "সকল ধরনের গাড়ির আসল যন্ত্রাংশ, মেরামত সেবা, টায়ার ও প্রিমিয়াম লুব্রিকেন্ট সরবরাহের বিশ্বস্ত সমাধান।",
       videoSrc: "/videos/vehicle_solution.mp4",
+      poster: "/images/companies/vehicle-solutions-bg.jpg",
     },
     {
       title: "ডেইলি বাজার — আধুনিক সুপার শপ",
       subtitle: "তাজা শাকসবজি, ফলমূল, নিত্যপ্রয়োজনীয় মুদি পণ্য ও দ্রুততম হোম ডেলিভারির আধুনিক সুপার শপ।",
       videoSrc: "/videos/daily_bazar.mp4",
+      poster: "/images/companies/daily-bazar-bg.jpg",
     },
   ],
 
@@ -214,7 +218,7 @@ export const siteConfigBn: SiteConfig = {
       },
       {
         question: "পাইকারি ক্রেতা বা ব্যবসায়িক অংশীদাররা কীভাবে যোগাযোগ করতে পারেন?",
-        answer: "চাল পাইকারি ক্রয়, অটো পার্টস সরবরাহ বা যেকোনো ব্যবসায়িক অংশীদারিত্বের জন্য আমাদের ওয়েবসাইটের যোগাযোগ ফরম পূরণ করতে পারেন, +880 123456789 নম্বরে কল করতে পারেন অথবা ফুলবাড়িয়ায় আমাদের প্রধান কার্যালয়ে সরাসরি যোগাযোগ করতে পারেন।",
+        answer: "চাল পাইকারি ক্রয়, অটো পার্টস সরবরাহ বা যেকোনো ব্যবসায়িক অংশীদারিত্বের জন্য আমাদের ওয়েবসাইটের যোগাযোগ ফরম পূরণ করতে পারেন, ইমেইল করতে পারেন অথবা ফুলবাড়িয়ায় আমাদের প্রধান কার্যালয়ে সরাসরি যোগাযোগ করতে পারেন।",
       },
     ],
   },
@@ -223,23 +227,23 @@ export const siteConfigBn: SiteConfig = {
     {
       name: "মেসার্স বাংলাদেশ অটো রাইস মিল",
       sector: "রাইস মিল",
-      description: "Processing and distributing high-quality rice.",
+      description: "উন্নত মানের চাল প্রক্রিয়াজাতকরণ ও বিতরণ।",
       logo: "/logos/fhs_logo.png",
       image: "/images/companies/rice-mill-bg.jpg",
       subdomain: "auto-rice-mill",
     },
     {
       name: "ভেহিকেল সলিউশনস",
-      sector: "Automotive Services",
-      description: "Vehicle parts, repairing, tyre, lubricant, and accessories.",
+      sector: "অটোমোটিভ সেবা",
+      description: "যানবাহনের যন্ত্রাংশ, মেরামত, টায়ার, লুব্রিকেন্ট ও এক্সেসরিজ।",
       logo: "/logos/fhs_logo.png",
       image: "/images/companies/vehicle-solutions-bg.jpg",
       subdomain: "vehiclesolutions.fhsenterprise.com",
     },
     {
       name: "ডেইলি বাজার",
-      sector: "Ecommerce",
-      description: "Online ecommerce shop for all kinds of bazar goods.",
+      sector: "ই-কমার্স",
+      description: "সব ধরনের বাজার সদাইয়ের অনলাইন ই-কমার্স শপ।",
       logo: "/logos/fhs_logo.png",
       image: "/images/companies/daily-bazar-bg.jpg",
       subdomain: "dailybazar.fhsenterprise.com",
@@ -332,7 +336,7 @@ export const siteConfigBn: SiteConfig = {
     ],
   },
   sustainabilityPages: {
-    overviewDescription: "Sustainability at FHS Enterprise.",
+    overviewDescription: "এফএইচএস এন্টারপ্রাইজে টেকসই উন্নয়ন।",
     // One entry per page under /sustainability/<slug>. A pillar with no entry here
     // has no page: its route 404s and it is dropped from the menu, tabs and
     // sitemap (see src/data/site.ts), so adding an entry is all it takes to
@@ -354,10 +358,10 @@ export const siteConfigBn: SiteConfig = {
 
   contact: {
     title: "যোগাযোগ করুন",
-    description: "Have a question? We'd love to hear from you.",
+    description: "কোনো প্রশ্ন আছে? আমরা আপনার কথা শুনতে চাই।",
     address: "ফুলবাড়িয়া, ময়মনসিংহ",
-    email: "info@fhsenterprise.com",
-    phone: "+880 123456789",
+    email: ORGANIZATION.email,
+    phone: ORGANIZATION.phone,
   },
 
   socials: [

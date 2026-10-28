@@ -6,6 +6,7 @@ import { buildPageMetadata, getPersonJsonLd } from "@/lib/seo";
 import Breadcrumbs from "@/components/navigation/Breadcrumbs";
 import type { AppLocale } from "@/i18n/routing";
 import { jsonLdString } from "@/lib/jsonLd";
+import { setRequestLocale } from "next-intl/server";
 
 export async function generateMetadata({
   params,
@@ -36,7 +37,7 @@ export async function generateMetadata({
   });
 }
 
-export default function FounderPage() {
+function FounderPageContent() {
   const locale = useLocale() as AppLocale;
   const { founder } = getSiteConfig(locale).aboutPages;
   const tAbout = useTranslations("aboutPages");
@@ -185,4 +186,17 @@ export default function FounderPage() {
       </section>
     </>
   );
+}
+
+// next-intl needs the request locale set before any of its APIs run, and Next
+// renders layouts and pages in parallel — so each one sets it itself. That is
+// also what lets the page be prerendered instead of rendered on every request.
+export default async function FounderPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  return <FounderPageContent />;
 }

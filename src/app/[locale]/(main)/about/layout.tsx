@@ -1,8 +1,9 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import AboutTabs from "@/components/sections/about/AboutTabs";
+import { setRequestLocale } from "next-intl/server";
 
-export default function AboutLayout({ children }: { children: React.ReactNode }) {
+function AboutLayoutContent({ children }: { children: React.ReactNode }) {
   const t = useTranslations("pageHeaders.about");
   return (
     <div className="flex-1 bg-white">
@@ -36,7 +37,22 @@ export default function AboutLayout({ children }: { children: React.ReactNode })
         </div>
       </div>
 
-      <main>{children}</main>
+      <div>{children}</div>
     </div>
   );
+}
+
+// next-intl needs the request locale set before any of its APIs run, and Next
+// renders layouts and pages in parallel — so each one sets it itself. That is
+// also what lets the page be prerendered instead of rendered on every request.
+export default async function AboutLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  return <AboutLayoutContent>{children}</AboutLayoutContent>;
 }

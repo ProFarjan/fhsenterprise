@@ -3,9 +3,10 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/session";
-import { isImageValidationError, readAndValidateImage } from "@/lib/imageUpload";
-import { routing } from "@/i18n/routing";
-import { COMPANY_SUBDOMAINS } from "@/lib/companies";
+import { isImageValidationError, readAndValidateImage, readOptionalImage } from "@/lib/imageUpload";
+import { INTERNAL_COMPANY_SLUGS } from "@/lib/companies";
+import { formString } from "@/lib/formData";
+import { revalidateLocalized } from "@/lib/revalidate";
 import {
   LIMITS,
   describeActionError,
@@ -32,27 +33,7 @@ export type CompanyFormState = { error?: string; success?: boolean };
 // only a few subdomains and revalidating an unrelated one is cheap, so this
 // always does all of them rather than looking up which one actually changed.
 function revalidatePublicCompanyPaths() {
-  for (const locale of routing.locales) {
-    revalidatePath(`/${locale}`);
-    revalidatePath(`/${locale}/companies`);
-    for (const subdomain of COMPANY_SUBDOMAINS) {
-      revalidatePath(`/${locale}/companies/${subdomain}`);
-    }
-  }
-}
-
-// Only overwrites an image column when a new file was actually chosen — an
-// empty/missing file input means "keep the current image".
-async function readOptionalImage(
-  formData: FormData,
-  field: string,
-): Promise<{ data: Uint8Array<ArrayBuffer>; mimeType: string } | null | { error: string }> {
-  const file = formData.get(field);
-  if (!(file instanceof File) || file.size === 0) return null;
-
-  const validated = await readAndValidateImage(file);
-  if (isImageValidationError(validated)) return { error: validated.error };
-  return validated;
+  revalidateLocalized("/", "/companies", ...INTERNAL_COMPANY_SLUGS.map((slug) => `/companies/${slug}`));
 }
 
 export async function updateCompanyAction(
@@ -64,12 +45,12 @@ export async function updateCompanyAction(
   const id = positiveInt(formData.get("id"));
   if (id === null) return { error: "Unknown company." };
 
-  const nameEn = String(formData.get("nameEn") ?? "").trim();
-  const nameBn = String(formData.get("nameBn") ?? "").trim();
-  const sectorEn = String(formData.get("sectorEn") ?? "").trim();
-  const sectorBn = String(formData.get("sectorBn") ?? "").trim();
-  const descriptionEn = String(formData.get("descriptionEn") ?? "").trim();
-  const descriptionBn = String(formData.get("descriptionBn") ?? "").trim();
+  const nameEn = formString(formData, "nameEn");
+  const nameBn = formString(formData, "nameBn");
+  const sectorEn = formString(formData, "sectorEn");
+  const sectorBn = formString(formData, "sectorBn");
+  const descriptionEn = formString(formData, "descriptionEn");
+  const descriptionBn = formString(formData, "descriptionBn");
   const isPublished = formData.get("isPublished") === "on";
 
   if (!nameEn || !nameBn) return { error: "Name (EN and BN) is required." };
@@ -249,10 +230,10 @@ export async function updateHeroImageAction(
   const id = positiveInt(formData.get("id"));
   if (id === null) return { error: "Unknown hero image." };
 
-  const headlineEn = String(formData.get("headlineEn") ?? "").trim();
-  const headlineBn = String(formData.get("headlineBn") ?? "").trim();
-  const taglineEn = String(formData.get("taglineEn") ?? "").trim();
-  const taglineBn = String(formData.get("taglineBn") ?? "").trim();
+  const headlineEn = formString(formData, "headlineEn");
+  const headlineBn = formString(formData, "headlineBn");
+  const taglineEn = formString(formData, "taglineEn");
+  const taglineBn = formString(formData, "taglineBn");
 
   const tooLong = lengthError([
     ["English headline", headlineEn, LIMITS.heroHeadline],

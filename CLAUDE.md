@@ -27,7 +27,7 @@ Corporate site for **FHS Enterprise** (Fulbariya, Mymensingh, Bangladesh; domain
 npm run dev                  # next dev (Turbopack)
 npm run build / npm start    # production build / serve
 npm run lint                 # eslint (core-web-vitals + typescript)
-npx tsc --noEmit             # type-check (there is no script for it)
+npm run typecheck            # prisma generate + next typegen + tsc (CI runs this)
 
 npm run prisma:generate      # REQUIRED after clone and after schema edits (client is gitignored)
 npm run prisma:migrate       # prisma migrate dev (creates + applies a migration)
@@ -40,6 +40,17 @@ npm run update               # migrate dev + generate + seed companies
 There is **no test suite** and no CI. Verify changes with `npx tsc --noEmit`, `npm run lint`, and by running the app. Prisma CLI config is `prisma.config.ts` at the **repo root** (it reads `DATABASE_URL` via `dotenv`).
 
 Environment (`.env`, see `.env.example`): `DATABASE_URL` (required); `NEXT_PUBLIC_ROOT_DOMAIN`; `SMTP_HOST/PORT/USER/PASSWORD`, optional `SMTP_FROM`, `CONTACT_EMAIL_TO`. Never edit `.env` or print secrets. Admin credentials are never stored in env; the seed script prompts for them.
+
+## Repository map (beyond `src/`)
+
+| Path | What it is |
+|---|---|
+| `OPERATIONS.md` | Deploy checklist, env vars, reverse-proxy/DNS notes, health check, **database backups** |
+| `prisma/README.md` | Baselining a `db push` database, fresh install, checking migrations against the schema |
+| `legacy/subsidiaries/` | Parked retired subsidiary sites (see below) |
+| `scripts/archive/` | One-off helper scripts, not part of the app |
+| `.github/workflows/ci.yml` | CI: lint, typecheck, build |
+| `GET /api/health` | 200 when the app and database are up, 503 if the database is down |
 
 ## Architecture
 
@@ -117,15 +128,29 @@ Pattern in `src/app/admin/(panel)/<area>/actions.ts` (`"use server"`):
 
 `src/i18n/routing.ts`: locales `["bn","en"]`, default `bn`, `localePrefix: "always"`, `localeDetection: false` (first-time visitors always get `/bn`). UI strings in `messages/{en,bn}.json` (keep both files' keys identical); long-form page content in `src/data/site.{en,bn}.ts` (keep both in sync, with the same shape from `src/types/content.ts`). In parent-site components use `Link`/`redirect`/`usePathname`/`useRouter` from `@/i18n/navigation`, **not** `next/link`. In pages/layouts call `setRequestLocale(locale)` and validate with `hasLocale(routing.locales, locale)` -> `notFound()`. Microsite chrome links back to the root domain with plain `<a href="//<root>/<locale>">`, because it crosses hosts.
 
+**Static rendering:** every `(main)` page and layout sets the request locale itself (`setRequestLocale(locale)`, because Next renders layouts and pages in parallel), which is what makes them prerender (`●` in the `next build` route table) instead of rendering per request. Sync pages that use next-intl hooks are split into an inner `XContent` component plus a small async wrapper that does this. New `(main)` pages must do the same or they silently become dynamic. Pages that read the DB also export `revalidate = 300` (admin edits still show immediately via `revalidatePath`; the window lets a build made while the DB was down heal itself). Hardcoded user-facing strings belong in `messages/*.json`, not inline `locale === "bn" ?` ternaries (some old ones remain).
+
+**404s** return a correct 404 status per locale (`(main)/not-found.tsx` plus a `[...rest]` catch-all), but because `app/layout.tsx` renders no `<html>` Next serves them as its client-hydrated error shell; check them in a browser after changing anything near the root layouts.
+
 ### SEO
 
-Use `buildPageMetadata()` from `src/lib/seo.ts` for page metadata (canonical, hreflang, OG, Twitter, geo). JSON-LD generators are in the same file. `src/app/sitemap.ts` has a **hardcoded** route list; add new public routes there. `robots.ts` disallows `/admin/` and `/api/`.
+Use `buildPageMetadata()` from `src/lib/seo.ts` for page metadata (canonical, hreflang with `x-default` = the default locale `/bn`, OG with the 1200x630 card `/images/og-default.png`, Twitter, geo); pass `siteUrl` for a subsidiary served from its own subdomain (the microsite canonical is the subdomain, via `subsidiaryUrl()`). The single JSON-LD Organization generator is `getOrganizationJsonLd()`; it only emits properties we actually have. Serialize every JSON-LD block with `jsonLdString()` (`src/lib/jsonLd.ts`), never bare `JSON.stringify`. `sitemap.ts` lists each public route per locale with hreflang alternates and deliberately no `lastModified`/`changeFrequency` (nothing real to report) and no microsite URLs (different host); sustainability pillar URLs are derived from the pillars that have content. `robots.ts` blocks only `/admin/` and `/api/contact` (the other `/api/` routes serve public images).
+
+### Organization facts and unverified content
+
+`src/data/organization.ts` is the one place for contact details, address parts, founder, and the `SHOW_UNVERIFIED_SECTIONS` flags. A `null` value means "not provided": every consumer (footer, contact page, JSON-LD, microsites) hides that detail instead of showing a placeholder. **The phone number is currently `null`** and the homepage Stats and Testimonials sections are switched off because their content is not verified; set the real values / flip the flags there. Social links with an `href` of `"#"` are filtered out in `getSiteConfig()`; real ones render through `SocialLink` (new tab, `noopener`).
+
+### Accessibility building blocks
+
+`src/lib/useDialog.ts` is the shared modal behaviour (focus in/out, Tab trap, Escape, scroll lock); the admin `Modal` and the public `VideoModal` (`src/components/ui/`) both use it. Clickable cards are a real `<button>` stretched over the card, not a `div onClick`. The header has a skip link to `#main` and `(main)/layout.tsx` owns the single `<main id="main">`, so pages must not render their own `<main>`. The hero (`Hero.tsx`) loads only the active slide's video, none under `prefers-reduced-motion`/Data Saver, and has a pause control. Small orange text uses `orange-700` (orange-600 fails 4.5:1 on white).
 
 ### Subsidiary microsites
 
 Active shape: `[locale]/companies/<sub>/layout.tsx` wraps children in the shared `CompanyChrome` (header/footer) with a per-company `CompanyTheme` (Tailwind class strings); `page.tsx` renders the shared `CompanyHomePage` with a `CompanySiteContent` object from `src/data/companies/<sub>.ts`. To add a microsite: new folder under `[locale]/companies/`, a content file, a `SiteKey` + migration, an entry in `COMPANY_SUBDOMAINS`, and the seed/sitemap entries.
 
-`src/components/company/{agro,filling,agromed,feed,agritech,mrlube,mahin,rahim}/` plus matching `src/types/*.ts` and palettes in `globals.css` are **legacy trees from the former MR Group, not routed by any page**. `agromed` imports from `agro`; nothing else references them. Don't delete them (they may be reactivated) and don't copy their patterns for new work; use `CompanyChrome`/`CompanyHomePage`.
+**Retired subsidiary sites are parked in `legacy/subsidiaries/`**, mirroring `src/` and `public/` (components, types, CSS palettes + fonts in `palettes.css`, and ~52 MB of their images/videos). They are excluded from TypeScript, ESLint and Tailwind (`@source not` in `globals.css`) and nothing imports them; their routes and data files were deleted earlier and are recoverable from the git tag `legacy-subsidiaries`. Don't delete them (they may be reactivated) and don't copy their patterns for new work; use `CompanyChrome`/`CompanyHomePage`. To reactivate one, follow `legacy/subsidiaries/README.md`.
+
+The company lists live in one place each: `INTERNAL_COMPANY_SLUGS`, the alias map and `resolveCompanySlug()` in `src/lib/companies.ts` (microsites this app serves), and `EXTERNAL_COMPANIES` in `src/lib/externalCompanies.ts` (separately hosted ones: feeds both the proxy's host redirects and `next.config.ts`'s path redirects). `BANNER_FALLBACK`/`COMPANY_LOGO_FALLBACK` in `publicContent.ts` hold one entry per existing subsidiary, keyed by the `Company.subdomain` value (the full hostname for external ones).
 
 ## Conventions
 
@@ -138,7 +163,7 @@ Active shape: `[locale]/companies/<sub>/layout.tsx` wraps children in the shared
 
 ## Known limitations (don't "fix" unprompted)
 
-No CAPTCHA, and rate limiting is in-memory only (see Auth); expired sessions are only cleaned opportunistically at login; no object storage (everything in MySQL); no news/event detail pages (all news links to `/media/news`); `media/actions.ts` revalidates `/companies/<sub>/gallery` paths that no longer exist; `docs/`, `documents/` (gitignored), `temp_videos/`, `crop*.py`, `generate_svg_logos.js`, `insert.sql`, `query.{js,ts}` and `__pycache__/` in the root are one-off assets/scripts, not application code.
+No CAPTCHA, and rate limiting is in-memory only (see Auth); expired sessions are only cleaned opportunistically at login; no object storage (everything in MySQL, so backups matter: `OPERATIONS.md`); no news/event detail pages (all news links to `/media/news`); the admin lists (products, media, companies) are not paginated (only messages are); the hero videos in `public/videos` are large and committed to git; `Company.subdomain` holds a full hostname for externally hosted companies (a nullable `externalUrl` column would be cleaner); `getCompanyHeroSlides`/`getSimpleDbProducts` are not used by any page yet; the privacy policy and terms (`src/data/legal.ts`) are a draft that needs the owner's review; `docs/` and `documents/` (git-ignored) hold source photos/videos, not documentation.
 
 ## Do not
 
@@ -146,3 +171,5 @@ No CAPTCHA, and rate limiting is in-memory only (see Auth); expired sessions are
 - Edit `src/generated/prisma/`; regenerate it with `npm run prisma:generate`.
 - Bypass or weaken auth checks, or skip `requireAdmin()` in a new action.
 - Hand-edit an existing migration; create a new one with `npm run prisma:migrate`.
+- Add a page under `(main)` without `setRequestLocale` (it silently stops being prerendered) or its own `<main>` (the layout provides it).
+- Put contact details, social links or marketing claims directly in components; they belong in `src/data/organization.ts` (`null` = hidden).

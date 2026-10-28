@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { getLocale, getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getParentEvents } from "@/lib/publicContent";
 import { buildPageMetadata } from "@/lib/seo";
 import type { AppLocale } from "@/i18n/routing";
@@ -65,8 +65,17 @@ function formatMonth(iso: string, locale: AppLocale) {
     .toUpperCase();
 }
 
-export default async function EventsPage() {
-  const locale = (await getLocale()) as AppLocale;
+// Prerendered; refreshed at most every 5 minutes (admin edits revalidate immediately).
+export const revalidate = 300;
+
+export default async function EventsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale: routeLocale } = await params;
+  setRequestLocale(routeLocale);
+  const locale = routeLocale as AppLocale;
   const tMedia = await getTranslations("media");
   const events = await getParentEvents();
 
@@ -98,7 +107,7 @@ export default async function EventsPage() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/5" />
 
             <div className="absolute left-5 top-5 flex w-16 flex-col items-center rounded-xl bg-white py-2 shadow-md">
-              <span className="text-xs font-bold uppercase text-orange-600">
+              <span className="text-xs font-bold uppercase text-orange-700">
                 {formatMonth(event.date, locale)}
               </span>
               <span className="text-xl font-bold text-neutral-900">{formatDay(event.date)}</span>

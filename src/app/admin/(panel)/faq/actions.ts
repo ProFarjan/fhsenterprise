@@ -4,7 +4,8 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/session";
 import { SiteKey } from "@/generated/prisma/enums";
-import { routing } from "@/i18n/routing";
+import { formString } from "@/lib/formData";
+import { revalidateLocalized } from "@/lib/revalidate";
 import {
   LIMITS,
   describeActionError,
@@ -26,17 +27,15 @@ export type FaqFormState = { error?: string; success?: boolean };
 // wouldn't appear on the live site until something else invalidated the route.
 function revalidateFaqPaths() {
   revalidatePath("/admin/faq");
-  for (const locale of routing.locales) {
-    revalidatePath(`/${locale}/about/faq`);
-  }
+  revalidateLocalized("/about/faq");
 }
 
 function readFaqFields(formData: FormData) {
   return {
-    questionEn: String(formData.get("questionEn") ?? "").trim(),
-    questionBn: String(formData.get("questionBn") ?? "").trim(),
-    answerEn: String(formData.get("answerEn") ?? "").trim(),
-    answerBn: String(formData.get("answerBn") ?? "").trim(),
+    questionEn: formString(formData, "questionEn"),
+    questionBn: formString(formData, "questionBn"),
+    answerEn: formString(formData, "answerEn"),
+    answerBn: formString(formData, "answerBn"),
     order: Number(formData.get("order") ?? 0),
   };
 }

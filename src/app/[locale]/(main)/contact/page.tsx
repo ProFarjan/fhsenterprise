@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import ContactForm from "@/components/sections/contact/ContactForm";
-import SocialIcon from "@/components/icons/SocialIcon";
+import SocialLink from "@/components/icons/SocialLink";
 import { MapPinIcon, MailIcon, PhoneIcon } from "@/components/icons/ContactIcons";
 import { getSiteConfig } from "@/data/site";
 import { buildPageMetadata, SITE_URL } from "@/lib/seo";
 import Breadcrumbs from "@/components/navigation/Breadcrumbs";
 import type { AppLocale } from "@/i18n/routing";
 import { jsonLdString } from "@/lib/jsonLd";
+import { setRequestLocale } from "next-intl/server";
 
 export async function generateMetadata({
   params,
@@ -25,7 +26,7 @@ export async function generateMetadata({
         : "Contact Us & Head Office | FHS Enterprise",
     description:
       locale === "bn"
-        ? "এফএইচএস এন্টারপ্রাইজের সাথে যোগাযোগ করুন। প্রধান কার্যালয়: ফুলবাড়িয়া, ময়মনসিংহ। ফোন: +880 123456789, ইমেইল: info@fhsenterprise.com"
+        ? "এফএইচএস এন্টারপ্রাইজের সাথে যোগাযোগ করুন। প্রধান কার্যালয়: ফুলবাড়িয়া, ময়মনসিংহ। ইমেইল: info@fhsenterprise.com"
         : "Get in touch with FHS Enterprise in Fulbariya, Mymensingh. Inquiries for Bangladesh Auto Rice Mill, Vehicle Solutions, and Daily Bazar partnerships.",
     keywords: [
       "Contact FHS Enterprise",
@@ -37,22 +38,27 @@ export async function generateMetadata({
   });
 }
 
-export default function ContactPage() {
+function ContactPageContent() {
   const locale = useLocale() as AppLocale;
   const { contact, socials } = getSiteConfig(locale);
   const t = useTranslations("contactPage");
   const tCommon = useTranslations("common");
   const tHome = useTranslations("home.contact");
 
+  // Rows without a value (no public phone number yet) are left out entirely.
   const infoItems = [
     { label: t("visitUs"), value: contact.address, icon: MapPinIcon, href: undefined as string | undefined },
     { label: t("emailUs"), value: contact.email, icon: MailIcon, href: `mailto:${contact.email}` },
-    {
-      label: t("callUs"),
-      value: contact.phone,
-      icon: PhoneIcon,
-      href: `tel:${contact.phone.replace(/[^+\d]/g, "")}`,
-    },
+    ...(contact.phone
+      ? [
+          {
+            label: t("callUs"),
+            value: contact.phone,
+            icon: PhoneIcon,
+            href: `tel:${contact.phone.replace(/[^+\d]/g, "")}`,
+          },
+        ]
+      : []),
   ];
 
   const contactJsonLd = {
@@ -63,7 +69,7 @@ export default function ContactPage() {
     mainEntity: {
       "@type": "LocalBusiness",
       name: "FHS Enterprise",
-      telephone: contact.phone,
+      ...(contact.phone && { telephone: contact.phone }),
       email: contact.email,
       address: {
         "@type": "PostalAddress",
@@ -107,7 +113,11 @@ export default function ContactPage() {
       </div>
 
       <div className="relative mx-auto mt-6 max-w-6xl px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+        <div
+          className={`grid grid-cols-1 gap-5 ${
+            infoItems.length === 3 ? "sm:grid-cols-3" : "mx-auto max-w-3xl sm:grid-cols-2"
+          }`}
+        >
           {infoItems.map((item) => {
             const Icon = item.icon;
             const card = (
@@ -156,26 +166,28 @@ export default function ContactPage() {
                 </p>
                 <p className="mt-1 text-sm text-neutral-300">{contact.email}</p>
               </div>
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
-                  {tCommon("phone")}
-                </p>
-                <p className="mt-1 text-sm text-neutral-300">{contact.phone}</p>
-              </div>
+              {contact.phone && (
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+                    {tCommon("phone")}
+                  </p>
+                  <p className="mt-1 text-sm text-neutral-300">{contact.phone}</p>
+                </div>
+              )}
             </div>
 
-            <div className="mt-10 flex gap-4 border-t border-white/10 pt-8">
-              {socials.map((social) => (
-                <Link
-                  key={social.label}
-                  href={social.href}
-                  aria-label={social.label}
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-neutral-300 transition-colors hover:bg-[#0045A0] hover:text-white"
-                >
-                  <SocialIcon label={social.label} />
-                </Link>
-              ))}
-            </div>
+            {socials.length > 0 && (
+              <div className="mt-10 flex gap-4 border-t border-white/10 pt-8">
+                {socials.map((social) => (
+                  <SocialLink
+                    key={social.label}
+                    label={social.label}
+                    href={social.href}
+                    className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-neutral-300 transition-colors hover:bg-[#0045A0] hover:text-white"
+                  />
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="p-8 sm:p-10 lg:col-span-3">
@@ -185,4 +197,17 @@ export default function ContactPage() {
       </div>
     </div>
   );
+}
+
+// next-intl needs the request locale set before any of its APIs run, and Next
+// renders layouts and pages in parallel — so each one sets it itself. That is
+// also what lets the page be prerendered instead of rendered on every request.
+export default async function ContactPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  return <ContactPageContent />;
 }

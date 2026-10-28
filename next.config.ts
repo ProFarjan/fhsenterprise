@@ -1,6 +1,7 @@
 import path from "node:path";
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
+import { EXTERNAL_COMPANIES } from "./src/lib/externalCompanies";
 
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
@@ -77,8 +78,19 @@ const nextConfig: NextConfig = {
     },
   },
   async headers() {
+    // Files under public/ are served with no caching by default, so every visit
+    // re-downloads the multi-megabyte hero videos and images. They are not
+    // content-hashed (a file can be replaced under the same name), so use a
+    // day of freshness plus a week of stale-while-revalidate instead of "immutable".
+    const staticAssetCache = {
+      key: "Cache-Control",
+      value: "public, max-age=86400, stale-while-revalidate=604800",
+    };
     return [
       { source: "/:path*", headers: securityHeaders },
+      { source: "/videos/:path*", headers: [staticAssetCache] },
+      { source: "/logos/:path*", headers: [staticAssetCache] },
+      { source: "/images/:path*", headers: [staticAssetCache] },
       // The admin panel is never meant to be framed, even by our own pages.
       {
         source: "/admin/:path*",
@@ -94,38 +106,14 @@ const nextConfig: NextConfig = {
     ];
   },
   async redirects() {
-    return [
-      {
-        source: "/companies/vehicle-solutions",
-        destination: "https://vehiclesolutions.fhsenterprise.com",
-        permanent: false,
-      },
-      {
-        source: "/:locale/companies/vehicle-solutions",
-        destination: "https://vehiclesolutions.fhsenterprise.com",
-        permanent: false,
-      },
-      {
-        source: "/companies/daily-bazar",
-        destination: "https://dailybazar.fhsenterprise.com",
-        permanent: false,
-      },
-      {
-        source: "/:locale/companies/daily-bazar",
-        destination: "https://dailybazar.fhsenterprise.com",
-        permanent: false,
-      },
-      {
-        source: "/companies/dailybazar",
-        destination: "https://dailybazar.fhsenterprise.com",
-        permanent: false,
-      },
-      {
-        source: "/:locale/companies/dailybazar",
-        destination: "https://dailybazar.fhsenterprise.com",
-        permanent: false,
-      },
-    ];
+    // These subsidiaries are separate deployments: /companies/<slug> and
+    // /<locale>/companies/<slug> forward to their own site (see src/lib/externalCompanies.ts).
+    return EXTERNAL_COMPANIES.flatMap((company) =>
+      company.paths.flatMap((slug) => [
+        { source: `/companies/${slug}`, destination: company.url, permanent: false },
+        { source: `/:locale/companies/${slug}`, destination: company.url, permanent: false },
+      ]),
+    );
   },
 };
 

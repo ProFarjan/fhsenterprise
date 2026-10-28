@@ -213,31 +213,22 @@ export async function getSiteEvents(site: SiteKey): Promise<PublicEvent[]> {
   );
 }
 
-// Static banner fallbacks, keyed by subdomain — used until an admin uploads a
-// banner for that company at /admin/companies (a freshly seeded Company row
-// has no image bytes yet). Matches the images the site shipped with before
-// Companies moved to the database (see src/data/site.en.ts).
-const BANNER_FALLBACK: Record<string, string> = {
-  agro: "/images/companies/agro-banner.png",
-  "filling-station": "/images/companies/filling-station.jpg",
-  "agro-medicine": "/images/companies/Chemical.png",
-  feed: "/images/companies/feed.jpg",
-  "auto-rice-mill": "/images/companies/rice-mill-bg.jpg",
-  "vehicle-solutions": "/images/companies/vehicle-solutions-bg.jpg",
-  "vehiclesolutions.fhsenterprise.com": "/images/companies/vehicle-solutions-bg.jpg",
-  "daily-bazar.fhsenterprise.com": "/images/companies/daily-bazar-bg.jpg",
-  "dailybazar.fhsenterprise.com": "/images/companies/daily-bazar-bg.jpg",
-  lube: "/images/companies/mr-lube-banner.svg",
-  mahin: "/images/companies/mahin-banner.svg",
-  rahim: "/images/companies/rahim-banner.svg",
-};
+// Static image fallbacks, keyed by the Company row's `subdomain` — used until
+// an admin uploads a logo/banner at /admin/companies (a freshly seeded row has no
+// image bytes yet). One entry per subsidiary that exists today: an internal
+// microsite is keyed by its subdomain, an externally hosted one by its hostname
+// (see SUBDOMAIN_TO_SITE in prisma/seedCompanies.ts).
 const LOGO_FALLBACK = "/logos/fhs_logo.png";
+
+const BANNER_FALLBACK: Record<string, string> = {
+  "auto-rice-mill": "/images/companies/rice-mill-bg.jpg",
+  "vehiclesolutions.fhsenterprise.com": "/images/companies/vehicle-solutions-bg.jpg",
+  "dailybazar.fhsenterprise.com": "/images/companies/daily-bazar-bg.jpg",
+};
 
 const COMPANY_LOGO_FALLBACK: Record<string, string> = {
   "auto-rice-mill": "/logos/rice-mill.png",
-  "vehicle-solutions": "/logos/vehicle_solutions.svg",
   "vehiclesolutions.fhsenterprise.com": "/logos/vehicle_solutions.svg",
-  "daily-bazar.fhsenterprise.com": "/logos/daily_bazar.svg",
   "dailybazar.fhsenterprise.com": "/logos/daily_bazar.svg",
 };
 

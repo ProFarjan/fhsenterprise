@@ -1,4 +1,5 @@
 import type { SiteConfig } from "@/types/content";
+import { ORGANIZATION } from "./organization";
 
 export const siteConfigEn: SiteConfig = {
   groupName: "FHS Enterprise",
@@ -48,16 +49,19 @@ export const siteConfigEn: SiteConfig = {
       title: "M/s. Bangladesh Auto Rice Mill",
       subtitle: "Industry-leading automated rice milling, hygienic grain processing, and premium food supply feeding the nation.",
       videoSrc: "/videos/Auto_rice_mill_operation.mp4",
+      poster: "/images/companies/rice-mill-bg.jpg",
     },
     {
       title: "Vehicle Solutions",
       subtitle: "Keeping you moving with dependable automotive parts, tyre servicing, lubricant supply, and expert vehicle repairs.",
       videoSrc: "/videos/vehicle_solution.mp4",
+      poster: "/images/companies/vehicle-solutions-bg.jpg",
     },
     {
       title: "Daily Bazar — Modern Super Shop",
       subtitle: "Your premier destination for fresh groceries, premium household essentials, and seamless online shopping with fast doorstep delivery.",
       videoSrc: "/videos/daily_bazar.mp4",
+      poster: "/images/companies/daily-bazar-bg.jpg",
     },
   ],
 
@@ -214,7 +218,7 @@ export const siteConfigEn: SiteConfig = {
       },
       {
         question: "How can distributors, businesses, or partners collaborate with FHS Enterprise?",
-        answer: "We warmly welcome wholesale grain buyers, automotive supply partners, and corporate clients. You can reach out directly via our website contact form, call us at +880 123456789, or visit our central corporate office in Fulbariya, Mymensingh.",
+        answer: "We warmly welcome wholesale grain buyers, automotive supply partners, and corporate clients. You can reach out directly via our website contact form, email us, or visit our central corporate office in Fulbariya, Mymensingh.",
       },
     ],
   },
@@ -356,8 +360,8 @@ export const siteConfigEn: SiteConfig = {
     title: "Get in Touch",
     description: "Have a question? We'd love to hear from you.",
     address: "Fulbariya, Mymensingh",
-    email: "info@fhsenterprise.com",
-    phone: "+880 123456789",
+    email: ORGANIZATION.email,
+    phone: ORGANIZATION.phone,
   },
 
   socials: [

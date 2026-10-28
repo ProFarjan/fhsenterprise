@@ -32,7 +32,7 @@ export default function Testimonials() {
               className="bg-neutral-50 p-8 rounded-3xl shadow-sm border border-neutral-200/80 relative flex flex-col justify-between hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
             >
               <div className="text-[#0045a0]/15 absolute top-6 left-6 pointer-events-none">
-                <svg className="w-14 h-14" fill="currentColor" viewBox="0 0 24 24">
+                <svg className="w-14 h-14" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M14.017 21L16.09 13.914C16.924 10.998 18.254 9.079 20.081 8.16L18.423 6C16.208 7.359 14.773 9.771 14.161 13.238L14.017 21H14.017ZM6.017 21L8.09 13.914C8.924 10.998 10.254 9.079 12.081 8.16L10.423 6C8.208 7.359 6.773 9.771 6.161 13.238L6.017 21H6.017Z" />
                 </svg>
               </div>
@@ -50,7 +50,7 @@ export default function Testimonials() {
                   {item.author.charAt(0)}
                 </div>
                 <div>
-                  <h4 className="font-bold text-neutral-900">{item.author}</h4>
+                  <h3 className="font-bold text-neutral-900">{item.author}</h3>
                   <p className="text-xs sm:text-sm font-medium text-neutral-500">{item.role}</p>
                 </div>
               </div>

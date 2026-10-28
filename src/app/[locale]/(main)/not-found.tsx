@@ -8,7 +8,7 @@ export default async function MainNotFound() {
   const t = await getTranslations("notFound");
 
   return (
-    <main className="flex flex-1 items-center justify-center px-6 pb-24 pt-40">
+    <div className="flex flex-1 items-center justify-center px-6 pb-24 pt-40">
       <div className="max-w-md text-center">
         <p className="text-6xl font-bold tracking-tight text-brand-blue">{t("code")}</p>
         <h1 className="mt-4 text-2xl font-semibold text-neutral-900">{t("title")}</h1>
@@ -20,6 +20,6 @@ export default async function MainNotFound() {
           {t("home")}
         </Link>
       </div>
-    </main>
+    </div>
   );
 }

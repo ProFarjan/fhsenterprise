@@ -21,7 +21,8 @@ export interface CompanySiteContent {
   contact: {
     heading: string;
     email: string;
-    phone: string;
+    /** null = not provided yet; the row is hidden rather than showing a placeholder. */
+    phone: string | null;
     address: string;
   };
 }

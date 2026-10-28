@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import PageHeader from "@/components/layout/PageHeader";
 import CompanyExplorer from "@/components/sections/companies/CompanyExplorer";
 import { getCompanies } from "@/lib/publicContent";
@@ -35,12 +35,16 @@ export async function generateMetadata({
   });
 }
 
+// Prerendered; refreshed at most every 5 minutes (admin edits revalidate immediately).
+export const revalidate = 300;
+
 export default async function CompaniesPage({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  setRequestLocale(locale);
   const [t, companies] = await Promise.all([
     getTranslations("pageHeaders.companies"),
     getCompanies(locale as AppLocale),

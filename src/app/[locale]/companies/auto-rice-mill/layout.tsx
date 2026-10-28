@@ -3,9 +3,10 @@ import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import CompanyChrome from "@/components/company/CompanyChrome";
-import { autoRiceMillContent } from "@/data/companies/auto-rice-mill";
+import { autoRiceMillContent, autoRiceMillTheme } from "@/data/companies/auto-rice-mill";
 import { getRootDomain } from "@/lib/companies";
 import { getCompanyLogo } from "@/lib/publicContent";
+import { buildPageMetadata, subsidiaryUrl } from "@/lib/seo";
 import { SiteKey } from "@/generated/prisma/enums";
 import { routing, type AppLocale } from "@/i18n/routing";
 
@@ -16,7 +17,17 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const content = autoRiceMillContent[locale as AppLocale] ?? autoRiceMillContent.en;
-  return { title: `${content.name} | FHS Enterprise`, description: content.tagline };
+  // This site is served from its own subdomain (rewritten by src/proxy.ts), so
+  // that — not /<locale>/companies/auto-rice-mill on the root domain — is the
+  // canonical URL. The root-domain path still works but points here.
+  return buildPageMetadata({
+    locale,
+    path: "/",
+    siteUrl: subsidiaryUrl("auto-rice-mill"),
+    title: `${content.name} | FHS Enterprise`,
+    description: content.tagline,
+    image: content.heroImage,
+  });
 }
 
 export default async function AutoRiceMillLayout({
@@ -35,20 +46,11 @@ export default async function AutoRiceMillLayout({
   const rootDomain = getRootDomain();
   const logoUrl = await getCompanyLogo(SiteKey.AUTO_RICE_MILL);
 
-  // Reusing a basic theme shape
-  const theme = {
-    accentBg: "bg-orange-600",
-    accentBgHover: "hover:bg-orange-500",
-    accentText: "text-orange-600",
-    accentBorder: "border-orange-200",
-    heroFrom: "from-orange-950",
-  };
-
   return (
     <CompanyChrome
       name={content.name}
       tagline={content.tagline}
-      theme={theme}
+      theme={autoRiceMillTheme}
       locale={locale as AppLocale}
       rootDomain={rootDomain}
       logo={logoUrl || "/logos/rice-mill.png"}

@@ -18,6 +18,9 @@ export interface HeroSlide {
   title: string;
   subtitle: string;
   videoSrc: string;
+  /** Still frame shown while the video loads, and instead of it for visitors who
+   *  prefer reduced motion or have data-saving on. */
+  poster: string;
 }
 
 export interface AboutContent {
@@ -191,7 +194,7 @@ export interface ContactContent {
   description: string;
   address: string;
   email: string;
-  phone: string;
+  phone: string | null;
 }
 
 export interface SiteConfig {
