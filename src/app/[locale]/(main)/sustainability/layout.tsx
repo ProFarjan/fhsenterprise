@@ -3,6 +3,8 @@ import { useLocale, useTranslations } from "next-intl";
 import PageHeader from "@/components/layout/PageHeader";
 import SustainabilityTabs from "@/components/sections/sustainability/SustainabilityTabs";
 import Breadcrumbs from "@/components/navigation/Breadcrumbs";
+import { getSiteConfig } from "@/data/site";
+import type { AppLocale } from "@/i18n/routing";
 import { buildPageMetadata } from "@/lib/seo";
 
 export async function generateMetadata({
@@ -35,6 +37,7 @@ export async function generateMetadata({
 export default function SustainabilityLayout({ children }: { children: React.ReactNode }) {
   const t = useTranslations("pageHeaders.sustainability");
   const locale = useLocale();
+  const { pillars } = getSiteConfig(locale as AppLocale).sustainabilityPages;
 
   return (
     <div className="flex-1 bg-white">
@@ -54,7 +57,7 @@ export default function SustainabilityLayout({ children }: { children: React.Rea
         />
       </div>
       <div className="mx-auto max-w-7xl px-6 py-6 lg:px-8">
-        <SustainabilityTabs />
+        <SustainabilityTabs slugs={pillars.map((p) => p.slug)} />
       </div>
       <div className="pb-24">{children}</div>
     </div>

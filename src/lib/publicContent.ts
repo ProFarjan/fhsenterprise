@@ -17,6 +17,19 @@ import type { AppLocale } from "@/i18n/routing";
 import type { Company, FaqItem } from "@/types/content";
 
 
+// Public pages must keep rendering when the database is unreachable (or a
+// query fails), so every read below degrades to a fallback instead of throwing
+// into the route's error boundary. The failure is still logged so an outage is
+// visible in the server logs.
+async function safely<T>(label: string, read: () => Promise<T>, fallback: T | (() => T)): Promise<T> {
+  try {
+    return await read();
+  } catch (error) {
+    console.error(`publicContent: ${label} failed, using fallback:`, error);
+    return typeof fallback === "function" ? (fallback as () => T)() : fallback;
+  }
+}
+
 export type PublicNewsItem = {
   id: number;
   title: string;
@@ -31,21 +44,27 @@ export type PublicNewsItem = {
 const NEWS_HREF = "/media/news";
 
 export async function getMrGroupNews(limit?: number): Promise<PublicNewsItem[]> {
-  const rows = await prisma.newsItem.findMany({
-    where: { site: SiteKey.FHS_ENTERPRISE },
-    orderBy: { date: "desc" },
-    take: limit,
-    select: { title: true, excerpt: true, date: true, id: true },
-  });
+  return safely(
+    "news",
+    async () => {
+      const rows = await prisma.newsItem.findMany({
+        where: { site: SiteKey.FHS_ENTERPRISE },
+        orderBy: { date: "desc" },
+        take: limit,
+        select: { title: true, excerpt: true, date: true, id: true },
+      });
 
-  return rows.map((row) => ({
-    id: row.id,
-    title: row.title,
-    excerpt: row.excerpt,
-    date: row.date.toISOString(),
-    image: `/api/news/${row.id}/image`,
-    href: NEWS_HREF,
-  }));
+      return rows.map((row) => ({
+        id: row.id,
+        title: row.title,
+        excerpt: row.excerpt,
+        date: row.date.toISOString(),
+        image: `/api/news/${row.id}/image`,
+        href: NEWS_HREF,
+      }));
+    },
+    [],
+  );
 }
 
 export type PublicGalleryPhoto = {
@@ -79,11 +98,16 @@ export async function getSiteGallery(
   photos: PublicGalleryPhoto[];
   videos: PublicGalleryVideo[];
 }> {
-  const rows = await prisma.mediaItem.findMany({
-    where: { site },
-    orderBy: { createdAt: "desc" },
-    select: { id: true, type: true, title: true, youtubeUrl: true },
-  });
+  const rows = await safely(
+    "gallery",
+    () =>
+      prisma.mediaItem.findMany({
+        where: { site },
+        orderBy: { createdAt: "desc" },
+        select: { id: true, type: true, title: true, youtubeUrl: true },
+      }),
+    [],
+  );
 
   const photos: PublicGalleryPhoto[] = [];
   const videos: PublicGalleryVideo[] = [];
@@ -167,20 +191,26 @@ export async function getMrGroupEvents(): Promise<PublicEvent[]> {
 // Same as getMrGroupEvents but parameterised by site — used by subsidiary
 // company sites once they get their own events page wired to EventItem.
 export async function getSiteEvents(site: SiteKey): Promise<PublicEvent[]> {
-  const rows = await prisma.eventItem.findMany({
-    where: { site },
-    orderBy: { date: "desc" },
-    select: { id: true, title: true, date: true, location: true, description: true },
-  });
+  return safely(
+    "events",
+    async () => {
+      const rows = await prisma.eventItem.findMany({
+        where: { site },
+        orderBy: { date: "desc" },
+        select: { id: true, title: true, date: true, location: true, description: true },
+      });
 
-  return rows.map((row) => ({
-    id: row.id,
-    title: row.title,
-    date: row.date.toISOString(),
-    location: row.location,
-    description: row.description,
-    image: `/api/events/${row.id}/image`,
-  }));
+      return rows.map((row) => ({
+        id: row.id,
+        title: row.title,
+        date: row.date.toISOString(),
+        location: row.location,
+        description: row.description,
+        image: `/api/events/${row.id}/image`,
+      }));
+    },
+    [],
+  );
 }
 
 // Static banner fallbacks, keyed by subdomain — used until an admin uploads a
@@ -215,23 +245,30 @@ const COMPANY_LOGO_FALLBACK: Record<string, string> = {
 // CompanyExplorer and the homepage Companies carousel). Backed by the
 // Company table admins edit at /admin/companies.
 export async function getCompanies(locale: AppLocale): Promise<Company[]> {
-  const rows = await prisma.company.findMany({
-    where: { isPublished: true },
-    orderBy: { order: "asc" },
-    select: {
-      id: true,
-      subdomain: true,
-      nameEn: true,
-      nameBn: true,
-      sectorEn: true,
-      sectorBn: true,
-      descriptionEn: true,
-      descriptionBn: true,
-      logoMimeType: true,
-      bannerMimeType: true,
-      updatedAt: true,
-    },
-  });
+  // On a DB failure fall back to the static company cards so the homepage and
+  // /companies still render. (An empty-but-healthy table still returns [] —
+  // that means an admin unpublished everything.)
+  const rows = await safely("companies", () =>
+    prisma.company.findMany({
+      where: { isPublished: true },
+      orderBy: { order: "asc" },
+      select: {
+        id: true,
+        subdomain: true,
+        nameEn: true,
+        nameBn: true,
+        sectorEn: true,
+        sectorBn: true,
+        descriptionEn: true,
+        descriptionBn: true,
+        logoMimeType: true,
+        bannerMimeType: true,
+        updatedAt: true,
+      },
+    }),
+    null,
+  );
+  if (rows === null) return getSiteConfig(locale).companies;
 
   return rows.map((row) => {
     // A Company row is edited in place, so its logo/banner URL is otherwise
@@ -272,15 +309,20 @@ export async function getCompanyHeroSlides(
   site: SiteKey,
   locale: AppLocale,
 ): Promise<CompanyHeroSlide[]> {
-  const company = await prisma.company.findUnique({
-    where: { site },
-    select: {
-      heroImages: {
-        orderBy: { order: "asc" },
-        select: { id: true, headlineEn: true, headlineBn: true, taglineEn: true, taglineBn: true },
-      },
-    },
-  });
+  const company = await safely(
+    "company hero slides",
+    () =>
+      prisma.company.findUnique({
+        where: { site },
+        select: {
+          heroImages: {
+            orderBy: { order: "asc" },
+            select: { id: true, headlineEn: true, headlineBn: true, taglineEn: true, taglineBn: true },
+          },
+        },
+      }),
+    null,
+  );
   if (!company) return [];
 
   return company.heroImages.map((h) => ({
@@ -297,10 +339,15 @@ export async function getCompanyHeroSlides(
 // parent site's cards), the navbar caller should treat null as "keep
 // rendering the bespoke text/icon brand mark", not a broken image.
 export async function getCompanyLogo(site: SiteKey): Promise<string | null> {
-  const company = await prisma.company.findUnique({
-    where: { site },
-    select: { id: true, logoMimeType: true, updatedAt: true },
-  });
+  const company = await safely(
+    "company logo",
+    () =>
+      prisma.company.findUnique({
+        where: { site },
+        select: { id: true, logoMimeType: true, updatedAt: true },
+      }),
+    null,
+  );
   if (!company?.logoMimeType) return null;
   // Version by `updatedAt` so a re-upload (which keeps the same id/URL) busts
   // the browser/`next/image` cache — see the note in getCompanies above.
@@ -328,20 +375,25 @@ export type SimpleDbProduct = {
 };
 
 export async function getSimpleDbProducts(site: SiteKey): Promise<SimpleDbProduct[]> {
-  const rows = await prisma.product.findMany({
-    where: { site, isPublished: true },
-    orderBy: { createdAt: "desc" },
-    select: {
-      id: true,
-      slug: true,
-      category: true,
-      name: true,
-      tagline: true,
-      description: true,
-      benefits: true,
-      specs: true,
-    },
-  });
+  const rows = await safely(
+    "products",
+    () =>
+      prisma.product.findMany({
+        where: { site, isPublished: true },
+        orderBy: { createdAt: "desc" },
+        select: {
+          id: true,
+          slug: true,
+          category: true,
+          name: true,
+          tagline: true,
+          description: true,
+          benefits: true,
+          specs: true,
+        },
+      }),
+    [],
+  );
 
   return rows.map((row) => ({
     slug: row.slug,

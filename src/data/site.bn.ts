@@ -333,6 +333,22 @@ export const siteConfigBn: SiteConfig = {
   },
   sustainabilityPages: {
     overviewDescription: "Sustainability at FHS Enterprise.",
+    // One entry per page under /sustainability/<slug>. A pillar with no entry here
+    // has no page: its route 404s and it is dropped from the menu, tabs and
+    // sitemap (see src/data/site.ts), so adding an entry is all it takes to
+    // publish one. Allowed slugs: "health" | "education" | "community-development"
+    // | "environment". Keep site.en.ts in sync.
+    //
+    // {
+    //   slug: "health",
+    //   icon: "heart", // "heart" | "book" | "users" | "leaf"
+    //   title: "...",
+    //   summary: "One sentence shown on the overview card and page banner.",
+    //   description: "Paragraph shown under the banner.",
+    //   image: "/images/sustainability/health.jpg",
+    //   stats: [{ label: "...", value: "..." }],           // 3 recommended
+    //   initiatives: [{ title: "...", description: "..." }], // 3 recommended
+    // },
     pillars: [],
   },
 

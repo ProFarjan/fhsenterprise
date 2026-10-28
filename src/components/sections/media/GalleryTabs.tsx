@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import type { PublicGalleryPhoto, PublicGalleryVideo } from "@/lib/publicContent";
 
 function PlayIcon() {

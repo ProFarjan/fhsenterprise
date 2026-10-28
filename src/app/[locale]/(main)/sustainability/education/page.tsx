@@ -1,10 +1,11 @@
+import { notFound } from "next/navigation";
 import { useLocale } from "next-intl";
 import PillarPage from "@/components/sections/sustainability/PillarPage";
-import { getSiteConfig } from "@/data/site";
+import { getSustainabilityPillar } from "@/data/site";
 import type { AppLocale } from "@/i18n/routing";
 
 export default function EducationPage() {
-  const siteConfig = getSiteConfig(useLocale() as AppLocale);
-  const pillar = siteConfig.sustainabilityPages.pillars.find((p) => p.slug === "education")!;
+  const pillar = getSustainabilityPillar(useLocale() as AppLocale, "education");
+  if (!pillar) notFound();
   return <PillarPage pillar={pillar} />;
 }

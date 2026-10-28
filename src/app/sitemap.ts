@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { getSiteConfig } from "@/data/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const siteUrl = "https://fhsenterprise.com";
@@ -20,10 +21,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/media/events",
     "/media/gallery",
     "/sustainability",
-    "/sustainability/health",
-    "/sustainability/education",
-    "/sustainability/community-development",
-    "/sustainability/environment",
+    // Only pillars that have content render a page (the rest 404).
+    ...getSiteConfig("en").sustainabilityPages.pillars.map((p) => `/sustainability/${p.slug}`),
     "/contact",
   ];
 

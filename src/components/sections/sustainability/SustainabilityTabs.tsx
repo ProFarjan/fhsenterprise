@@ -3,16 +3,28 @@
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 
-export default function SustainabilityTabs() {
+// Tab label (messages `tabs.*`) per pillar slug. A tab is only shown when the
+// pillar has content (`slugs`), so the tab bar never links to a 404.
+const PILLAR_TAB_KEYS: Record<string, "health" | "education" | "communityDevelopment" | "environment"> = {
+  health: "health",
+  education: "education",
+  "community-development": "communityDevelopment",
+  environment: "environment",
+};
+
+// Order the tabs have always been shown in.
+const PILLAR_ORDER = ["health", "education", "community-development", "environment"];
+
+export default function SustainabilityTabs({ slugs }: { slugs: string[] }) {
   const pathname = usePathname();
   const t = useTranslations("tabs");
 
   const TABS = [
     { label: t("overview"), href: "/sustainability" },
-    { label: t("health"), href: "/sustainability/health" },
-    { label: t("education"), href: "/sustainability/education" },
-    { label: t("communityDevelopment"), href: "/sustainability/community-development" },
-    { label: t("environment"), href: "/sustainability/environment" },
+    ...PILLAR_ORDER.filter((slug) => slugs.includes(slug)).map((slug) => ({
+      label: t(PILLAR_TAB_KEYS[slug]),
+      href: `/sustainability/${slug}`,
+    })),
   ];
 
   return (

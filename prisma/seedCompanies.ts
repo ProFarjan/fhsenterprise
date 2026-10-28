@@ -19,10 +19,13 @@ const prisma = new PrismaClient({
   adapter: new PrismaMariaDb(process.env.DATABASE_URL ?? ""),
 });
 
+// Keys are the `subdomain` values used by the company cards in
+// src/data/site.{en,bn}.ts — an internal subdomain for the rice mill, and the
+// full external hostname for the two subsidiaries hosted on their own sites.
 const SUBDOMAIN_TO_SITE: Record<string, SiteKey> = {
   "auto-rice-mill": SiteKey.AUTO_RICE_MILL,
-  "vehicle-solutions": SiteKey.VEHICLE_SOLUTIONS,
-  "daily-bazar.fhsenterprise.com": SiteKey.DAILY_BAZAR,
+  "vehiclesolutions.fhsenterprise.com": SiteKey.VEHICLE_SOLUTIONS,
+  "dailybazar.fhsenterprise.com": SiteKey.DAILY_BAZAR,
 };
 
 async function main() {
