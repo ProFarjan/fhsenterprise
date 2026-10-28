@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type SubmitEvent } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { SHOW_UNVERIFIED_SECTIONS } from "@/data/organization";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -14,6 +15,7 @@ export default function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const successRef = useRef<HTMLDivElement>(null);
+  const nameRef = useRef<HTMLInputElement>(null);
 
   // The form is replaced by the confirmation, so keyboard/screen-reader focus
   // would be lost on a removed element — move it to the confirmation instead.
@@ -71,7 +73,12 @@ export default function ContactForm() {
         <p className="mt-2 text-neutral-600">{t("successBody")}</p>
         <button
           type="button"
-          onClick={() => setStatus("idle")}
+          onClick={() => {
+            // The button being clicked is about to be unmounted with the
+            // confirmation, so hand focus to the first field of the fresh form.
+            setStatus("idle");
+            requestAnimationFrame(() => nameRef.current?.focus());
+          }}
           className="mt-5 text-sm font-semibold text-orange-700 hover:text-orange-600"
         >
           {t("sendAnother")}
@@ -91,7 +98,7 @@ export default function ContactForm() {
         <label htmlFor="name" className="text-sm font-medium text-neutral-700">
           {t("name")}
         </label>
-        <input id="name" name="name" type="text" required autoComplete="name" maxLength={100} className={inputClasses} />
+        <input ref={nameRef} id="name" name="name" type="text" required autoComplete="name" maxLength={100} className={inputClasses} />
       </div>
       <div>
         <label htmlFor="email" className="text-sm font-medium text-neutral-700">
@@ -124,15 +131,17 @@ export default function ContactForm() {
         </p>
       )}
 
-      <p className="text-xs text-neutral-500 sm:col-span-2">
-        {t.rich("privacyNote", {
-          link: (chunks) => (
-            <Link href="/privacy" className="font-medium underline hover:text-neutral-700">
-              {chunks}
-            </Link>
-          ),
-        })}
-      </p>
+      {SHOW_UNVERIFIED_SECTIONS.legalPages && (
+        <p className="text-xs text-neutral-500 sm:col-span-2">
+          {t.rich("privacyNote", {
+            link: (chunks) => (
+              <Link href="/privacy" className="font-medium underline hover:text-neutral-700">
+                {chunks}
+              </Link>
+            ),
+          })}
+        </p>
+      )}
 
       <div className="sm:col-span-2">
         <button

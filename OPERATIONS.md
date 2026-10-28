@@ -108,8 +108,11 @@ mysqldump --single-transaction --hex-blob --default-character-set=utf8mb4 \
   scheduled job is needed.
 - Contact messages are kept until deleted from `/admin/messages`. Delete a person's
   messages when they ask (the privacy policy says you will).
-- Review `/privacy` and `/terms` (`src/data/legal.ts`) with the business owner: they
-  are a draft written from what the code does, not legal advice.
+- **Publishing the Privacy Policy and Terms of Use:** `/privacy` and `/terms`
+  (`src/data/legal.ts`) are a draft written from what the code does, not legal advice, so
+  they are **switched off** (404, no links). Have the owner review them (retention period,
+  IP logging, cookies; get the Bangla checked) and then set `legalPages: true` in
+  `SHOW_UNVERIFIED_SECTIONS` in `src/data/organization.ts`.
 
 ## Large media in git
 

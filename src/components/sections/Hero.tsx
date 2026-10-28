@@ -136,7 +136,7 @@ export default function Hero() {
           muted
           loop
           playsInline
-          preload="auto"
+          preload={playing ? "auto" : "none"}
           aria-hidden="true"
           onPlaying={() => setVideoReadyFor(index)}
         >

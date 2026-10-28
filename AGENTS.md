@@ -760,7 +760,7 @@ npm run prisma:push
 - **Do not modify production data** or run destructive database operations
 - **Do not bypass authentication** or access control checks
 - **Do not introduce new dependencies** without explicit user approval
-- **Do not delete existing components** for legacy subsidiaries (agro, filling, etc.) — they may be reactivated
+- **Do not delete the parked legacy subsidiary code** under `legacy/subsidiaries/` (agro, filling, etc.) — it may be reactivated (see `legacy/subsidiaries/README.md`; it is no longer in `src/` and is no longer type-checked or linted)
 - **Do not edit `src/generated/prisma/`** — always regenerate via Prisma CLI
 
 ### When Adding New Features
@@ -797,6 +797,12 @@ npm run prisma:push
 | `next.config.ts`              | Framework config — image patterns, redirects, body limits|
 
 ### Subsidiary Component Pattern
+
+> **Historical.** The per-subsidiary component trees described below were moved out of `src/` into
+> `legacy/subsidiaries/src/` (components, types) and `legacy/subsidiaries/palettes.css` (the colour
+> palettes and fonts that used to be in `globals.css`). New subsidiary sites use the shared
+> `CompanyChrome` / `CompanyHomePage` — see `CLAUDE.md`. The structure below is what you will find
+> there if a site is reactivated.
 
 Each subsidiary follows a consistent structure:
 

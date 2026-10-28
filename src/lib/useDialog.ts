@@ -9,6 +9,10 @@ const FOCUSABLE =
 const FIRST_FIELD =
   'input:not([type="hidden"]):not([disabled]), textarea:not([disabled]), select:not([disabled])';
 
+// Open dialogs, oldest first. Only the last one (the topmost) handles keys, so
+// stacking one dialog on another can't close both with a single Escape press.
+const openDialogs: object[] = [];
+
 // The behaviour every modal dialog needs, in one place (used by the admin Modal
 // and the public VideoModal):
 //  - on open: move focus inside, and lock page scroll
@@ -42,7 +46,11 @@ export function useDialog(
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
+    const token = {};
+    openDialogs.push(token);
+
     const onKeyDown = (e: KeyboardEvent) => {
+      if (openDialogs[openDialogs.length - 1] !== token) return;
       if (e.key === "Escape") {
         e.preventDefault();
         onCloseRef.current();
@@ -50,8 +58,10 @@ export function useDialog(
       }
       if (e.key !== "Tab" || !dialog) return;
 
+      // getClientRects() is empty for display:none but NOT for position:fixed
+      // elements (whose offsetParent is null), which must stay in the Tab cycle.
       const focusable = Array.from(dialog.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(
-        (el) => el.offsetParent !== null,
+        (el) => el.getClientRects().length > 0,
       );
       if (focusable.length === 0) {
         e.preventDefault();
@@ -75,6 +85,7 @@ export function useDialog(
     document.addEventListener("keydown", onKeyDown);
 
     return () => {
+      openDialogs.splice(openDialogs.indexOf(token), 1);
       document.removeEventListener("keydown", onKeyDown);
       document.body.style.overflow = previousOverflow;
       opener?.focus();

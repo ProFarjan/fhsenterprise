@@ -63,7 +63,7 @@ There is no automated test suite; `.github/workflows/ci.yml` runs lint, typechec
 ```
 src/
   app/
-    [locale]/(main)/        public pages (header + footer): home, about, companies, media, sustainability, contact, privacy, terms
+    [locale]/(main)/        public pages (header + footer): home, about, companies, media, sustainability, contact, privacy, terms (the last two stay hidden until reviewed)
     [locale]/companies/     subsidiary microsites (own header/footer)
     admin/                  admin panel; (panel)/ is behind the sign-in check
     api/                    contact form, health check, and the routes that serve images stored in the database

@@ -4,6 +4,7 @@ import { Link } from "@/i18n/navigation";
 import { getSiteConfig } from "@/data/site";
 import type { AppLocale } from "@/i18n/routing";
 import SocialLink from "@/components/icons/SocialLink";
+import { SHOW_UNVERIFIED_SECTIONS } from "@/data/organization";
 
 export default function Footer() {
   const locale = useLocale() as AppLocale;
@@ -84,18 +85,20 @@ export default function Footer() {
           <p>
             &copy; {year} {siteConfig.groupName}. {t("rights")}
           </p>
-          <ul className="flex gap-5">
-            <li>
-              <Link href="/privacy" className="hover:text-emerald-400">
-                {t("privacy")}
-              </Link>
-            </li>
-            <li>
-              <Link href="/terms" className="hover:text-emerald-400">
-                {t("terms")}
-              </Link>
-            </li>
-          </ul>
+          {SHOW_UNVERIFIED_SECTIONS.legalPages && (
+            <ul className="flex gap-5">
+              <li>
+                <Link href="/privacy" className="hover:text-emerald-400">
+                  {t("privacy")}
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" className="hover:text-emerald-400">
+                  {t("terms")}
+                </Link>
+              </li>
+            </ul>
+          )}
         </div>
       </div>
     </footer>

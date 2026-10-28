@@ -31,7 +31,12 @@ export const ORGANIZATION = {
 // the section again.
 //   stats        — "10+ years", "500+ happy customers", "24/7 support"
 //   testimonials — named quotes under "Real experiences from business partners"
+//   legalPages   — the Privacy Policy and Terms of Use (src/data/legal.ts). A draft
+//                  written from what the code does, NOT yet reviewed by the owner or
+//                  a lawyer. While false, /privacy and /terms return 404 and nothing
+//                  links to them (footer, contact form, sitemap).
 export const SHOW_UNVERIFIED_SECTIONS = {
   stats: false,
   testimonials: false,
+  legalPages: false,
 };

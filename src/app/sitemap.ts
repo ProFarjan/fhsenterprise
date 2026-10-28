@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getSiteConfig } from "@/data/site";
 import { SITE_URL } from "@/lib/seo";
+import { SHOW_UNVERIFIED_SECTIONS } from "@/data/organization";
 import { routing } from "@/i18n/routing";
 
 // Every public page, once per locale, each pointing at its translation (hreflang)
@@ -31,8 +32,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Only pillars that have content render a page (the rest 404).
     ...getSiteConfig("en").sustainabilityPages.pillars.map((p) => `/sustainability/${p.slug}`),
     "/contact",
-    "/privacy",
-    "/terms",
+    // Only once the draft legal text has been reviewed (SHOW_UNVERIFIED_SECTIONS.legalPages).
+    ...(SHOW_UNVERIFIED_SECTIONS.legalPages ? ["/privacy", "/terms"] : []),
   ];
 
   const priorityFor = (route: string) =>

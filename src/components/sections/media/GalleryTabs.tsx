@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useId, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import type { PublicGalleryPhoto, PublicGalleryVideo } from "@/lib/publicContent";
 import VideoModal from "@/components/ui/VideoModal";
@@ -26,17 +26,40 @@ export default function GalleryTabs({
   const [tab, setTab] = useState<"photos" | "videos">("videos");
   const [activeVideo, setActiveVideo] = useState<PublicGalleryVideo | null>(null);
   const baseId = useId();
+  const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const TAB_ORDER = ["videos", "photos"] as const;
+
+  // The ARIA "tabs" keyboard pattern: only the selected tab is a Tab stop, and
+  // the arrow keys / Home / End move selection and focus between tabs.
+  function onTabKeyDown(e: React.KeyboardEvent) {
+    const current = TAB_ORDER.indexOf(tab);
+    const last = TAB_ORDER.length - 1;
+    const next =
+      e.key === "ArrowRight" ? (current + 1) % TAB_ORDER.length
+      : e.key === "ArrowLeft" ? (current + last) % TAB_ORDER.length
+      : e.key === "Home" ? 0
+      : e.key === "End" ? last
+      : null;
+    if (next === null) return;
+    e.preventDefault();
+    setTab(TAB_ORDER[next]);
+    tabRefs.current[TAB_ORDER[next]]?.focus();
+  }
   const tabId = (name: string) => `${baseId}-tab-${name}`;
   const panelId = `${baseId}-panel`;
 
   return (
     <>
       <div className="flex justify-center">
-        <div role="tablist" className="inline-flex gap-1.5 rounded-full border border-neutral-200 bg-white p-1.5 shadow-sm">
+        <div role="tablist" onKeyDown={onTabKeyDown} className="inline-flex gap-1.5 rounded-full border border-neutral-200 bg-white p-1.5 shadow-sm">
           <button
             type="button"
             role="tab"
             id={tabId("videos")}
+            ref={(el) => {
+              tabRefs.current.videos = el;
+            }}
+            tabIndex={tab === "videos" ? 0 : -1}
             aria-selected={tab === "videos"}
             aria-controls={panelId}
             onClick={() => setTab("videos")}
@@ -50,6 +73,10 @@ export default function GalleryTabs({
             type="button"
             role="tab"
             id={tabId("photos")}
+            ref={(el) => {
+              tabRefs.current.photos = el;
+            }}
+            tabIndex={tab === "photos" ? 0 : -1}
             aria-selected={tab === "photos"}
             aria-controls={panelId}
             onClick={() => setTab("photos")}

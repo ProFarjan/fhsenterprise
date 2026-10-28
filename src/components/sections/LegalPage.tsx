@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import Breadcrumbs from "@/components/navigation/Breadcrumbs";
 import { LEGAL, LEGAL_UPDATED, type LegalKey } from "@/data/legal";
+import { SHOW_UNVERIFIED_SECTIONS } from "@/data/organization";
 import type { AppLocale } from "@/i18n/routing";
 import { buildPageMetadata } from "@/lib/seo";
 
@@ -12,6 +14,7 @@ export async function buildLegalMetadata(
   params: Promise<{ locale: string }>,
   kind: LegalKey,
 ): Promise<Metadata> {
+  if (!SHOW_UNVERIFIED_SECTIONS.legalPages) return {};
   const { locale } = await params;
   const doc = LEGAL[kind][lang(locale)];
   return buildPageMetadata({
@@ -24,6 +27,8 @@ export async function buildLegalMetadata(
 
 // A plain text document page: the Privacy Policy and the Terms of Use.
 export default async function LegalPage({ kind, locale }: { kind: LegalKey; locale: string }) {
+  // Unreviewed draft text is not published (see SHOW_UNVERIFIED_SECTIONS).
+  if (!SHOW_UNVERIFIED_SECTIONS.legalPages) notFound();
   const l = lang(locale);
   const doc = LEGAL[kind][l];
   const t = await getTranslations({ locale: l, namespace: "legal" });

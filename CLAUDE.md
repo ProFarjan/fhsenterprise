@@ -138,7 +138,7 @@ Use `buildPageMetadata()` from `src/lib/seo.ts` for page metadata (canonical, hr
 
 ### Organization facts and unverified content
 
-`src/data/organization.ts` is the one place for contact details, address parts, founder, and the `SHOW_UNVERIFIED_SECTIONS` flags. A `null` value means "not provided": every consumer (footer, contact page, JSON-LD, microsites) hides that detail instead of showing a placeholder. **The phone number is currently `null`** and the homepage Stats and Testimonials sections are switched off because their content is not verified; set the real values / flip the flags there. Social links with an `href` of `"#"` are filtered out in `getSiteConfig()`; real ones render through `SocialLink` (new tab, `noopener`).
+`src/data/organization.ts` is the one place for contact details, address parts, founder, and the `SHOW_UNVERIFIED_SECTIONS` flags (`stats`, `testimonials`, and `legalPages`: the draft Privacy/Terms pages in `src/data/legal.ts`, which are 404 and unlinked until the owner reviews them). A `null` value means "not provided": every consumer (footer, contact page, JSON-LD, microsites) hides that detail instead of showing a placeholder. **The phone number is currently `null`** and the homepage Stats and Testimonials sections are switched off because their content is not verified; set the real values / flip the flags there. Social links with an `href` of `"#"` are filtered out in `getSiteConfig()`; real ones render through `SocialLink` (new tab, `noopener`).
 
 ### Accessibility building blocks
 

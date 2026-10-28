@@ -7,11 +7,13 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        // Only the admin panel and the contact endpoint are off limits. The
-        // other /api/ routes just serve the images shown on public pages
-        // (news, gallery, companies...), which search engines need to fetch to
-        // index them; unpublished items are not served to the public anyway.
-        disallow: ["/admin/", "/api/contact", "/api/health"],
+        // Off limits: the admin panel and the non-page endpoints. The image routes
+        // for news, gallery, events and products stay crawlable so those images
+        // can be indexed (an unpublished product's image is only served to a
+        // signed-in admin). The company logo/banner/hero routes are NOT gated by
+        // Company.isPublished (see their comments), so they are kept out of search
+        // indexes; the same images are still reached through the pages that show them.
+        disallow: ["/admin/", "/api/contact", "/api/health", "/api/companies/"],
       },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
