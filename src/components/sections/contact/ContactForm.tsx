@@ -26,6 +26,8 @@ export default function ContactForm() {
       phone: data.get("phone"),
       subject: data.get("subject"),
       message: data.get("message"),
+      // Honeypot — see the hidden field below.
+      website: data.get("website"),
     };
 
     try {
@@ -34,7 +36,8 @@ export default function ContactForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      const result = await response.json();
+      // A proxy/CDN error page (502, 413…) isn't JSON — don't surface a parse error.
+      const result = await response.json().catch(() => ({}));
 
       if (!response.ok) {
         throw new Error(result.error || t("error"));
@@ -66,6 +69,11 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+      {/* Honeypot: invisible to people and assistive tech, tempting to bots. */}
+      <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+        <label htmlFor="website">Website</label>
+        <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+      </div>
       <div>
         <label htmlFor="name" className="text-sm font-medium text-neutral-700">
           {t("name")}

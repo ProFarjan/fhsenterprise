@@ -2,7 +2,7 @@ import { SiteKey } from "@/generated/prisma/enums";
 
 // Display names for the `SiteKey` enum in prisma/schema.prisma. Single source
 // of truth for the "which site" dropdowns in the admin panel — keep in sync
-// with COMPANY_SUBDOMAINS in src/lib/companies.ts (MR_GROUP is the one entry
+// with COMPANY_SUBDOMAINS in src/lib/companies.ts (FHS_ENTERPRISE is the one entry
 // with no subdomain, for content not tied to a subsidiary).
 export const SITE_OPTIONS: { key: SiteKey; label: string }[] = [
   { key: SiteKey.FHS_ENTERPRISE, label: "FHS Enterprise" },

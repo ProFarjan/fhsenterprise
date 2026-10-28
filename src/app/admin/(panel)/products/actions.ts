@@ -7,6 +7,13 @@ import { isSiteKey } from "@/lib/sites";
 import { isImageValidationError, readAndValidateImage } from "@/lib/imageUpload";
 import { isValidCategory } from "@/lib/productCategories";
 import { Prisma } from "@/generated/prisma/client";
+import {
+  LIMITS,
+  describeActionError,
+  ignoreNotFound,
+  lengthError,
+  positiveInt,
+} from "@/lib/actionGuards";
 
 export type ProductFormState = { error?: string; success?: boolean };
 
@@ -75,6 +82,14 @@ export async function createProductAction(
   if (!name) return { error: "Name is required." };
   if (!tagline) return { error: "Tagline is required." };
   if (!description) return { error: "Description is required." };
+  const tooLong = lengthError([
+    ["Name", name, LIMITS.name],
+    ["Tagline", tagline, LIMITS.tagline],
+    ["Description", description, LIMITS.longText],
+    ["Benefits", benefitsRaw, LIMITS.longText],
+    ["Specifications", specsRaw, LIMITS.longText],
+  ]);
+  if (tooLong) return { error: tooLong };
 
   const file = formData.get("image");
   if (!(file instanceof File) || file.size === 0) {
@@ -87,32 +102,37 @@ export async function createProductAction(
   const specs = parseSpecs(specsRaw);
 
   const baseSlug = slugify(name) || "product";
-  let slug = baseSlug;
-  for (let suffix = 2; ; suffix++) {
-    const existing = await prisma.product.findUnique({
-      where: { site_slug: { site, slug } },
-      select: { id: true },
-    });
-    if (!existing) break;
-    slug = `${baseSlug}-${suffix}`;
-  }
 
-  await prisma.product.create({
-    data: {
-      site,
-      slug,
-      category,
-      name,
-      tagline,
-      description,
-      benefits: benefits.length > 0 ? benefits : undefined,
-      specs: specs.length > 0 ? specs : undefined,
-      imageData: validated.data,
-      imageMimeType: validated.mimeType,
-      isPublished,
-      createdById: admin.id,
-    },
-  });
+  // The (site, slug) pair is unique. Looking for a free slug first and then
+  // inserting leaves a race (two admins saving the same name at once), so a
+  // unique-constraint failure (P2002) on insert just moves on to the next suffix.
+  for (let suffix = 1; ; suffix++) {
+    const slug = suffix === 1 ? baseSlug : `${baseSlug}-${suffix}`;
+    try {
+      await prisma.product.create({
+        data: {
+          site,
+          slug,
+          category,
+          name,
+          tagline,
+          description,
+          benefits: benefits.length > 0 ? benefits : undefined,
+          specs: specs.length > 0 ? specs : undefined,
+          imageData: validated.data,
+          imageMimeType: validated.mimeType,
+          isPublished,
+          createdById: admin.id,
+        },
+      });
+      break;
+    } catch (error) {
+      const slugTaken =
+        error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002";
+      if (slugTaken && suffix < 50) continue;
+      return { error: describeActionError(error, "Couldn't save the product. Please try again.") };
+    }
+  }
 
   revalidatePath("/admin/products");
   return { success: true };
@@ -127,8 +147,8 @@ export async function updateProductAction(
 ): Promise<ProductFormState> {
   await requireAdmin();
 
-  const id = Number(formData.get("id"));
-  if (!Number.isInteger(id)) return { error: "Unknown product." };
+  const id = positiveInt(formData.get("id"));
+  if (id === null) return { error: "Unknown product." };
 
   const current = await prisma.product.findUnique({ where: { id }, select: { site: true } });
   if (!current) return { error: "Unknown product." };
@@ -147,6 +167,14 @@ export async function updateProductAction(
   if (!name) return { error: "Name is required." };
   if (!tagline) return { error: "Tagline is required." };
   if (!description) return { error: "Description is required." };
+  const tooLong = lengthError([
+    ["Name", name, LIMITS.name],
+    ["Tagline", tagline, LIMITS.tagline],
+    ["Description", description, LIMITS.longText],
+    ["Benefits", benefitsRaw, LIMITS.longText],
+    ["Specifications", specsRaw, LIMITS.longText],
+  ]);
+  if (tooLong) return { error: tooLong };
 
   // Replacing the image is optional — an empty file input keeps the current one.
   const file = formData.get("image");
@@ -160,19 +188,23 @@ export async function updateProductAction(
   const benefits = parseBenefits(benefitsRaw);
   const specs = parseSpecs(specsRaw);
 
-  await prisma.product.update({
-    where: { id },
-    data: {
-      category,
-      name,
-      tagline,
-      description,
-      benefits: benefits.length > 0 ? benefits : Prisma.DbNull,
-      specs: specs.length > 0 ? specs : Prisma.DbNull,
-      isPublished,
-      ...(image && { imageData: image.data, imageMimeType: image.mimeType }),
-    },
-  });
+  try {
+    await prisma.product.update({
+      where: { id },
+      data: {
+        category,
+        name,
+        tagline,
+        description,
+        benefits: benefits.length > 0 ? benefits : Prisma.DbNull,
+        specs: specs.length > 0 ? specs : Prisma.DbNull,
+        isPublished,
+        ...(image && { imageData: image.data, imageMimeType: image.mimeType }),
+      },
+    });
+  } catch (error) {
+    return { error: describeActionError(error, "Couldn't save the product. Please try again.") };
+  }
 
   revalidatePath("/admin/products");
   return { success: true };
@@ -180,9 +212,9 @@ export async function updateProductAction(
 
 export async function deleteProductAction(formData: FormData): Promise<void> {
   await requireAdmin();
-  const id = Number(formData.get("id"));
-  if (Number.isInteger(id)) {
-    await prisma.product.delete({ where: { id } }).catch(() => null);
+  const id = positiveInt(formData.get("id"));
+  if (id !== null) {
+    await prisma.product.delete({ where: { id } }).catch(ignoreNotFound);
   }
   revalidatePath("/admin/products");
 }

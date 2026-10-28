@@ -11,6 +11,7 @@ import LatestNews from "@/components/sections/LatestNews";
 import Contact from "@/components/sections/Contact";
 import { getCompanies } from "@/lib/publicContent";
 import type { AppLocale } from "@/i18n/routing";
+import { jsonLdString } from "@/lib/jsonLd";
 
 export default async function Home({
   params,
@@ -88,7 +89,7 @@ export default async function Home({
     <main className="flex-1">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }}
       />
       <Hero />
       <About />

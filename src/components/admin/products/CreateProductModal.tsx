@@ -37,6 +37,9 @@ export default function CreateProductModal({
   const [imageFileError, setImageFileError] = useState<string | null>(null);
   const [site, setSite] = useState("");
   const categories = categoriesForSite(site as SiteKey);
+  // A product needs a category, and a company with none configured can't take
+  // one (the category field is required) — don't offer it as a dead end.
+  const productSites = sites.filter((s) => categoriesForSite(s.key as SiteKey).length > 0);
 
   const action = async (prev: ProductFormState, formData: FormData) => {
     const result = await createProductAction(prev, formData);
@@ -63,7 +66,7 @@ export default function CreateProductModal({
             <option value="" disabled>
               Select a company…
             </option>
-            {sites.map((s) => (
+            {productSites.map((s) => (
               <option key={s.key} value={s.key}>
                 {s.label}
               </option>

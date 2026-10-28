@@ -16,6 +16,7 @@ export const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5MB — comfortably under MyS
 
 export const IMAGE_TYPE_ERROR = "Image must be JPEG, PNG, WEBP, or GIF.";
 export const IMAGE_SIZE_ERROR = "Image must be smaller than 5MB.";
+export const IMAGE_CONTENT_ERROR = "That file isn't a valid JPEG, PNG, WEBP, or GIF image.";
 
 export type ImageValidationError = { error: string };
 export type ValidatedImage = { data: Uint8Array<ArrayBuffer>; mimeType: string };
@@ -45,7 +46,34 @@ export async function readAndValidateImage(
   }
 
   const data = new Uint8Array(await file.arrayBuffer());
-  return { data, mimeType: file.type };
+  const mimeType = sniffImageMimeType(data);
+  if (!mimeType) return { error: IMAGE_CONTENT_ERROR };
+  return { data, mimeType };
+}
+
+// The browser-supplied `file.type` is just a label the uploader chose, so the
+// server also checks the file's leading bytes ("magic numbers") and stores the
+// type they prove — an HTML/SVG/script file renamed to .png is rejected.
+export function sniffImageMimeType(bytes: Uint8Array): string | null {
+  const startsWith = (...sig: number[]) => sig.every((b, i) => bytes[i] === b);
+
+  if (startsWith(0xff, 0xd8, 0xff)) return "image/jpeg";
+  if (startsWith(0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a)) return "image/png";
+  // "GIF87a" / "GIF89a"
+  if (startsWith(0x47, 0x49, 0x46, 0x38) && (bytes[4] === 0x37 || bytes[4] === 0x39) && bytes[5] === 0x61) {
+    return "image/gif";
+  }
+  // "RIFF" <4-byte size> "WEBP"
+  if (
+    startsWith(0x52, 0x49, 0x46, 0x46) &&
+    bytes[8] === 0x57 &&
+    bytes[9] === 0x45 &&
+    bytes[10] === 0x42 &&
+    bytes[11] === 0x50
+  ) {
+    return "image/webp";
+  }
+  return null;
 }
 
 export function isImageValidationError(

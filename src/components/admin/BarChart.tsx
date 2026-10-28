@@ -4,7 +4,17 @@ import { useState } from "react";
 
 export type BarDatum = { label: string; value: number };
 
-// A single-series magnitude chart in the MR Group brand orange. Per the data-viz
+// Axis top rounded up so the four gridline steps are whole, readable numbers
+// (1/2/5 × 10ⁿ per step) — works for a handful of messages as well as hundreds.
+function niceAxisMax(max: number): number {
+  const rawStep = Math.max(max, 1) / 4;
+  const magnitude = 10 ** Math.floor(Math.log10(rawStep));
+  const f = rawStep / magnitude;
+  const step = Math.max(1, (f <= 1 ? 1 : f <= 2 ? 2 : f <= 5 ? 5 : 10) * magnitude);
+  return step * 4;
+}
+
+// A single-series magnitude chart in the FHS Enterprise brand orange. Per the data-viz
 // method: one series -> no legend (the card title names it), rounded 4px data
 // ends anchored to the baseline, recessive gridlines, and a per-bar hover
 // tooltip. Text stays in ink tokens; only the bars carry the brand hue.
@@ -17,8 +27,7 @@ export default function BarChart({
 }) {
   const [hover, setHover] = useState<number | null>(null);
   const max = Math.max(...data.map((d) => d.value), 1);
-  // Round the axis top up to a "nice" number for readable gridlines.
-  const niceMax = Math.ceil(max / 50) * 50 || max;
+  const niceMax = niceAxisMax(max);
   const ticks = [0, 0.25, 0.5, 0.75, 1].map((t) => Math.round(niceMax * t));
 
   return (

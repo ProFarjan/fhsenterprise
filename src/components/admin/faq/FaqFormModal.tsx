@@ -73,7 +73,7 @@ export default function FaqFormModal({
               maxLength={500}
               defaultValue={faq?.questionEn ?? ""}
               className={inputClass}
-              placeholder="e.g. Where is MR Group headquartered?"
+              placeholder="e.g. Where is FHS Enterprise headquartered?"
             />
           </div>
           <div>

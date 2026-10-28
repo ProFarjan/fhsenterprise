@@ -54,7 +54,7 @@ export default function CompaniesClient({ companies }: { companies: CompanyCardD
       <div>
         <h1 className="text-lg font-semibold text-neutral-900">Companies</h1>
         <p className="mt-1 text-sm text-neutral-500">
-          Manage the MR Group subsidiary companies — profiles, logos, hero content, and ordering.
+          Manage the FHS Enterprise subsidiary companies — profiles, logos, hero content, and ordering.
         </p>
       </div>
 

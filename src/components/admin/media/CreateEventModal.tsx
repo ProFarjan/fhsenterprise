@@ -74,7 +74,7 @@ export default function CreateEventModal({
             required
             maxLength={200}
             className={inputClass}
-            placeholder="e.g. MR Group Annual Summit"
+            placeholder="e.g. FHS Enterprise Annual Meeting"
           />
         </div>
 

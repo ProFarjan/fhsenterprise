@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { getMrGroupNews } from "@/lib/publicContent";
+import { getParentNews } from "@/lib/publicContent";
 import type { AppLocale } from "@/i18n/routing";
 
 function ArrowIcon() {
@@ -56,7 +56,7 @@ export default async function MediaOverviewPage() {
   const t = await getTranslations("tabs");
   const tMedia = await getTranslations("media");
   const tCommon = await getTranslations("common");
-  const [latest] = await getMrGroupNews(1);
+  const [latest] = await getParentNews(1);
 
   const SECTIONS = [
     { title: t("news"), description: tMedia("newsDesc"), href: "/media/news", Icon: NewsIcon },

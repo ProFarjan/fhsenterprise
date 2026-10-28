@@ -8,10 +8,19 @@ export const COMPANY_SUBDOMAINS = new Set([
   "autorice",
 ]);
 
-const DEFAULT_ROOT_DOMAIN = "fhsenterprise.com";
+// The ONE place the root domain is decided — src/proxy.ts uses it too, so
+// subdomain detection and the links built for company cards can never disagree.
+// Unset in production -> the real domain; unset in dev -> localhost:3000, where
+// browsers resolve "<sub>.localhost" to 127.0.0.1 with no hosts-file edits.
+// (NEXT_PUBLIC_* values are inlined at build time, so set it before `next build`.)
+const PRODUCTION_ROOT_DOMAIN = "fhsenterprise.com";
+const DEVELOPMENT_ROOT_DOMAIN = "localhost:3000";
 
 export function getRootDomain(): string {
-  return process.env.NEXT_PUBLIC_ROOT_DOMAIN || DEFAULT_ROOT_DOMAIN;
+  return (
+    process.env.NEXT_PUBLIC_ROOT_DOMAIN ||
+    (process.env.NODE_ENV === "production" ? PRODUCTION_ROOT_DOMAIN : DEVELOPMENT_ROOT_DOMAIN)
+  );
 }
 
 export function companyUrl(subdomain: string, locale?: string): string {

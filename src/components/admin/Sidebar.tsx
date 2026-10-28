@@ -19,9 +19,11 @@ function useIsActive() {
 export default function Sidebar({
   mobileOpen,
   onClose,
+  unreadMessages,
 }: {
   mobileOpen: boolean;
   onClose: () => void;
+  unreadMessages: number;
 }) {
   const isActive = useIsActive();
 
@@ -44,10 +46,10 @@ export default function Sidebar({
         {/* Brand */}
         <div className="flex h-16 items-center gap-3 px-5">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-orange-600 text-sm font-bold text-white">
-            MR
+            FHS
           </div>
           <div className="leading-tight">
-            <p className="text-sm font-semibold text-white">MR Group</p>
+            <p className="text-sm font-semibold text-white">FHS Enterprise</p>
             <p className="text-xs text-neutral-500">Admin Panel</p>
           </div>
           <button
@@ -67,6 +69,7 @@ export default function Sidebar({
           {NAV_ITEMS.map((item) => {
             const active = isActive(item.href);
             const Icon = item.icon;
+            const badge = item.href === "/admin/messages" ? unreadMessages : 0;
             return (
               <Link
                 key={item.href}
@@ -80,13 +83,14 @@ export default function Sidebar({
               >
                 <Icon className="h-5 w-5 shrink-0" />
                 <span>{item.label}</span>
-                {item.badge ? (
+                {badge > 0 ? (
                   <span
                     className={`ml-auto rounded-full px-2 py-0.5 text-[11px] font-semibold ${
                       active ? "bg-white/25 text-white" : "bg-orange-600/90 text-white"
                     }`}
+                    aria-label={`${badge} unread`}
                   >
-                    {item.badge}
+                    {badge > 99 ? "99+" : badge}
                   </span>
                 ) : null}
               </Link>

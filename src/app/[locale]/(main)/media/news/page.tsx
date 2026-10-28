@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { getMrGroupNews } from "@/lib/publicContent";
+import { getParentNews } from "@/lib/publicContent";
 import { buildPageMetadata } from "@/lib/seo";
 import type { AppLocale } from "@/i18n/routing";
 
@@ -59,7 +59,7 @@ export default async function NewsPage() {
   const locale = (await getLocale()) as AppLocale;
   const tMedia = await getTranslations("media");
   const tCommon = await getTranslations("common");
-  const [featured, ...rest] = await getMrGroupNews();
+  const [featured, ...rest] = await getParentNews();
 
   if (!featured) {
     return (

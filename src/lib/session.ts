@@ -64,9 +64,13 @@ export const getCurrentAdmin = cache(async (): Promise<CurrentAdmin | null> => {
   const token = cookieStore.get(COOKIE_NAME)?.value;
   if (!token) return null;
 
+  // Select only what the app needs — never load `passwordHash` on every request.
   const session = await prisma.session.findUnique({
     where: { id: hashToken(token) },
-    include: { admin: true },
+    select: {
+      expiresAt: true,
+      admin: { select: { id: true, email: true, name: true, role: true, isActive: true } },
+    },
   });
 
   if (!session) return null;

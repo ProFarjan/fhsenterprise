@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { getLocale, getTranslations } from "next-intl/server";
-import { getMrGroupEvents } from "@/lib/publicContent";
+import { getParentEvents } from "@/lib/publicContent";
 import { buildPageMetadata } from "@/lib/seo";
 import type { AppLocale } from "@/i18n/routing";
 
@@ -68,7 +68,7 @@ function formatMonth(iso: string, locale: AppLocale) {
 export default async function EventsPage() {
   const locale = (await getLocale()) as AppLocale;
   const tMedia = await getTranslations("media");
-  const events = await getMrGroupEvents();
+  const events = await getParentEvents();
 
   if (events.length === 0) {
     return (

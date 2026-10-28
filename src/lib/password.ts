@@ -29,11 +29,19 @@ const KEY_LENGTH = 64;
 const SALT_LENGTH = 16;
 const MAX_MEM = 96 * 1024 * 1024;
 
+// scrypt costs ~33 MB and ~100 ms per call no matter who is asking, so callers
+// must reject absurdly long input BEFORE hashing (an unauthenticated login
+// request could otherwise carry megabytes through NFKC normalisation + scrypt).
+export const MAX_PASSWORD_LENGTH = 256;
+
 // Normalising means a password typed with a different Unicode composition
 // (common for non-ASCII input) still verifies.
 const normalize = (password: string) => password.normalize("NFKC");
 
 export async function hashPassword(password: string): Promise<string> {
+  if (password.length > MAX_PASSWORD_LENGTH) {
+    throw new Error(`Password must be ${MAX_PASSWORD_LENGTH} characters or fewer.`);
+  }
   const salt = randomBytes(SALT_LENGTH);
   const hash = await scrypt(normalize(password), salt, KEY_LENGTH, {
     N,
@@ -55,6 +63,8 @@ export async function verifyPassword(
   password: string,
   stored: string,
 ): Promise<boolean> {
+  if (password.length > MAX_PASSWORD_LENGTH) return false;
+
   const parts = stored.split("$");
   if (parts.length !== 6 || parts[0] !== "scrypt") return false;
 

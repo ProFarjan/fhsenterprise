@@ -63,11 +63,18 @@ function ImageField({
   const [isPending, startTransition] = useTransition();
 
   function handleRemove() {
+    // Takes effect immediately (not tied to "Save changes"), so ask first.
+    if (!confirm(`Remove the current ${name}? This takes effect immediately.`)) return;
     startTransition(async () => {
       const formData = new FormData();
       formData.set("id", String(companyId));
       formData.set("field", name);
-      await removeCompanyImageAction(formData);
+      const result = await removeCompanyImageAction(formData);
+      if (result.error) {
+        onError(result.error);
+        return;
+      }
+      onError(null);
       setCurrentUrl(null);
       setPreview(null);
       onChanged();
@@ -322,10 +329,16 @@ function HeroGallery({
   }
 
   function removeImage(id: number) {
+    if (!confirm("Remove this hero slide? This takes effect immediately.")) return;
     startTransition(async () => {
       const formData = new FormData();
       formData.set("id", String(id));
-      await removeHeroImageAction(formData);
+      const result = await removeHeroImageAction(formData);
+      if (result.error) {
+        onError(result.error);
+        return;
+      }
+      onError(null);
       setImages((prev) => prev.filter((img) => img.id !== id));
       onChanged();
     });

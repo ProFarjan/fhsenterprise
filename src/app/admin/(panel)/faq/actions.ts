@@ -5,6 +5,13 @@ import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/session";
 import { SiteKey } from "@/generated/prisma/enums";
 import { routing } from "@/i18n/routing";
+import {
+  LIMITS,
+  describeActionError,
+  ignoreNotFound,
+  lengthError,
+  positiveInt,
+} from "@/lib/actionGuards";
 
 export type FaqFormState = { error?: string; success?: boolean };
 
@@ -40,7 +47,13 @@ function validateFaqFields(f: ReturnType<typeof readFaqFields>): string | null {
   if (!f.answerEn) return "English answer is required.";
   if (!f.answerBn) return "Bangla answer is required.";
   if (!Number.isFinite(f.order)) return "Order must be a number.";
-  return null;
+  if (Math.abs(f.order) > 1_000_000) return "Order is out of range.";
+  return lengthError([
+    ["English question", f.questionEn, LIMITS.faqQuestion],
+    ["Bangla question", f.questionBn, LIMITS.faqQuestion],
+    ["English answer", f.answerEn, LIMITS.longText],
+    ["Bangla answer", f.answerBn, LIMITS.longText],
+  ]);
 }
 
 export async function createFaqAction(
@@ -53,17 +66,21 @@ export async function createFaqAction(
   const error = validateFaqFields(fields);
   if (error) return { error };
 
-  await prisma.faqItem.create({
-    data: {
-      site: SiteKey.FHS_ENTERPRISE,
-      questionEn: fields.questionEn,
-      questionBn: fields.questionBn,
-      answerEn: fields.answerEn,
-      answerBn: fields.answerBn,
-      order: Math.trunc(fields.order),
-      createdById: admin.id,
-    },
-  });
+  try {
+    await prisma.faqItem.create({
+      data: {
+        site: SiteKey.FHS_ENTERPRISE,
+        questionEn: fields.questionEn,
+        questionBn: fields.questionBn,
+        answerEn: fields.answerEn,
+        answerBn: fields.answerBn,
+        order: Math.trunc(fields.order),
+        createdById: admin.id,
+      },
+    });
+  } catch (error) {
+    return { error: describeActionError(error, "Couldn't save the FAQ. Please try again.") };
+  }
 
   revalidateFaqPaths();
   return { success: true };
@@ -75,8 +92,8 @@ export async function updateFaqAction(
 ): Promise<FaqFormState> {
   await requireAdmin();
 
-  const id = Number(formData.get("id"));
-  if (!Number.isInteger(id)) return { error: "Invalid FAQ id." };
+  const id = positiveInt(formData.get("id"));
+  if (id === null) return { error: "Invalid FAQ id." };
 
   const fields = readFaqFields(formData);
   const error = validateFaqFields(fields);
@@ -93,7 +110,7 @@ export async function updateFaqAction(
         order: Math.trunc(fields.order),
       },
     })
-    .catch(() => null);
+    .catch(ignoreNotFound);
 
   if (!updated) return { error: "FAQ not found." };
 
@@ -103,9 +120,9 @@ export async function updateFaqAction(
 
 export async function deleteFaqAction(formData: FormData): Promise<void> {
   await requireAdmin();
-  const id = Number(formData.get("id"));
-  if (Number.isInteger(id)) {
-    await prisma.faqItem.delete({ where: { id } }).catch(() => null);
+  const id = positiveInt(formData.get("id"));
+  if (id !== null) {
+    await prisma.faqItem.delete({ where: { id } }).catch(ignoreNotFound);
   }
   revalidateFaqPaths();
 }

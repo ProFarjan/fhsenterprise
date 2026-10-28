@@ -5,6 +5,7 @@ import { buildPageMetadata, getFaqJsonLd } from "@/lib/seo";
 import Breadcrumbs from "@/components/navigation/Breadcrumbs";
 import FaqAccordion from "@/components/sections/about/FaqAccordion";
 import type { AppLocale } from "@/i18n/routing";
+import { jsonLdString } from "@/lib/jsonLd";
 
 export async function generateMetadata({
   params,
@@ -44,7 +45,7 @@ export default async function FaqPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdString(faqJsonLd) }}
       />
       <div className="mx-auto max-w-3xl px-6 pt-6 lg:px-8">
         <Breadcrumbs

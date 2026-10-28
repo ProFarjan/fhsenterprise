@@ -8,6 +8,13 @@ import { isValidYoutubeUrl } from "@/lib/youtube";
 import { isImageValidationError, readAndValidateImage } from "@/lib/imageUpload";
 import { MediaType, SiteKey } from "@/generated/prisma/enums";
 import { routing } from "@/i18n/routing";
+import {
+  LIMITS,
+  describeActionError,
+  ignoreNotFound,
+  lengthError,
+  positiveInt,
+} from "@/lib/actionGuards";
 
 export type MediaFormState = { error?: string; success?: boolean };
 export type NewsFormState = { error?: string; success?: boolean };
@@ -23,7 +30,7 @@ export type EventFormState = { error?: string; success?: boolean };
 // at src/app/[locale]/companies/agro/gallery/). Next only revalidates on
 // demand — without this, a newly created/deleted item wouldn't show up on
 // the live site until something else invalidated the route's cache. Only
-// MR_GROUP, FILLING_STATION, and AGRO are wired to public pages so far.
+// FHS_ENTERPRISE is wired to public pages so far.
 function revalidatePublicMediaPaths(site: string) {
   for (const locale of routing.locales) {
     if (site === SiteKey.FHS_ENTERPRISE) {
@@ -52,6 +59,8 @@ export async function createMediaAction(
 
   if (!isSiteKey(site)) return { error: "Choose a site." };
   if (!title) return { error: "Title is required." };
+  const titleTooLong = lengthError([["Title", title, LIMITS.title]]);
+  if (titleTooLong) return { error: titleTooLong };
   if (type !== MediaType.IMAGE && type !== MediaType.VIDEO) {
     return { error: "Choose image or video." };
   }
@@ -61,10 +70,15 @@ export async function createMediaAction(
     if (!isValidYoutubeUrl(youtubeUrl)) {
       return { error: "Enter a valid YouTube link." };
     }
+    if (youtubeUrl.length > 500) return { error: "YouTube link must be 500 characters or fewer." };
 
-    await prisma.mediaItem.create({
-      data: { type, site, title, youtubeUrl, createdById: admin.id },
-    });
+    try {
+      await prisma.mediaItem.create({
+        data: { type, site, title, youtubeUrl, createdById: admin.id },
+      });
+    } catch (error) {
+      return { error: describeActionError(error, "Couldn't save the video. Please try again.") };
+    }
   } else {
     const file = formData.get("image");
     if (!(file instanceof File) || file.size === 0) {
@@ -74,16 +88,20 @@ export async function createMediaAction(
     const validated = await readAndValidateImage(file);
     if (isImageValidationError(validated)) return { error: validated.error };
 
-    await prisma.mediaItem.create({
-      data: {
-        type,
-        site,
-        title,
-        imageData: validated.data,
-        imageMimeType: validated.mimeType,
-        createdById: admin.id,
-      },
-    });
+    try {
+      await prisma.mediaItem.create({
+        data: {
+          type,
+          site,
+          title,
+          imageData: validated.data,
+          imageMimeType: validated.mimeType,
+          createdById: admin.id,
+        },
+      });
+    } catch (error) {
+      return { error: describeActionError(error, "Couldn't save the image. Please try again.") };
+    }
   }
 
   revalidatePath("/admin/media");
@@ -93,9 +111,9 @@ export async function createMediaAction(
 
 export async function deleteMediaAction(formData: FormData): Promise<void> {
   await requireAdmin();
-  const id = Number(formData.get("id"));
-  if (Number.isInteger(id)) {
-    const deleted = await prisma.mediaItem.delete({ where: { id } }).catch(() => null);
+  const id = positiveInt(formData.get("id"));
+  if (id !== null) {
+    const deleted = await prisma.mediaItem.delete({ where: { id } }).catch(ignoreNotFound);
     if (deleted) revalidatePublicMediaPaths(deleted.site);
   }
   revalidatePath("/admin/media");
@@ -115,6 +133,11 @@ export async function createNewsAction(
   if (!isSiteKey(site)) return { error: "Choose a site." };
   if (!title) return { error: "Title is required." };
   if (!excerpt) return { error: "Excerpt is required." };
+  const tooLong = lengthError([
+    ["Title", title, LIMITS.title],
+    ["Excerpt", excerpt, LIMITS.longText],
+  ]);
+  if (tooLong) return { error: tooLong };
 
   const date = new Date(dateRaw);
   if (Number.isNaN(date.getTime())) return { error: "Enter a valid date." };
@@ -126,17 +149,21 @@ export async function createNewsAction(
   const validated = await readAndValidateImage(file);
   if (isImageValidationError(validated)) return { error: validated.error };
 
-  await prisma.newsItem.create({
-    data: {
-      site,
-      title,
-      excerpt,
-      date,
-      coverImageData: validated.data,
-      coverImageMimeType: validated.mimeType,
-      createdById: admin.id,
-    },
-  });
+  try {
+    await prisma.newsItem.create({
+      data: {
+        site,
+        title,
+        excerpt,
+        date,
+        coverImageData: validated.data,
+        coverImageMimeType: validated.mimeType,
+        createdById: admin.id,
+      },
+    });
+  } catch (error) {
+    return { error: describeActionError(error, "Couldn't save the news item. Please try again.") };
+  }
 
   revalidatePath("/admin/media");
   revalidatePublicMediaPaths(site);
@@ -145,9 +172,9 @@ export async function createNewsAction(
 
 export async function deleteNewsAction(formData: FormData): Promise<void> {
   await requireAdmin();
-  const id = Number(formData.get("id"));
-  if (Number.isInteger(id)) {
-    const deleted = await prisma.newsItem.delete({ where: { id } }).catch(() => null);
+  const id = positiveInt(formData.get("id"));
+  if (id !== null) {
+    const deleted = await prisma.newsItem.delete({ where: { id } }).catch(ignoreNotFound);
     if (deleted) revalidatePublicMediaPaths(deleted.site);
   }
   revalidatePath("/admin/media");
@@ -169,6 +196,12 @@ export async function createEventAction(
   if (!title) return { error: "Title is required." };
   if (!location) return { error: "Location is required." };
   if (!description) return { error: "Description is required." };
+  const tooLong = lengthError([
+    ["Title", title, LIMITS.title],
+    ["Location", location, LIMITS.location],
+    ["Description", description, LIMITS.longText],
+  ]);
+  if (tooLong) return { error: tooLong };
 
   const date = new Date(dateRaw);
   if (Number.isNaN(date.getTime())) return { error: "Enter a valid date." };
@@ -180,18 +213,22 @@ export async function createEventAction(
   const validated = await readAndValidateImage(file);
   if (isImageValidationError(validated)) return { error: validated.error };
 
-  await prisma.eventItem.create({
-    data: {
-      site,
-      title,
-      location,
-      description,
-      date,
-      coverImageData: validated.data,
-      coverImageMimeType: validated.mimeType,
-      createdById: admin.id,
-    },
-  });
+  try {
+    await prisma.eventItem.create({
+      data: {
+        site,
+        title,
+        location,
+        description,
+        date,
+        coverImageData: validated.data,
+        coverImageMimeType: validated.mimeType,
+        createdById: admin.id,
+      },
+    });
+  } catch (error) {
+    return { error: describeActionError(error, "Couldn't save the event. Please try again.") };
+  }
 
   revalidatePath("/admin/media");
   revalidatePublicMediaPaths(site);
@@ -200,9 +237,9 @@ export async function createEventAction(
 
 export async function deleteEventAction(formData: FormData): Promise<void> {
   await requireAdmin();
-  const id = Number(formData.get("id"));
-  if (Number.isInteger(id)) {
-    const deleted = await prisma.eventItem.delete({ where: { id } }).catch(() => null);
+  const id = positiveInt(formData.get("id"));
+  if (id !== null) {
+    const deleted = await prisma.eventItem.delete({ where: { id } }).catch(ignoreNotFound);
     if (deleted) revalidatePublicMediaPaths(deleted.site);
   }
   revalidatePath("/admin/media");

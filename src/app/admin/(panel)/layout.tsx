@@ -1,4 +1,5 @@
 import { requireAdmin } from "@/lib/session";
+import { getUnreadMessageCount } from "@/lib/messages";
 import AdminShell from "@/components/admin/AdminShell";
 
 // The `(panel)` route group wraps every authenticated admin page in the
@@ -14,6 +15,11 @@ export default async function PanelLayout({
   children: React.ReactNode;
 }) {
   const admin = await requireAdmin();
+  const unreadMessages = await getUnreadMessageCount();
 
-  return <AdminShell admin={admin}>{children}</AdminShell>;
+  return (
+    <AdminShell admin={admin} unreadMessages={unreadMessages}>
+      {children}
+    </AdminShell>
+  );
 }

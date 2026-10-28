@@ -52,7 +52,7 @@ export default function CompanyCard({
       <div className="relative aspect-video bg-neutral-100">
         {company.bannerUrl ? (
           // eslint-disable-next-line @next/next/no-img-element -- served from our own byte-serving route, not an optimizable local asset
-          <img src={company.bannerUrl} alt="" className="h-full w-full object-cover" />
+          <img src={company.bannerUrl} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
         ) : (
           <div className="flex h-full items-center justify-center text-xs text-neutral-400">
             No banner uploaded
@@ -71,7 +71,7 @@ export default function CompanyCard({
         {company.logoUrl && (
           <div className="absolute bottom-2 left-2 flex h-10 w-10 items-center justify-center rounded-lg bg-white/95 p-1.5 shadow-md">
             {/* eslint-disable-next-line @next/next/no-img-element -- served from our own byte-serving route, not an optimizable local asset */}
-            <img src={company.logoUrl} alt="" className="h-full w-full object-contain" />
+            <img src={company.logoUrl} alt="" loading="lazy" decoding="async" className="h-full w-full object-contain" />
           </div>
         )}
       </div>

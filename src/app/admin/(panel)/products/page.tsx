@@ -23,6 +23,7 @@ export default async function AdminProductsPage() {
       specs: true,
       isPublished: true,
       createdAt: true,
+      updatedAt: true,
     },
   });
 
@@ -38,7 +39,7 @@ export default async function AdminProductsPage() {
     description: row.description,
     benefits: parseProductBenefits(row.benefits),
     specs: parseProductSpecs(row.specs),
-    imageUrl: `/api/products/${row.id}/image`,
+    imageUrl: `/api/products/${row.id}/image?v=${row.updatedAt.getTime()}`,
     isPublished: row.isPublished,
     createdAtLabel: row.createdAt.toLocaleDateString("en-US", {
       day: "numeric",

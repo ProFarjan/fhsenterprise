@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { getMrGroupNews } from "@/lib/publicContent";
+import { getParentNews } from "@/lib/publicContent";
 import type { AppLocale } from "@/i18n/routing";
 
 // Homepage "Latest News" only ever shows the 3 most recent items — the full
@@ -35,9 +35,9 @@ export default async function LatestNews() {
   const locale = (await getLocale()) as AppLocale;
   const t = await getTranslations("home.news");
   const tCommon = await getTranslations("common");
-  const news = await getMrGroupNews(HOMEPAGE_NEWS_LIMIT);
+  const news = await getParentNews(HOMEPAGE_NEWS_LIMIT);
 
-  // No MR Group news yet — hide the whole section rather than show an empty
+  // No FHS Enterprise news yet — hide the whole section rather than show an empty
   // heading with nothing underneath it.
   if (news.length === 0) return null;
 

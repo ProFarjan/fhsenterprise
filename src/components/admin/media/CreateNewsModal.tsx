@@ -74,7 +74,7 @@ export default function CreateNewsModal({
             required
             maxLength={200}
             className={inputClass}
-            placeholder="e.g. MR Feed opens new mill"
+            placeholder="e.g. Auto Rice Mill expands capacity"
           />
         </div>
 

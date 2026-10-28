@@ -2,7 +2,7 @@
 // Backed by the same MediaItem / NewsItem / EventItem tables the admin panel
 // writes to (see prisma/schema.prisma and src/app/admin/(panel)/media/).
 //
-// The MR Group main site (News, Gallery, Events) and the Gallery pages for
+// The FHS Enterprise main site (News, Gallery, Events) and the Gallery pages for
 // the Filling Station and Agro subsidiaries are wired to the database. Other
 // subsidiary pages still read their own static data under
 // src/data/companies/ — the `getSite*` functions below are already
@@ -43,7 +43,7 @@ export type PublicNewsItem = {
 // there's no individual news detail page in this project yet).
 const NEWS_HREF = "/media/news";
 
-export async function getMrGroupNews(limit?: number): Promise<PublicNewsItem[]> {
+export async function getParentNews(limit?: number): Promise<PublicNewsItem[]> {
   return safely(
     "news",
     async () => {
@@ -82,14 +82,14 @@ export type PublicGalleryVideo = {
   description?: string;
 };
 
-export async function getMrGroupGallery(locale: AppLocale = "en"): Promise<{
+export async function getParentGallery(locale: AppLocale = "en"): Promise<{
   photos: PublicGalleryPhoto[];
   videos: PublicGalleryVideo[];
 }> {
   return getSiteGallery(SiteKey.FHS_ENTERPRISE, locale);
 }
 
-// Same as getMrGroupGallery but parameterised by site — used by the
+// Same as getParentGallery but parameterised by site — used by the
 // subsidiary company sites once they're wired to the admin-managed MediaItem table.
 export async function getSiteGallery(
   site: SiteKey,
@@ -184,11 +184,11 @@ export type PublicEvent = {
   image: string;
 };
 
-export async function getMrGroupEvents(): Promise<PublicEvent[]> {
+export async function getParentEvents(): Promise<PublicEvent[]> {
   return getSiteEvents(SiteKey.FHS_ENTERPRISE);
 }
 
-// Same as getMrGroupEvents but parameterised by site — used by subsidiary
+// Same as getParentEvents but parameterised by site — used by subsidiary
 // company sites once they get their own events page wired to EventItem.
 export async function getSiteEvents(site: SiteKey): Promise<PublicEvent[]> {
   return safely(
@@ -301,7 +301,7 @@ export type CompanyHeroSlide = {
 };
 
 // A subsidiary's admin-managed hero gallery (CompanyHeroImage), for its own
-// subdomain site — e.g. agro.mrgroup.com reading AGRO's slides. Returns []
+// subdomain site — e.g. auto-rice-mill.fhsenterprise.com reading its slides. Returns []
 // when the company has no hero images yet, which the caller should treat as
 // "keep rendering the existing bespoke static hero" rather than an empty
 // state — see each companies/<subdomain>/page.tsx.
@@ -390,6 +390,7 @@ export async function getSimpleDbProducts(site: SiteKey): Promise<SimpleDbProduc
           description: true,
           benefits: true,
           specs: true,
+          updatedAt: true,
         },
       }),
     [],
@@ -400,7 +401,9 @@ export async function getSimpleDbProducts(site: SiteKey): Promise<SimpleDbProduc
     category: row.category,
     name: row.name,
     tagline: row.tagline,
-    image: `/api/products/${row.id}/image`,
+    // Versioned so a replaced image is never served from an immutable cache
+    // entry — see src/app/api/products/[id]/image/route.ts.
+    image: `/api/products/${row.id}/image?v=${row.updatedAt.getTime()}`,
     description: row.description,
     specs: parseProductSpecs(row.specs),
     benefits: parseProductBenefits(row.benefits),

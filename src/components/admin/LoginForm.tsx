@@ -43,7 +43,7 @@ export default function LoginForm() {
             required
             autoComplete="email"
             className="w-full rounded-lg border border-white/10 bg-neutral-900/60 px-3.5 py-2.5 text-sm text-white placeholder:text-neutral-500 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/30 focus:outline-none"
-            placeholder="you@mrgroup.com"
+            placeholder="you@fhsenterprise.com"
           />
         </div>
 

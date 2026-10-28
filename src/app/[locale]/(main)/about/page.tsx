@@ -6,6 +6,7 @@ import { getSiteConfig } from "@/data/site";
 import { buildPageMetadata, SITE_URL } from "@/lib/seo";
 import Breadcrumbs from "@/components/navigation/Breadcrumbs";
 import type { AppLocale } from "@/i18n/routing";
+import { jsonLdString } from "@/lib/jsonLd";
 
 export async function generateMetadata({
   params,
@@ -93,7 +94,7 @@ export default function AboutOverviewPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutSchema) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdString(aboutSchema) }}
       />
       <div className="mx-auto max-w-6xl px-6 pt-6 lg:px-8">
         <Breadcrumbs

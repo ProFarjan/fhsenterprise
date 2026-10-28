@@ -12,8 +12,8 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "Admin · MR Group",
-  description: "MR Group administration panel",
+  title: "Admin · FHS Enterprise",
+  description: "FHS Enterprise administration panel",
   robots: { index: false, follow: false },
 };
 

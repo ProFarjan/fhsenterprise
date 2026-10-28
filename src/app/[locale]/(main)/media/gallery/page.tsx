@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { getMrGroupGallery } from "@/lib/publicContent";
+import { getParentGallery } from "@/lib/publicContent";
 import GalleryTabs from "@/components/sections/media/GalleryTabs";
 import { buildPageMetadata } from "@/lib/seo";
 import type { AppLocale } from "@/i18n/routing";
@@ -39,7 +39,7 @@ export default async function GalleryPage({
 }) {
   const { locale } = await params;
   const t = await getTranslations("media");
-  const { photos, videos } = await getMrGroupGallery(locale as AppLocale);
+  const { photos, videos } = await getParentGallery(locale as AppLocale);
 
   return (
     <section className="mx-auto max-w-6xl px-6 lg:px-8">

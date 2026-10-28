@@ -16,7 +16,7 @@ export default function NewsCard({ item }: { item: NewsCardData }) {
     <div className="group relative flex flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm">
       <div className="relative aspect-[16/9] bg-neutral-100">
         {/* eslint-disable-next-line @next/next/no-img-element -- served from our own byte-serving route, not an optimizable local asset */}
-        <img src={item.coverImageUrl} alt="" className="h-full w-full object-cover" />
+        <img src={item.coverImageUrl} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
         <span className="absolute top-2 left-2 rounded-full bg-black/60 px-2.5 py-1 text-[11px] font-medium text-white">
           {item.siteLabel}
         </span>

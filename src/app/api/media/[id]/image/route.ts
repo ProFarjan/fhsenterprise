@@ -1,29 +1,25 @@
-import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { CACHE_IMMUTABLE, imageResponse, notFound, parseId } from "@/lib/imageResponse";
 
 // Serves an uploaded image's bytes straight out of the database — there is no
 // object storage in this project, so MediaItem.imageData IS the file. Public
 // and unauthenticated on purpose: this is marketing content meant to be
-// visible on the public site once it's wired up to read from the DB.
+// visible on the public site. (Video rows have no image bytes → 404.)
 export async function GET(
   _request: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const { id } = await params;
+  const id = parseId((await params).id);
+  if (id === null) return notFound();
+
   const item = await prisma.mediaItem.findUnique({
-    where: { id: Number(id) },
+    where: { id },
     select: { imageData: true, imageMimeType: true },
   });
+  if (!item?.imageData || !item.imageMimeType) return notFound();
 
-  if (!item?.imageData || !item.imageMimeType) {
-    return NextResponse.json({ error: "Not found." }, { status: 404 });
-  }
-
-  return new NextResponse(new Uint8Array(item.imageData), {
-    headers: {
-      "Content-Type": item.imageMimeType,
-      // Immutable: a new upload gets a new row id, so this id's bytes never change.
-      "Cache-Control": "public, max-age=31536000, immutable",
-    },
+  // Immutable: a new upload gets a new row id, so this id's bytes never change.
+  return imageResponse(item.imageData, item.imageMimeType, {
+    cacheControl: CACHE_IMMUTABLE,
   });
 }

@@ -68,7 +68,7 @@ export default async function AdminMediaPage() {
       <div>
         <h2 className="text-xl font-semibold text-neutral-900">Media & News</h2>
         <p className="mt-1 text-sm text-neutral-500">
-          Publish gallery images, YouTube videos, news articles, and events across MR Group sites.
+          Publish gallery images, YouTube videos, news articles, and events across FHS Enterprise sites.
         </p>
       </div>
       <MediaNewsClient

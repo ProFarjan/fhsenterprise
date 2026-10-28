@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import type { CurrentAdmin } from "@/lib/session";
 import { NAV_ITEMS } from "./nav";
-import { BellIcon, MenuIcon, SearchIcon } from "./icons";
+import { MenuIcon } from "./icons";
 
 function usePageTitle() {
   const pathname = usePathname();
@@ -35,26 +35,8 @@ export default function Topbar({
 
       <h1 className="text-base font-semibold text-neutral-900">{title}</h1>
 
-      {/* Search */}
-      <div className="relative ml-auto hidden max-w-xs flex-1 sm:block">
-        <SearchIcon className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-neutral-400" />
-        <input
-          type="search"
-          placeholder="Search…"
-          className="w-full rounded-lg border border-neutral-200 bg-neutral-50 py-2 pr-3 pl-9 text-sm text-neutral-700 placeholder:text-neutral-400 focus:border-orange-400 focus:bg-white focus:ring-2 focus:ring-orange-500/20 focus:outline-none"
-        />
-      </div>
-
-      <button
-        className="relative ml-auto rounded-lg p-2 text-neutral-600 hover:bg-neutral-100 sm:ml-0"
-        aria-label="Notifications"
-      >
-        <BellIcon className="h-5 w-5" />
-        <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-orange-600 ring-2 ring-white" />
-      </button>
-
       {/* Profile — the signed-in admin from the verified server session */}
-      <div className="flex items-center gap-2.5 pl-1">
+      <div className="ml-auto flex items-center gap-2.5 pl-1">
         <div className="flex h-9 w-9 items-center justify-center rounded-full bg-orange-600 text-sm font-semibold text-white">
           {initial}
         </div>

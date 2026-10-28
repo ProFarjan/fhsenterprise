@@ -8,6 +8,7 @@ import { getSiteConfig } from "@/data/site";
 import { buildPageMetadata, SITE_URL } from "@/lib/seo";
 import Breadcrumbs from "@/components/navigation/Breadcrumbs";
 import type { AppLocale } from "@/i18n/routing";
+import { jsonLdString } from "@/lib/jsonLd";
 
 export async function generateMetadata({
   params,
@@ -78,7 +79,7 @@ export default function ContactPage() {
     <div className="flex-1 bg-neutral-50">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(contactJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdString(contactJsonLd) }}
       />
       <section className="relative overflow-hidden bg-neutral-950 pb-20 pt-24 sm:pt-28">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_rgba(0,69,160,0.35),_transparent_55%)]" />

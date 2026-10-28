@@ -31,7 +31,7 @@ export default async function AdminFaqPage() {
       <div>
         <h2 className="text-xl font-semibold text-neutral-900">FAQ</h2>
         <p className="mt-1 text-sm text-neutral-500">
-          Manage the questions on the MR Group About &gt; FAQ page. Each answer is shown in the
+          Manage the questions on the FHS Enterprise About &gt; FAQ page. Each answer is shown in the
           visitor&apos;s language, so both English and Bangla are required.
         </p>
       </div>

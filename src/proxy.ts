@@ -1,18 +1,31 @@
 import createMiddleware from "next-intl/middleware";
 import { NextResponse, type NextRequest } from "next/server";
 import { routing } from "./i18n/routing";
-import { COMPANY_SUBDOMAINS } from "./lib/companies";
+import { COMPANY_SUBDOMAINS, getRootDomain } from "./lib/companies";
 
 // Next.js 16 renamed `middleware.ts` to `proxy.ts` (the exported function is
 // still a plain (req) => Response handler, so next-intl's middleware factory
 // works unchanged here).
 const handleI18n = createMiddleware(routing);
 
-const ROOT_DOMAIN = (process.env.NEXT_PUBLIC_ROOT_DOMAIN || "localhost").split(":")[0];
+// Hostname only (no port). Same source of truth as companyUrl() in
+// src/lib/companies.ts, so subdomain detection and the links built for company
+// cards can never disagree.
+const ROOT_DOMAIN = getRootDomain().split(":")[0].toLowerCase();
 
-// "agro.mrgroup.com" -> "agro"; "mrgroup.com" / "www.mrgroup.com" -> null.
-function companySubdomain(host: string): string | null {
-  const hostname = host.split(":")[0];
+// Subsidiaries that run as their own deployments. Requests for these hosts (and
+// their aliases) are sent to the canonical URL.
+const EXTERNAL_COMPANY_URLS: Record<string, string> = {
+  [`vehiclesolutions.${ROOT_DOMAIN}`]: "https://vehiclesolutions.fhsenterprise.com",
+  "vehicle-solutions.fhsenterprise.com": "https://vehiclesolutions.fhsenterprise.com",
+  [`dailybazar.${ROOT_DOMAIN}`]: "https://dailybazar.fhsenterprise.com",
+  [`daily-bazar.${ROOT_DOMAIN}`]: "https://dailybazar.fhsenterprise.com",
+  "daily-bazar.fhsenterprise.com": "https://dailybazar.fhsenterprise.com",
+};
+
+// "auto-rice-mill.fhsenterprise.com" -> "auto-rice-mill"; "fhsenterprise.com" / "www.fhsenterprise.com" -> null.
+// `hostname` must already be lower-cased and port-free.
+function companySubdomain(hostname: string): string | null {
   if (hostname === ROOT_DOMAIN || hostname === `www.${ROOT_DOMAIN}`) return null;
   if (!hostname.endsWith(`.${ROOT_DOMAIN}`)) return null;
   const sub = hostname.slice(0, -`.${ROOT_DOMAIN}`.length);
@@ -20,28 +33,17 @@ function companySubdomain(host: string): string | null {
 }
 
 export function proxy(request: NextRequest) {
-  const host = request.headers.get("host") ?? "";
-  const hostname = host.split(":")[0].toLowerCase();
+  const hostname = (request.headers.get("host") ?? "").split(":")[0].toLowerCase();
 
-  // Directly redirect external company subdomains to their destination URLs
-  if (
-    hostname === `vehiclesolutions.${ROOT_DOMAIN}` ||
-    hostname === "vehiclesolutions.fhsenterprise.com" ||
-    hostname === "vehicle-solutions.fhsenterprise.com"
-  ) {
-    return NextResponse.redirect("https://vehiclesolutions.fhsenterprise.com", 307);
+  // Redirect external company hosts to their canonical URL — but never to the
+  // host the request already arrived on: if DNS ever points that hostname at
+  // this app, redirecting to itself would loop forever.
+  const externalUrl = EXTERNAL_COMPANY_URLS[hostname];
+  if (externalUrl && new URL(externalUrl).hostname !== hostname) {
+    return NextResponse.redirect(externalUrl, 307);
   }
 
-  if (
-    hostname === `dailybazar.${ROOT_DOMAIN}` ||
-    hostname === `daily-bazar.${ROOT_DOMAIN}` ||
-    hostname === "dailybazar.fhsenterprise.com" ||
-    hostname === "daily-bazar.fhsenterprise.com"
-  ) {
-    return NextResponse.redirect("https://dailybazar.fhsenterprise.com", 307);
-  }
-
-  const subdomain = companySubdomain(host);
+  const subdomain = companySubdomain(hostname);
   if (!subdomain) return handleI18n(request);
 
   const segments = request.nextUrl.pathname.split("/").filter(Boolean);
@@ -65,5 +67,7 @@ export function proxy(request: NextRequest) {
 export const config = {
   // `admin` is excluded so the admin panel lives at a clean, locale-free
   // `/admin` — next-intl must not prefix it into `/bn/admin` or `/en/admin`.
-  matcher: ["/((?!api|admin|_next|.*\\..*).*)"],
+  // `api` and `admin` must match a WHOLE path segment: a bare prefix would also
+  // skip locale handling for unrelated paths such as /administrator or /api-docs.
+  matcher: ["/((?!api(?:/|$)|admin(?:/|$)|_next|.*\\..*).*)"],
 };

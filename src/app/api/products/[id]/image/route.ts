@@ -1,28 +1,59 @@
-import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { getCurrentAdmin } from "@/lib/session";
+import {
+  CACHE_IMMUTABLE,
+  CACHE_PRIVATE,
+  CACHE_REVALIDATE,
+  etagMatches,
+  imageResponse,
+  notFound,
+  notModified,
+  parseId,
+} from "@/lib/imageResponse";
 
 // Serves a product's image bytes straight out of the database — same
-// convention as /api/media/[id]/image. A Product row has no edit action yet
-// (only create/delete — see src/app/admin/(panel)/products/actions.ts), so
-// its image never changes under a given id and can be cached as immutable.
+// convention as /api/media/[id]/image.
+//
+// Unlike media/news/events, a product's image CAN be replaced in place
+// (updateProductAction keeps the id), so the URL is versioned: callers append
+// `?v=<updatedAt ms>` (see getSimpleDbProducts and the admin products page).
+// Only a request whose `v` matches the current version is cached as immutable;
+// anything else (no `v`, or a stale one) always revalidates via the ETag.
+//
+// Unpublished products are not public: the image is only served to a signed-in
+// admin (the admin product cards preview them), and never cacheable.
 export async function GET(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const { id } = await params;
-  const product = await prisma.product.findUnique({
-    where: { id: Number(id) },
-    select: { imageData: true, imageMimeType: true },
-  });
+  const id = parseId((await params).id);
+  if (id === null) return notFound();
 
-  if (!product) {
-    return NextResponse.json({ error: "Not found." }, { status: 404 });
-  }
-
-  return new NextResponse(new Uint8Array(product.imageData), {
-    headers: {
-      "Content-Type": product.imageMimeType,
-      "Cache-Control": "public, max-age=31536000, immutable",
-    },
+  const meta = await prisma.product.findUnique({
+    where: { id },
+    select: { imageMimeType: true, updatedAt: true, isPublished: true },
   });
+  if (!meta) return notFound();
+
+  const preview = !meta.isPublished;
+  if (preview && !(await getCurrentAdmin())) return notFound();
+
+  const version = String(meta.updatedAt.getTime());
+  const requestedVersion = new URL(request.url).searchParams.get("v");
+  const cacheControl = preview
+    ? CACHE_PRIVATE
+    : requestedVersion === version
+      ? CACHE_IMMUTABLE
+      : CACHE_REVALIDATE;
+
+  const etag = `"${version}"`;
+  if (etagMatches(request, etag)) return notModified(etag, cacheControl);
+
+  const row = await prisma.product.findUnique({
+    where: { id },
+    select: { imageData: true },
+  });
+  if (!row) return notFound();
+
+  return imageResponse(row.imageData, meta.imageMimeType, { cacheControl, etag });
 }

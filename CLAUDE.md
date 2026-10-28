@@ -45,13 +45,13 @@ Environment (`.env`, see `.env.example`): `DATABASE_URL` (required); `NEXT_PUBLI
 
 ### Request flow: `src/proxy.ts`
 
-Every request not matching the exclusions goes through `proxy()`. Matcher: `/((?!api|admin|_next|.*\..*).*)`.
+Every request not matching the exclusions goes through `proxy()`. Matcher: `/((?!api(?:/|$)|admin(?:/|$)|_next|.*\..*).*)` (`api`/`admin` match whole path segments only).
 
-1. Host is `vehiclesolutions.*` or `dailybazar.*` -> redirect to the external URL.
+1. Host is `vehiclesolutions.*` / `dailybazar.*` (or an alias like `vehicle-solutions.*`) -> redirect to the external URL.
 2. Host is a known company subdomain (`COMPANY_SUBDOMAINS` in `src/lib/companies.ts`) and the path already has a locale -> **rewrite** to `/[locale]/companies/<internal-subdomain>/...` (URL stays clean).
 3. Anything else -> `next-intl` middleware (adds the locale prefix).
 
-Locally use `auto-rice-mill.localhost:3000`. **Gotcha:** `proxy.ts` defaults the root domain to `localhost`, `getRootDomain()` defaults to `fhsenterprise.com`, and `.env.example` ships `mrgroup.com`. If `NEXT_PUBLIC_ROOT_DOMAIN` doesn't match the real host, subdomain detection silently fails.
+Locally use `auto-rice-mill.localhost:3000`. The root domain comes from one place, `getRootDomain()` in `src/lib/companies.ts` (used by both the proxy and `companyUrl()`): `NEXT_PUBLIC_ROOT_DOMAIN`, else `localhost:3000` in dev / `fhsenterprise.com` in production. It is inlined at build time, and if it doesn't match the real host, subdomain detection silently fails. A request for `vehiclesolutions.fhsenterprise.com` / `dailybazar.fhsenterprise.com` is never redirected to itself (that would loop); it falls through to the normal locale handling.
 
 ### Three route trees (and three HTML shells)
 
@@ -72,25 +72,25 @@ The admin panel is excluded from the proxy matcher so it stays at `/admin` (neve
 
 ### Content: DB + static hybrid (not uniform)
 
-Static content lives in `src/data/` (`site.en.ts`, `site.bn.ts`, `companies/*.ts`) and is read through `getSiteConfig(locale)`. Dynamic content is read in `src/lib/publicContent.ts`. **Fallback behaviour differs per function, so check before assuming:**
+Static content lives in `src/data/` (`site.en.ts`, `site.bn.ts`, `companies/*.ts`) and is read through `getSiteConfig(locale)`. Dynamic content is read in `src/lib/publicContent.ts`. **Every read is wrapped in `safely()`, so a DB outage never crashes a public page** (it is logged and the page degrades). What differs is what each function does when the table is merely EMPTY:
 
-| Function | Falls back to static when DB is empty? |
-|---|---|
-| `getFaqs` (also on DB error) | Yes, `aboutPages.faqs` |
-| `getSiteGallery` / `getMrGroupGallery` | Yes, `mediaPages.gallery*` |
-| `getCompanies` | No. Per-field image fallbacks only (`BANNER_FALLBACK`, `COMPANY_LOGO_FALLBACK`) |
-| `getMrGroupNews`, `getSiteEvents` | No. Return `[]` |
-| `getCompanyLogo` | Returns `null`; caller keeps the static logo |
-| `getCompanyHeroSlides`, `getSimpleDbProducts` | Defined but **not called anywhere yet** |
+| Function | Empty table | DB failure |
+|---|---|---|
+| `getFaqs` | static `aboutPages.faqs` | same |
+| `getSiteGallery` / `getParentGallery` | static `mediaPages.gallery*` | same |
+| `getCompanies` | `[]` (admin unpublished all), with per-field image fallbacks (`BANNER_FALLBACK`, `COMPANY_LOGO_FALLBACK`) | static cards from `getSiteConfig(locale).companies` |
+| `getParentNews`, `getSiteEvents` | `[]` | `[]` |
+| `getCompanyLogo` | `null` (caller keeps the static logo) | `null` |
+| `getCompanyHeroSlides`, `getSimpleDbProducts` | `[]`; defined but **not called anywhere yet** | `[]` |
 
 Product rows are managed in the admin but no public page renders them yet. The auto-rice-mill microsite is currently static (`CompanyHomePage` + `src/data/companies/auto-rice-mill.ts`), with only its logo from the DB.
 
 ### Database (Prisma 7, MySQL/MariaDB)
 
-- `prisma/schema.prisma`. Models: `Admin`, `Session`, `Company`, `CompanyHeroImage`, `MediaItem`, `NewsItem`, `EventItem`, `Product`, `FaqItem`. Enums: `AdminRole`, `SiteKey`, `MediaType`.
+- `prisma/schema.prisma`. Models: `Admin`, `Session`, `Company`, `CompanyHeroImage`, `MediaItem`, `NewsItem`, `EventItem`, `Product`, `FaqItem`, `ContactMessage`. After pulling schema changes run `npx prisma migrate deploy` (or `db push` on a `db push`-built database; see `prisma/README.md`). Enums: `AdminRole`, `SiteKey`, `MediaType`.
 - Client is generated to `src/generated/prisma/` (**gitignored, never edit**). Import from `@/generated/prisma/client` and `@/generated/prisma/enums`. Use the singleton in `src/lib/prisma.ts`, which needs the `PrismaMariaDb` driver adapter (Prisma 7 can't take a URL directly).
-- **Images are stored in the DB** as `Bytes @db.LongBlob` plus a `*MimeType` column, and are served by `src/app/api/<entity>/[id]/image/route.ts` (companies add `/logo`, `/banner`, plus `hero-images/[id]`). Uploads are limited to JPEG/PNG/WEBP/GIF and 5 MB (`src/lib/imageUpload.ts`); `serverActions.bodySizeLimit` is `6mb` and must stay above that.
-- Mutable images (company logo/banner) use a `?v=<updatedAt>` URL to bust caches; this requires the `/api/companies/**` entry in `images.localPatterns`. Immutable ones send `Cache-Control: ... immutable`. Adding an edit path to an "immutable" route means changing its cache header.
+- **Images are stored in the DB** as `Bytes @db.LongBlob` plus a `*MimeType` column, and are served by `src/app/api/<entity>/[id]/image/route.ts` (companies add `/logo`, `/banner`, plus `hero-images/[id]`). Uploads are limited to JPEG/PNG/WEBP/GIF and 5 MB (`src/lib/imageUpload.ts`, which also checks the file's magic bytes and stores the detected type); `serverActions.bodySizeLimit` is `6mb` and must stay above that. All routes share `src/lib/imageResponse.ts` (id validation → 404, `nosniff`, ETag helpers).
+- Cache policy per route: media/news/event/hero images are `immutable` (a new upload gets a new id, no edit action). **Company logo/banner and Product images are edited in place**, so their URLs carry `?v=<updatedAt>` (needs the matching entry in `images.localPatterns`) and the route only sends `immutable` when `v` equals the current version, otherwise it revalidates via ETag. Adding an edit path to an "immutable" route means changing its cache header. Unpublished Product images are served only to a signed-in admin (`private, no-store`); Company `isPublished` is deliberately NOT checked on logo/banner (it only hides the card; the microsite still uses them).
 - Bilingual models use `...En` / `...Bn` column pairs (`Company`, `FaqItem`). `Product`, `NewsItem`, `EventItem` are single-language and show the same text in both locales.
 - `Product` has `@@unique([site, slug])`; slugs are generated from the name with a numeric suffix on collision. `benefits`/`specs` are `Json` and must be read through `src/lib/productJson.ts`.
 - Adding a `SiteKey` requires updating, at minimum: `SITE_OPTIONS` (`src/lib/sites.ts`), `PRODUCT_CATEGORIES` (`src/lib/productCategories.ts`, typed as `Record<SiteKey, ...>` so it fails to compile), `COMPANY_SUBDOMAINS` and proxy logic if it is a subdomain site, and `SUBDOMAIN_TO_SITE` in `prisma/seedCompanies.ts`.
@@ -98,7 +98,8 @@ Product rows are managed in the admin but no public page renders them yet. The a
 ### Auth (custom, no library)
 
 - `src/lib/password.ts`: scrypt, NFKC-normalised, constant-time compare. `src/lib/session.ts`: random 32-byte token in the `mr_admin_session` cookie, **SHA-256 of it stored as `Session.id`**, 7-day expiry, `httpOnly`, `sameSite=lax`, `secure` in production.
-- `getCurrentAdmin()` is `cache()`d and does no writes (cookies can't be set during render). `requireAdmin()` redirects to `/admin/login`.
+- `getCurrentAdmin()` is `cache()`d, does no writes (cookies can't be set during render), and never loads `passwordHash`. `requireAdmin()` redirects to `/admin/login`.
+- **Rate limiting is in-memory** (`src/lib/rateLimit.ts`; per-process, resets on restart, not shared across instances): login (per IP, per email, global), password change, and `/api/contact` (plus a honeypot field). The client address comes from `src/lib/clientIp.ts`, which takes the entry `TRUSTED_PROXY_HOPS` from the RIGHT of `X-Forwarded-For` (the left-most entry is spoofable). Passwords are capped at `MAX_PASSWORD_LENGTH` before any scrypt work.
 - **Every Server Action must call `requireAdmin()` itself.** The `(panel)` layout check does not protect actions, which are separately reachable POST endpoints.
 - `loginAction` verifies against a dummy hash when the account doesn't exist (timing-safe) and returns one generic error message. Preserve that.
 - `Admin.role` (`ADMIN`/`SUPER_ADMIN`) exists but is **not enforced**; every admin has full access.
@@ -106,9 +107,11 @@ Product rows are managed in the admin but no public page renders them yet. The a
 ### Admin mutations: Server Actions
 
 Pattern in `src/app/admin/(panel)/<area>/actions.ts` (`"use server"`):
-`requireAdmin()` -> read/validate `FormData` -> Prisma write -> `revalidatePath(...)`. Forms use `useActionState` with a `{ error?, success? }` state type. After changing public-facing data, revalidate the public paths for **both locales** (see `revalidatePublicMediaPaths`, `revalidatePublicCompanyPaths`, `revalidateFaqPaths`). Admin list pages are client components (`*Client.tsx`) fed by a server page; dates cross that boundary as ISO strings.
+`requireAdmin()` -> read/validate `FormData` (ids via `positiveInt`, lengths via `lengthError`/`LIMITS`, all in `src/lib/actionGuards.ts`) -> Prisma write inside try/catch (`describeActionError` logs and returns a friendly `{ error }`) -> `revalidatePath(...)`. Forms use `useActionState` with a `{ error?, success? }` state type. After changing public-facing data, revalidate the public paths for **both locales** (see `revalidatePublicMediaPaths`, `revalidatePublicCompanyPaths`, `revalidateFaqPaths`). Admin list pages are client components (`*Client.tsx`) fed by a server page; dates cross that boundary as ISO strings.
 
-`createFaqAction` hardcodes `site: FHS_ENTERPRISE`. Settings (change password) works; **Dashboard shows hard-coded demo data and Messages is a `ComingSoon` scaffold** (the contact form only sends email and stores nothing).
+`createFaqAction` hardcodes `site: FHS_ENTERPRISE`. Settings (change password) works.
+
+**Contact messages:** `POST /api/contact` first stores the submission (`ContactMessage`), then emails it; the visitor only sees an error if BOTH fail, and `emailSent` records whether the email went out. `/admin/messages` lists them (unread filter, mark read/unread, mark all read, delete, 20 per page). The sidebar unread badge comes from `getUnreadMessageCount()` (`src/lib/messages.ts`) in the `(panel)` layout, which degrades to 0 on error so a DB problem there can't take the whole admin down; message actions call `revalidatePath("/admin", "layout")` to refresh it. The dashboard (`admin/(panel)/page.tsx`) is all live data, every query isolated by `safe()`.
 
 ### i18n
 
@@ -135,7 +138,7 @@ Active shape: `[locale]/companies/<sub>/layout.tsx` wraps children in the shared
 
 ## Known limitations (don't "fix" unprompted)
 
-No rate limiting or CAPTCHA on login or `/api/contact`; `deleteExpiredSessions()` is never scheduled; no object storage (everything in MySQL); no news/event detail pages (all news links to `/media/news`); `media/actions.ts` revalidates `/companies/<sub>/gallery` paths that no longer exist; `docs/`, `documents/` (gitignored), `temp_videos/`, `crop*.py`, `generate_svg_logos.js`, `insert.sql`, `query.{js,ts}` and `__pycache__/` in the root are one-off assets/scripts, not application code.
+No CAPTCHA, and rate limiting is in-memory only (see Auth); expired sessions are only cleaned opportunistically at login; no object storage (everything in MySQL); no news/event detail pages (all news links to `/media/news`); `media/actions.ts` revalidates `/companies/<sub>/gallery` paths that no longer exist; `docs/`, `documents/` (gitignored), `temp_videos/`, `crop*.py`, `generate_svg_logos.js`, `insert.sql`, `query.{js,ts}` and `__pycache__/` in the root are one-off assets/scripts, not application code.
 
 ## Do not
 

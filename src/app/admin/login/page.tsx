@@ -23,11 +23,11 @@ export default async function AdminLoginPage({
       <div className="relative w-full max-w-md">
         <div className="mb-8 text-center">
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-600 text-xl font-bold text-white shadow-lg shadow-orange-600/30">
-            MR
+            FHS
           </div>
           <h1 className="text-2xl font-semibold text-white">Admin Panel</h1>
           <p className="mt-1 text-sm text-neutral-400">
-            Sign in to manage MR Group content
+            Sign in to manage FHS Enterprise content
           </p>
         </div>
 

@@ -33,7 +33,7 @@ export default function ProductCard({
     <div className="group relative overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm">
       <div className="relative aspect-video bg-neutral-100">
         {/* eslint-disable-next-line @next/next/no-img-element -- served from our own byte-serving route, not an optimizable local asset */}
-        <img src={product.imageUrl} alt="" className="h-full w-full object-cover" />
+        <img src={product.imageUrl} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
         <span className="absolute top-2 left-2 rounded-full bg-black/60 px-2.5 py-1 text-[11px] font-medium text-white">
           {product.siteLabel}
         </span>

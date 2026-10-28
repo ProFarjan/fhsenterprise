@@ -17,7 +17,7 @@ export default function MediaCard({ item }: { item: MediaCardData }) {
     <div className="group relative overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm">
       <div className="relative aspect-video bg-neutral-100">
         {/* eslint-disable-next-line @next/next/no-img-element -- served from our own byte-serving route or the YouTube CDN, not an optimizable local asset */}
-        <img src={item.thumbnailUrl} alt="" className="h-full w-full object-cover" />
+        <img src={item.thumbnailUrl} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
         {item.type === "VIDEO" && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/20">
             <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white/95 shadow-lg">

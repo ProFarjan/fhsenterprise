@@ -1,5 +1,6 @@
 import { Link } from "@/i18n/navigation";
 import { getBreadcrumbJsonLd } from "@/lib/seo";
+import { jsonLdString } from "@/lib/jsonLd";
 
 export interface BreadcrumbItem {
   label: string;
@@ -24,7 +25,7 @@ export default function Breadcrumbs({
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }}
       />
       <nav aria-label="Breadcrumb" className="py-4 text-xs sm:text-sm text-neutral-500">
         <ol className="flex flex-wrap items-center gap-1.5 sm:gap-2">

@@ -65,7 +65,7 @@ model Session {
 }
 
 // Which site a piece of content belongs to. Mirrors the subsidiary subdomains
-// in src/lib/companies.ts, plus MR_GROUP for content that isn't tied to one
+// in src/lib/companies.ts, plus FHS_ENTERPRISE for content that isn't tied to one
 // subsidiary (e.g. the parent site's own news). Keep in sync with the
 // display-name mapping in src/lib/sites.ts.
 enum SiteKey {
@@ -151,7 +151,7 @@ model EventItem {
 }
 
 // A subsidiary company managed from /admin/companies. One row per subsidiary
-// SiteKey (MR_GROUP is the parent site itself, not a card here). Feeds the
+// SiteKey (FHS_ENTERPRISE is the parent site itself, not a card here). Feeds the
 // parent site's company cards (see CompanyExplorer) and each subsidiary's
 // shared hero block. The deep bespoke subdomain sections still live in
 // src/data/companies/*.ts — this model deliberately covers only the uniform
@@ -229,7 +229,7 @@ model CompanyHeroImage {
   @@index([companyId, order])
 }
 
-// A product listed under one of MR Group's subsidiaries — managed from
+// A product listed under one of FHS Enterprise's subsidiaries — managed from
 // /admin/products. Admin-side CRUD only for now, matching the Media & News
 // pattern (see src/app/admin/(panel)/media/) — no subsidiary's public site
 // reads from this table yet; each still renders its own bespoke, larger
@@ -264,6 +264,9 @@ model Product {
   createdById Int?
   createdBy   Admin?   @relation(fields: [createdById], references: [id], onDelete: SetNull)
   createdAt   DateTime @default(now())
+  // Bumped on every edit (incl. image replacement); versions the image URL so
+  // a re-upload is never hidden behind an immutable cache entry.
+  updatedAt   DateTime @default(now()) @updatedAt
 
   @@unique([site, slug])
   @@index([site])
@@ -275,7 +278,7 @@ model Product {
 // the Company model's paired ...En/...Bn columns, because the public page
 // renders whichever language the visitor is viewing. Ordered by an explicit
 // `order` column (see CompanyHeroImage) rather than creation time, so an admin
-// controls the sequence of questions. `site` defaults to MR_GROUP — the only
+// controls the sequence of questions. `site` defaults to FHS_ENTERPRISE — the only
 // site with a public FAQ page today — but exists for future per-site reuse.
 model FaqItem {
   id   Int     @id @default(autoincrement())
@@ -296,4 +299,30 @@ model FaqItem {
   updatedAt   DateTime @updatedAt
 
   @@index([site, order])
+}
+
+// A submission from the public contact form (POST /api/contact). Stored BEFORE
+// the notification email is attempted, so a lead is never lost to an SMTP
+// outage; `emailSent` records whether the email actually went out. Read in
+// /admin/messages. Column sizes mirror the limits enforced in the route.
+model ContactMessage {
+  id Int @id @default(autoincrement())
+
+  name    String  @db.VarChar(100)
+  email   String  @db.VarChar(254)
+  phone   String? @db.VarChar(30)
+  subject String  @db.VarChar(200)
+  message String  @db.Text
+
+  // Audit/abuse trail only — see getClientIp (src/lib/clientIp.ts).
+  ipAddress String? @db.VarChar(45)
+  userAgent String? @db.VarChar(255)
+
+  emailSent Boolean @default(false)
+  isRead    Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@index([isRead, createdAt])
+  @@index([createdAt])
 }
