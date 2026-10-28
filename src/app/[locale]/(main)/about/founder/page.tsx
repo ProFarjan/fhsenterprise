@@ -7,6 +7,7 @@ import Breadcrumbs from "@/components/navigation/Breadcrumbs";
 import type { AppLocale } from "@/i18n/routing";
 import { jsonLdString } from "@/lib/jsonLd";
 import { setRequestLocale } from "next-intl/server";
+import { SHOW_UNVERIFIED_SECTIONS } from "@/data/organization";
 
 export async function generateMetadata({
   params,
@@ -113,18 +114,20 @@ function FounderPageContent() {
             ))}
           </div>
 
-          <div className="mt-12 grid grid-cols-2 gap-8 border-t border-neutral-200 pt-10 sm:grid-cols-4">
-            {founder.achievements.map((item: { label: string; value: string }) => (
-              <div key={item.label}>
-                <div className="text-3xl font-bold tracking-tight text-[#0045A0]">
-                  {item.value}
+          {SHOW_UNVERIFIED_SECTIONS.founderFigures && (
+            <div className="mt-12 grid grid-cols-2 gap-8 border-t border-neutral-200 pt-10 sm:grid-cols-4">
+              {founder.achievements.map((item: { label: string; value: string }) => (
+                <div key={item.label}>
+                  <div className="text-3xl font-bold tracking-tight text-[#0045A0]">
+                    {item.value}
+                  </div>
+                  <div className="mt-2 text-sm font-medium text-neutral-600">
+                    {item.label}
+                  </div>
                 </div>
-                <div className="mt-2 text-sm font-medium text-neutral-600">
-                  {item.label}
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

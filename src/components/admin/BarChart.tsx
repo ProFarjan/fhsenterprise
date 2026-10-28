@@ -14,7 +14,7 @@ function niceAxisMax(max: number): number {
   return step * 4;
 }
 
-// A single-series magnitude chart in the FHS Enterprise brand orange. Per the data-viz
+// A single-series magnitude chart in the FHS Enterprise brand blue. Per the data-viz
 // method: one series -> no legend (the card title names it), rounded 4px data
 // ends anchored to the baseline, recessive gridlines, and a per-bar hover
 // tooltip. Text stays in ink tokens; only the bars carry the brand hue.
@@ -70,7 +70,7 @@ export default function BarChart({
                   )}
                   <div
                     className={`w-full max-w-10 rounded-t-[4px] transition-colors ${
-                      active ? "bg-orange-500" : "bg-orange-600"
+                      active ? "bg-brand-blue" : "bg-brand-blue"
                     }`}
                     style={{ height: `${Math.max(pct, 1)}%` }}
                   />

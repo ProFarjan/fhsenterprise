@@ -28,7 +28,7 @@ export async function generateMetadata({
       "Vehicle Solutions workshop photos",
       "Daily Bazar video",
     ],
-    image: "/images/gallery/harvest.jpg",
+    image: "/images/companies/rice-mill-bg.jpg",
   });
 }
 

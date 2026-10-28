@@ -107,14 +107,14 @@ export default async function EventsPage({
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/5" />
 
             <div className="absolute left-5 top-5 flex w-16 flex-col items-center rounded-xl bg-white py-2 shadow-md">
-              <span className="text-xs font-bold uppercase text-orange-700">
+              <span className="text-xs font-bold uppercase text-brand-blue">
                 {formatMonth(event.date, locale)}
               </span>
               <span className="text-xl font-bold text-neutral-900">{formatDay(event.date)}</span>
             </div>
 
             <div className="relative flex flex-col gap-2 p-6">
-              <div className="flex items-center gap-1.5 text-xs font-medium text-orange-300">
+              <div className="flex items-center gap-1.5 text-xs font-medium text-blue-200">
                 <LocationIcon />
                 {event.location}
               </div>

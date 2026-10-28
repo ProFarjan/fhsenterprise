@@ -159,7 +159,7 @@ model EventItem {
 model Company {
   id Int @id @default(autoincrement())
 
-  // AGRO, FEED, AGRO_MEDICINE, FILLING_STATION, or AGRI_TECH.
+  // AUTO_RICE_MILL, VEHICLE_SOLUTIONS or DAILY_BAZAR.
   site SiteKey @unique
 
   // Matches the folder under src/app/[locale]/companies/ and the subdomain
@@ -201,8 +201,7 @@ model Company {
 // One slide in a company's hero gallery — an image plus its own headline and
 // tagline. A separate table (rather than fields on Company) because several
 // subsidiaries rotate through multiple hero slides with different copy per
-// slide — see the `hero.slides` arrays in
-// src/data/companies/{agritech,feed,agro-medicine}.ts. The image itself
+// slide. The image itself
 // (imageData/imageMimeType) is set once at creation and never edited in
 // place — a re-upload deletes the row and creates a new one — so it can be
 // served with an immutable cache header; the headline/tagline text can be
@@ -231,10 +230,8 @@ model CompanyHeroImage {
 
 // A product listed under one of FHS Enterprise's subsidiaries — managed from
 // /admin/products. Admin-side CRUD only for now, matching the Media & News
-// pattern (see src/app/admin/(panel)/media/) — no subsidiary's public site
-// reads from this table yet; each still renders its own bespoke, larger
-// product shape from src/data/companies/*.ts (see AgroProduct, FeedProduct,
-// AgritechProduct, AgroMedProduct in src/types/).
+// pattern (see src/app/admin/(panel)/media/) — no public page reads from this
+// table yet; the homepage's product categories come from src/data/site.*.ts.
 model Product {
   id   Int     @id @default(autoincrement())
   site SiteKey

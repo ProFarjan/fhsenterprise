@@ -80,14 +80,14 @@ export default async function MediaOverviewPage({
           <Link
             key={href}
             href={href}
-            className="group flex flex-col gap-4 rounded-2xl border border-neutral-200 bg-neutral-50 p-7 transition-all hover:-translate-y-1 hover:border-orange-200 hover:bg-white hover:shadow-xl"
+            className="group flex flex-col gap-4 rounded-2xl border border-neutral-200 bg-neutral-50 p-7 transition-all hover:-translate-y-1 hover:border-blue-200 hover:bg-white hover:shadow-xl"
           >
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-orange-600 text-white">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-blue text-white">
               <Icon />
             </div>
             <h3 className="text-lg font-semibold text-neutral-900">{title}</h3>
             <p className="text-sm leading-6 text-neutral-600">{description}</p>
-            <span className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-orange-700">
+            <span className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-blue">
               {tCommon("explore")}
               <ArrowIcon />
             </span>
@@ -108,12 +108,12 @@ export default async function MediaOverviewPage({
               <Image src={latest.image} alt="" fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
             </div>
             <div className="flex flex-1 flex-col justify-center gap-2 p-7">
-              <time dateTime={latest.date} className="text-xs font-semibold uppercase tracking-wide text-orange-700">
+              <time dateTime={latest.date} className="text-xs font-semibold uppercase tracking-wide text-brand-blue">
                 {formatDate(latest.date, locale)}
               </time>
               <h3 className="text-xl font-bold text-neutral-900">{latest.title}</h3>
               <p className="text-neutral-600">{latest.excerpt}</p>
-              <span className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-orange-700">
+              <span className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-blue">
                 {tCommon("readMore")}
                 <ArrowIcon />
               </span>

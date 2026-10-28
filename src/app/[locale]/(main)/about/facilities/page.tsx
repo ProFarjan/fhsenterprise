@@ -6,6 +6,7 @@ import { buildPageMetadata } from "@/lib/seo";
 import Breadcrumbs from "@/components/navigation/Breadcrumbs";
 import type { AppLocale } from "@/i18n/routing";
 import { setRequestLocale } from "next-intl/server";
+import { SHOW_UNVERIFIED_SECTIONS } from "@/data/organization";
 
 export async function generateMetadata({
   params,
@@ -34,12 +35,8 @@ export async function generateMetadata({
   });
 }
 
-const FACILITY_IMAGES = [
-  "/images/gallery/feed-fac.png",
-  "/images/gallery/chemical-fac.png",
-  "/images/gallery/agro-fac.png",
-  "/images/gallery/filling-fac.png",
-];
+// Used only if a facility has no image of its own.
+const FALLBACK_FACILITY_IMAGE = "/images/gallery/fhs_history.jpg";
 
 function PinIcon() {
   return (
@@ -69,14 +66,14 @@ function FacilitiesPageContent() {
 
       <section className="mx-auto max-w-6xl px-6 py-12 lg:px-8 lg:py-20">
       <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
-        {facilities.map((facility, index) => (
+        {facilities.map((facility) => (
           <article
             key={facility.name}
             className="group overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-sm transition-all hover:-translate-y-1 hover:border-blue-200 hover:shadow-2xl"
           >
             <div className="relative aspect-[16/10] overflow-hidden">
               <Image
-                src={facility.image ?? FACILITY_IMAGES[index % FACILITY_IMAGES.length]}
+                src={facility.image ?? FALLBACK_FACILITY_IMAGE}
                 alt={facility.name}
                 fill
                 sizes="(min-width: 640px) 50vw, 100vw"
@@ -84,7 +81,7 @@ function FacilitiesPageContent() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
               
-              {facility.capacity && (
+              {SHOW_UNVERIFIED_SECTIONS.facilityFigures && facility.capacity && (
                 <span className="absolute top-4 right-4 inline-flex items-center rounded-full bg-emerald-600/90 px-3 py-1 text-xs font-semibold text-white shadow-md backdrop-blur">
                   {facility.capacity}
                 </span>

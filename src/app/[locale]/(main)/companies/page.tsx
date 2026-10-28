@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import PageHeader from "@/components/layout/PageHeader";
-import CompanyExplorer from "@/components/sections/companies/CompanyExplorer";
+import CompanyCard from "@/components/sections/companies/CompanyCard";
 import { getCompanies } from "@/lib/publicContent";
 import { buildPageMetadata } from "@/lib/seo";
 import Breadcrumbs from "@/components/navigation/Breadcrumbs";
@@ -31,7 +31,7 @@ export async function generateMetadata({
       "Daily Bazar",
       "subsidiary companies Mymensingh",
     ],
-    image: "/images/gallery/distribution.jpg",
+    image: "/images/gallery/fhs_vision.jpg",
   });
 }
 
@@ -56,7 +56,7 @@ export default async function CompaniesPage({
         eyebrow={t("eyebrow")}
         title={t("title")}
         description={t("description")}
-        image="/images/gallery/distribution.jpg"
+        image="/images/gallery/fhs_vision.jpg"
       />
       <div className="mx-auto max-w-7xl px-6 pt-6 lg:px-8">
         <Breadcrumbs
@@ -67,8 +67,16 @@ export default async function CompaniesPage({
           ]}
         />
       </div>
-      <div className="mx-auto max-w-7xl px-6 py-8 lg:px-8">
-        <CompanyExplorer companies={companies} />
+      <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8 lg:py-16">
+        {companies.length > 0 ? (
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {companies.map((company) => (
+              <CompanyCard key={company.name} company={company} locale={locale as AppLocale} />
+            ))}
+          </div>
+        ) : (
+          <p className="py-12 text-center text-neutral-500">{t("empty")}</p>
+        )}
       </div>
     </div>
   );

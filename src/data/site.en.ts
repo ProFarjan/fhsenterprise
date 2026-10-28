@@ -95,7 +95,7 @@ export const siteConfigEn: SiteConfig = {
       bio: [
         "Fakhrul Hasan Suton is the visionary Proprietor and driving force behind FHS Enterprise. Born and raised in Fulbariya, Mymensingh, he envisioned a dynamic enterprise capable of bridging traditional agricultural strengths with modern technology and customer-first business ethics.",
         "Under his strategic stewardship, FHS Enterprise has evolved into a robust multi-sector powerhouse — spearheading innovations across automated rice processing, specialized automotive care and spares distribution, and modern e-commerce retail. His leadership combines hands-on operational discipline with long-term strategic investments.",
-        "Beyond business expansion, Fakhrul Hasan Suton is deeply invested in social empowerment, creating stable employment for hundreds of local workers, championing ethical trade practices, and actively supporting regional educational and community development initiatives in Fulbariya.",
+        "Beyond business expansion, Fakhrul Hasan Suton is deeply invested in social empowerment, creating stable employment for local workers, championing ethical trade practices, and actively supporting regional educational and community development initiatives in Fulbariya.",
       ],
       achievements: [
         { label: "Years of Leadership", value: "10+" },
@@ -111,8 +111,8 @@ export const siteConfigEn: SiteConfig = {
           image: "/images/gallery/bulbul.jpeg",
           quote: "Modernizing Bangladesh's agricultural processing with pure, hygienic, and automated technologies has been our lifelong dedication to the farmers and families of our nation.",
           bio: [
-            "Md. Saiful Islam Bulbul is the esteemed Founder and Director of M/s. Bangladesh Auto Rice Mill, the premier agricultural concern of FHS Enterprise. With decades of hands-on expertise in the grain and agro-industrial sector, he pioneered large-scale automated milling in Fulbariya.",
-            "His technical vision and commitment to uncompromised food safety have positioned the mill as a cornerstone of regional food security, supporting thousands of local paddy farmers and supplying premium rice across Bangladesh.",
+            "Md. Saiful Islam Bulbul is the esteemed Founder and Director of M/s. Bangladesh Auto Rice Mill, the premier agricultural concern of FHS Enterprise. With hands-on expertise in the grain and agro-industrial sector, he pioneered large-scale automated milling in Fulbariya.",
+            "His technical vision and commitment to uncompromised food safety have positioned the mill as a cornerstone of regional food security, supporting local paddy farmers and supplying premium rice to markets.",
           ],
         },
       ],
@@ -174,24 +174,17 @@ export const siteConfigEn: SiteConfig = {
       },
       {
         name: "Vehicle Solutions Diagnostic & Workshop Center",
-        location: "Bypass Road, Fulbariya, Mymensingh",
+        location: "Fulbariya, Mymensingh",
         description: "Full-service automotive facility equipped with computer diagnostics, hydraulic lifts, precision wheel alignment, tyre changing equipment, and a certified genuine parts warehouse.",
-        image: "/images/gallery/distribution.jpg",
+        image: "/images/companies/vehicle-solutions-bg.jpg",
         capacity: "50+ Vehicles Serviced Daily",
       },
       {
         name: "Daily Bazar Central Fulfillment & Cold Chain Hub",
-        location: "Central Market, Fulbariya, Mymensingh",
+        location: "Fulbariya, Mymensingh",
         description: "Modern retail fulfillment hub with temperature-managed fresh produce chambers, barcode-managed grocery sorting aisles, and a dedicated rapid home delivery dispatch unit.",
-        image: "/images/gallery/product.jpg",
+        image: "/images/companies/daily-bazar-bg.jpg",
         capacity: "1,000+ Daily Orders Processed",
-      },
-      {
-        name: "FHS Enterprise Corporate Operations & Quality Lab",
-        location: "Main Road, Fulbariya, Mymensingh",
-        description: "Central administrative headquarters housing corporate management, grain testing and moisture analysis laboratories, supply chain dispatch, and 24/7 customer support desks.",
-        image: "/images/gallery/facility.jpg",
-        capacity: "Group Administrative Headquarters",
       },
     ],
 
@@ -206,15 +199,15 @@ export const siteConfigEn: SiteConfig = {
       },
       {
         question: "What makes M/s. Bangladesh Auto Rice Mill products superior in quality?",
-        answer: "Our mill utilizes state-of-the-art Japanese and European automated sorting, destoning, and polishing technologies. Every grain of rice undergoes rigorous moisture, purity, and breakage inspections, ensuring 100% hygienic, chemical-free, and nutrient-rich rice for consumers.",
+        answer: "M/s. Bangladesh Auto Rice Mill processes rice in an automated, hygienic mill in Fulbariya. Our range includes parboiled, premium and aromatic rice.",
       },
       {
         question: "What services and products are available at Vehicle Solutions?",
-        answer: "Vehicle Solutions is a one-stop automotive hub providing computerized vehicle diagnostics, routine maintenance, brake and suspension overhaul, premium engine oils and industrial lubricants, branded tyres with precision alignment, and 100% authentic spare parts for cars, commercial trucks, and agricultural tractors.",
+        answer: "Vehicle Solutions supplies vehicle parts, tyres, lubricants and accessories, and offers vehicle repairing services.",
       },
       {
         question: "How does Daily Bazar work for retail customers and home delivery?",
-        answer: "Daily Bazar operates both as a physical modern super shop in Fulbariya and an online e-commerce platform at dailybazar.fhsenterprise.com. Customers can purchase farm-fresh vegetables, dairy, cooking essentials, and packaged consumer goods with same-day express doorstep delivery.",
+        answer: "Daily Bazar is our modern super shop and online store for everyday goods, including fresh produce, daily needs and groceries. You can shop online at dailybazar.fhsenterprise.com.",
       },
       {
         question: "How can distributors, businesses, or partners collaborate with FHS Enterprise?",
@@ -285,7 +278,22 @@ export const siteConfigEn: SiteConfig = {
     galleryPhotos: [
       {
         caption: "M/s. Bangladesh Auto Rice Mill — Modern Automated Milling Facility",
-        image: "/images/gallery/harvest.jpg",
+        image: "/images/companies/rice-mill-bg.jpg",
+        height: 600,
+      },
+      {
+        caption: "M/s. Bangladesh Auto Rice Mill — Processing Tower",
+        image: "/images/facilities/rice-mill-processing.jpg",
+        height: 600,
+      },
+      {
+        caption: "M/s. Bangladesh Auto Rice Mill — Silos & Storage",
+        image: "/images/facilities/rice-mill-silos.jpg",
+        height: 600,
+      },
+      {
+        caption: "M/s. Bangladesh Auto Rice Mill — Mill Campus, Fulbariya",
+        image: "/images/facilities/rice-mill-machinery.jpg",
         height: 600,
       },
       {
@@ -305,31 +313,31 @@ export const siteConfigEn: SiteConfig = {
       },
       {
         caption: "Vehicle Solutions — Transport Fleet & Automotive Hub",
-        image: "/images/gallery/distribution.jpg",
+        image: "/images/companies/vehicle-solutions-bg.jpg",
         height: 600,
       },
       {
         caption: "Daily Bazar — Fresh Grocery Supply Chain & Delivery Center",
-        image: "/images/gallery/product.jpg",
+        image: "/images/companies/daily-bazar-bg.jpg",
         height: 600,
       },
     ],
     galleryVideos: [
       {
         title: "M/s. Bangladesh Auto Rice Mill — Automated Processing & Quality Packaging",
-        thumbnail: "/images/gallery/harvest.jpg",
+        thumbnail: "/images/companies/rice-mill-bg.jpg",
         videoUrl: "/videos/Auto_rice_mill_operation.mp4",
         description: "An inside look at our state-of-the-art automated rice mill in Fulbariya, Mymensingh, ensuring hygienic processing and premium quality grain.",
       },
       {
         title: "Vehicle Solutions — Commercial Fleet Care, Tyres & Lubricant Services",
-        thumbnail: "/images/gallery/distribution.jpg",
+        thumbnail: "/images/companies/vehicle-solutions-bg.jpg",
         videoUrl: "/videos/vehicle_solution.mp4",
         description: "Comprehensive vehicle maintenance, genuine parts, tyre servicing, and industrial lubricants keeping the region moving.",
       },
       {
         title: "Daily Bazar — Modern Super Shop & Express Online Delivery",
-        thumbnail: "/images/gallery/product.jpg",
+        thumbnail: "/images/companies/daily-bazar-bg.jpg",
         videoUrl: "/videos/daily_bazar.mp4",
         description: "Explore our modern super shop experience with fully stocked aisles of fresh vegetables, packaged groceries, and doorstep delivery via dailybazar.fhsenterprise.com.",
       },

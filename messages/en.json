@@ -56,7 +56,8 @@
     "companies": {
       "eyebrow": "Our Portfolio",
       "title": "Companies of FHS Enterprise",
-      "description": "A diversified family of businesses spanning agricultural rice milling, automotive solutions, and digital e-commerce — united under FHS Enterprise."
+      "description": "A diversified family of businesses spanning agricultural rice milling, automotive solutions, and digital e-commerce — united under FHS Enterprise.",
+      "empty": "Our companies will be listed here shortly."
     }
   },
   "common": {
@@ -78,6 +79,7 @@
       "badge": "Who We Are"
     },
     "companies": {
+      "badge": "Our Businesses",
       "headingPrefix": "Our",
       "headingHighlight": "Companies",
       "subheading": "a family of businesses built on trust",
@@ -87,8 +89,7 @@
       "seeAll": "See All",
       "parentBadge": "Parent Company",
       "parentDescription": "A rapidly growing conglomerate located in Fulbariya, Mymensingh — spanning premium agricultural processing, advanced automotive solutions, and modern digital e-commerce.",
-      "parentLogoAlt": "FHS Enterprise logo",
-      "companyLogoAlt": "{name} logo"
+      "parentLogoAlt": "FHS Enterprise logo"
     },
     "whyChooseUs": {
       "badge": "Why Choose Us",
@@ -101,7 +102,7 @@
         },
         "experience": {
           "title": "Trusted Experience",
-          "description": "Over 10 years of proven excellence serving communities with dedication."
+          "description": "A trusted name in Fulbariya, built on honest dealing and dependable service."
         },
         "portfolio": {
           "title": "Diverse Portfolio",
@@ -113,7 +114,7 @@
         },
         "customer": {
           "title": "Customer First",
-          "description": "24/7 dedicated support and a relentless focus on customer satisfaction."
+          "description": "A dedicated team and a relentless focus on customer satisfaction."
         },
         "sustainability": {
           "title": "Sustainable Growth",
@@ -184,12 +185,6 @@
     "contact": {
       "badge": "Get in Touch"
     }
-  },
-  "explorer": {
-    "companies": "Companies",
-    "sectors": "Sectors",
-    "group": "Group",
-    "empty": "No companies found in this sector."
   },
   "pillar": {
     "badge": "Sustainability",

@@ -12,7 +12,7 @@ export default function ComingSoon({
 }) {
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center rounded-xl border border-dashed border-neutral-300 bg-white/60 px-6 py-16 text-center">
-      <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-orange-50 text-orange-600">
+      <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-blue-light text-brand-blue">
         <Icon className="h-8 w-8" />
       </span>
       <h2 className="mt-5 text-lg font-semibold text-neutral-900">{title}</h2>

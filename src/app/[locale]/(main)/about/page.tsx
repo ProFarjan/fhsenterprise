@@ -8,6 +8,7 @@ import Breadcrumbs from "@/components/navigation/Breadcrumbs";
 import type { AppLocale } from "@/i18n/routing";
 import { jsonLdString } from "@/lib/jsonLd";
 import { setRequestLocale } from "next-intl/server";
+import { SHOW_UNVERIFIED_SECTIONS } from "@/data/organization";
 
 export async function generateMetadata({
   params,
@@ -33,7 +34,7 @@ export async function generateMetadata({
       "Vehicle Solutions Mymensingh",
       "Daily Bazar super shop",
     ],
-    image: "/images/gallery/overview.png",
+    image: "/images/gallery/fhs_vision.jpg",
   });
 }
 
@@ -59,14 +60,18 @@ function AboutOverviewPageContent() {
       description: locale === "bn" ? "ভবিষ্যতের পথচলা এবং নৈতিক ব্যবসায়িক মূল্যবোধ।" : "Our strategic goals, aspirations, and ethical values.",
       href: "/about/mission-vision",
     },
-    {
-      title: tTabs("milestones"),
-      description: locale === "bn" ? "২০১৪ থেকে ২০২৬ পর্যন্ত অর্জিত ঐতিহাসিক সাফল্য।" : "Key milestones from our inception to nationwide leadership.",
-      href: "/about/milestones",
-    },
+    ...(SHOW_UNVERIFIED_SECTIONS.milestones
+      ? [
+          {
+            title: tTabs("milestones"),
+            description: locale === "bn" ? "আমাদের যাত্রার গুরুত্বপূর্ণ মাইলফলক।" : "Key milestones along our journey.",
+            href: "/about/milestones",
+          },
+        ]
+      : []),
     {
       title: tTabs("facilities"),
-      description: locale === "bn" ? "অত্যাধুনিক অটো রাইস মিল, ওয়ার্কশপ ও কোল্ড চেইন হাব।" : "State-of-the-art milling complex, workshops, and fulfillment hubs.",
+      description: locale === "bn" ? "আমাদের অটো রাইস মিল, ভেহিকেল সলিউশনস ও ডেইলি বাজার।" : "Our rice mill, vehicle solutions centre and super shop.",
       href: "/about/facilities",
     },
     {
@@ -121,7 +126,7 @@ function AboutOverviewPageContent() {
           </div>
           <div className="relative aspect-[4/3] overflow-hidden rounded-3xl shadow-2xl ring-1 ring-black/5">
             <Image
-              src="/images/gallery/overview.png"
+              src="/images/gallery/fhs_vision.jpg"
               alt=""
               fill
               sizes="(min-width: 1024px) 50vw, 100vw"

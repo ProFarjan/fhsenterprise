@@ -3,6 +3,8 @@ import type { AppLocale } from "@/i18n/routing";
 import { siteConfigBn } from "./site.bn";
 import { siteConfigEn } from "./site.en";
 
+import { SHOW_UNVERIFIED_SECTIONS } from "./organization";
+
 const SUSTAINABILITY_HREF = "/sustainability";
 
 // The header menu lists one sub-link per sustainability pillar. Those pages only
@@ -33,7 +35,26 @@ function withRealSocials(config: SiteConfig): SiteConfig {
   };
 }
 
-const prepare = (config: SiteConfig) => withRealSocials(withAvailablePillarLinks(config));
+// Pages switched off in organization.ts must not appear in the menu either.
+function withoutHiddenPages(config: SiteConfig): SiteConfig {
+  const hidden = new Set<string>();
+  if (!SHOW_UNVERIFIED_SECTIONS.milestones) hidden.add("/about/milestones");
+  // The whole Sustainability section is hidden until at least one pillar has
+  // content (the overview would otherwise be an empty page).
+  if (config.sustainabilityPages.pillars.length === 0) hidden.add(SUSTAINABILITY_HREF);
+  if (hidden.size === 0) return config;
+  return {
+    ...config,
+    nav: config.nav
+      .filter((item) => !hidden.has(item.href))
+      .map((item) =>
+        item.children ? { ...item, children: item.children.filter((c) => !hidden.has(c.href)) } : item,
+      ),
+  };
+}
+
+const prepare = (config: SiteConfig) =>
+  withoutHiddenPages(withRealSocials(withAvailablePillarLinks(config)));
 
 const configs: Record<AppLocale, SiteConfig> = {
   en: prepare(siteConfigEn),
@@ -44,7 +65,7 @@ const configs: Record<AppLocale, SiteConfig> = {
 // static object, so the same call site keeps working once this is swapped
 // for a Prisma query that returns a `SiteConfig` per locale.
 export function getSiteConfig(locale: AppLocale): SiteConfig {
-  return configs[locale === "en" ? "en" : "bn"];
+  return configs[locale === "bn" ? "bn" : "en"];
 }
 
 // A single sustainability pillar page's content, or undefined when no content

@@ -25,7 +25,7 @@ export default async function AdminSettingsPage() {
           <div>
             <dt className="text-xs text-neutral-500">Role</dt>
             <dd className="mt-0.5">
-              <span className="inline-flex rounded-full bg-orange-50 px-2.5 py-1 text-xs font-medium text-orange-700">
+              <span className="inline-flex rounded-full bg-brand-blue-light px-2.5 py-1 text-xs font-medium text-brand-blue">
                 {admin.role === "SUPER_ADMIN" ? "Super Admin" : "Admin"}
               </span>
             </dd>

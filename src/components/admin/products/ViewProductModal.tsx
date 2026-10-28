@@ -18,7 +18,7 @@ export default function ViewProductModal({
           <span className="rounded-full bg-neutral-100 px-2.5 py-1 text-[11px] font-medium text-neutral-600">
             {product.siteLabel}
           </span>
-          <span className="rounded-full bg-orange-50 px-2.5 py-1 text-[11px] font-semibold text-orange-700">
+          <span className="rounded-full bg-brand-blue-light px-2.5 py-1 text-[11px] font-semibold text-brand-blue">
             {product.categoryLabel}
           </span>
           <span

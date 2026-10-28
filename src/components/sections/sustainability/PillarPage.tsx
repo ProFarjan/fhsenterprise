@@ -17,7 +17,7 @@ export default function PillarPage({ pillar }: { pillar: SustainabilityPillar })
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/5" />
         <div className="relative p-8">
-          <span className="inline-block rounded-full bg-white/15 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-orange-300 backdrop-blur-sm">
+          <span className="inline-block rounded-full bg-white/15 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-200 backdrop-blur-sm">
             {t("badge")}
           </span>
           <h2 className="mt-3 text-3xl font-bold text-white">{pillar.title}</h2>
@@ -33,7 +33,7 @@ export default function PillarPage({ pillar }: { pillar: SustainabilityPillar })
             key={stat.label}
             className="rounded-2xl border border-neutral-200 bg-neutral-50 p-6 text-center"
           >
-            <dt className="text-3xl font-bold text-orange-600">{stat.value}</dt>
+            <dt className="text-3xl font-bold text-brand-blue">{stat.value}</dt>
             <dd className="mt-1 text-sm text-neutral-600">{stat.label}</dd>
           </div>
         ))}

@@ -14,13 +14,13 @@ import { routing } from "@/i18n/routing";
 //  - the subsidiary microsites: they live on their own subdomains (a different
 //    host), so they can't be listed in this host's sitemap.
 export default function sitemap(): MetadataRoute.Sitemap {
+  const pillars = getSiteConfig("en").sustainabilityPages.pillars;
   const publicRoutes = [
     "",
     "/about",
     "/about/history",
     "/about/founder",
     "/about/mission-vision",
-    "/about/milestones",
     "/about/facilities",
     "/about/faq",
     "/companies",
@@ -28,12 +28,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/media/news",
     "/media/events",
     "/media/gallery",
-    "/sustainability",
-    // Only pillars that have content render a page (the rest 404).
-    ...getSiteConfig("en").sustainabilityPages.pillars.map((p) => `/sustainability/${p.slug}`),
+    // The Sustainability section exists only once at least one pillar has content;
+    // each pillar is its own page (pillars without content 404).
+    ...(pillars.length > 0 ? ["/sustainability", ...pillars.map((p) => `/sustainability/${p.slug}`)] : []),
     "/contact",
     // Only once the draft legal text has been reviewed (SHOW_UNVERIFIED_SECTIONS.legalPages).
     ...(SHOW_UNVERIFIED_SECTIONS.legalPages ? ["/privacy", "/terms"] : []),
+    ...(SHOW_UNVERIFIED_SECTIONS.milestones ? ["/about/milestones"] : []),
   ];
 
   const priorityFor = (route: string) =>

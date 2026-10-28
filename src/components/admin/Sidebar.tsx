@@ -45,7 +45,7 @@ export default function Sidebar({
       >
         {/* Brand */}
         <div className="flex h-16 items-center gap-3 px-5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-orange-600 text-sm font-bold text-white">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-blue text-sm font-bold text-white">
             FHS
           </div>
           <div className="leading-tight">
@@ -77,7 +77,7 @@ export default function Sidebar({
                 onClick={onClose}
                 className={`group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                   active
-                    ? "bg-orange-600 text-white"
+                    ? "bg-brand-blue text-white"
                     : "text-neutral-400 hover:bg-white/5 hover:text-white"
                 }`}
               >
@@ -86,7 +86,7 @@ export default function Sidebar({
                 {badge > 0 ? (
                   <span
                     className={`ml-auto rounded-full px-2 py-0.5 text-[11px] font-semibold ${
-                      active ? "bg-white/25 text-white" : "bg-orange-600/90 text-white"
+                      active ? "bg-white/25 text-white" : "bg-brand-blue/90 text-white"
                     }`}
                     aria-label={`${badge} unread`}
                   >

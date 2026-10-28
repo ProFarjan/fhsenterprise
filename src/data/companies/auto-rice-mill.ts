@@ -1,12 +1,14 @@
 import type { CompanySiteContent, CompanyTheme } from "@/types/company";
 
 // Accent colours for the microsite's chrome (header/footer) and homepage.
+// Written out in full (not built by string concatenation) so Tailwind can see
+// every class.
 export const autoRiceMillTheme: CompanyTheme = {
-  accentBg: "bg-orange-600",
-  accentBgHover: "hover:bg-orange-500",
-  accentText: "text-orange-600",
-  accentBorder: "border-orange-200",
-  heroFrom: "from-orange-950",
+  accentBg: "bg-brand-green",
+  accentBgHover: "hover:bg-brand-green-hover",
+  accentText: "text-brand-green",
+  accentBorder: "border-brand-green/30",
+  heroFrom: "from-green-950",
 };
 
 export const autoRiceMillContent: Record<"en" | "bn", CompanySiteContent> = {
@@ -14,7 +16,7 @@ export const autoRiceMillContent: Record<"en" | "bn", CompanySiteContent> = {
     name: "M/s. Bangladesh Auto Rice Mill",
     sector: "Rice Mill",
     tagline: "Premium Quality Rice Production from field to table.",
-    heroImage: "/images/companies/agro-banner.png",
+    heroImage: "/images/companies/rice-mill-bg.jpg",
     nav: [
       { label: "Home", href: "/" },
       { label: "About", href: "/#about" },
@@ -49,7 +51,7 @@ export const autoRiceMillContent: Record<"en" | "bn", CompanySiteContent> = {
     name: "মেসার্স বাংলাদেশ অটো রাইস মিল",
     sector: "রাইস মিল",
     tagline: "মাঠ থেকে টেবিলে প্রিমিয়াম মানের চাল সরবরাহ",
-    heroImage: "/images/companies/agro-banner.png",
+    heroImage: "/images/companies/rice-mill-bg.jpg",
     nav: [
       { label: "হোম", href: "/" },
       { label: "সম্পর্কে", href: "/#about" },

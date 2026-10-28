@@ -6,9 +6,9 @@ import type { AppLocale } from "@/i18n/routing";
 import type { CompanyTheme } from "@/types/company";
 
 // Shared chrome for a company subdomain site: its own header/footer, distinct
-// from MR Group's <Header>/<Footer> in src/components/layout. Companies vary
-// their look via `theme` (see src/data/companies/theme.ts) but share this
-// structural skeleton.
+// from the parent site's <Header>/<Footer> in src/components/layout. Companies
+// vary their look via `theme` (a CompanyTheme, see src/types/company.ts) but
+// share this structural skeleton.
 export default async function CompanyChrome({
   name,
   tagline,
@@ -68,7 +68,7 @@ export default async function CompanyChrome({
           )}
 
           <div className="flex items-center gap-4">
-            <LanguageSwitcher />
+            <LanguageSwitcher accentClassName={theme.accentBg} />
             <a
               href={`//${rootDomain}/${locale}`}
               className={`hidden text-sm font-semibold ${theme.accentText} sm:inline`}

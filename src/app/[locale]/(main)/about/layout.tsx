@@ -10,7 +10,7 @@ function AboutLayoutContent({ children }: { children: React.ReactNode }) {
       {/* Full-bleed photo hero */}
       <header className="relative isolate flex min-h-[400px] items-end overflow-hidden">
         <Image
-          src="/images/gallery/facility.jpg"
+          src="/images/gallery/fhs_history.jpg"
           alt=""
           fill
           priority

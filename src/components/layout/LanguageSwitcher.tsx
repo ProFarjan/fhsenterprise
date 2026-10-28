@@ -5,13 +5,13 @@ import { Link, usePathname } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 
 const OPTIONS: { locale: AppLocale; label: string; full: string }[] = [
-  { locale: "bn", label: "বাং", full: "বাংলা" },
   { locale: "en", label: "EN", full: "English" },
+  { locale: "bn", label: "বাং", full: "বাংলা" },
 ];
 
 export default function LanguageSwitcher({
   transparent = false,
-  accentClassName = "bg-orange-600",
+  accentClassName = "bg-brand-blue",
 }: {
   transparent?: boolean;
   /** Active-pill background class — lets company subdomains match their own theme. */
@@ -19,7 +19,7 @@ export default function LanguageSwitcher({
 }) {
   const locale = useLocale() as AppLocale;
   const pathname = usePathname();
-  const activeIndex = locale === "en" ? 1 : 0;
+  const activeIndex = locale === "bn" ? 1 : 0;
 
   return (
     <div

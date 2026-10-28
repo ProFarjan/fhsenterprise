@@ -9,7 +9,7 @@ import { createProductAction, type ProductFormState } from "@/app/admin/(panel)/
 import { SiteKey } from "@/generated/prisma/enums";
 
 const inputClass =
-  "w-full rounded-lg border border-neutral-200 bg-white px-3.5 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-orange-400 focus:ring-2 focus:ring-orange-500/20 focus:outline-none";
+  "w-full rounded-lg border border-neutral-200 bg-white px-3.5 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-blue-400 focus:ring-2 focus:ring-brand-blue/20 focus:outline-none";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -17,7 +17,7 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="rounded-lg bg-orange-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-orange-500 disabled:cursor-not-allowed disabled:opacity-70"
+      className="rounded-lg bg-brand-blue px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-blue-hover disabled:cursor-not-allowed disabled:opacity-70"
     >
       {pending ? "Adding…" : "Add product"}
     </button>
@@ -203,7 +203,7 @@ export default function CreateProductModal({
               setImageFileError(null);
               setImagePreview(URL.createObjectURL(file));
             }}
-            className="block w-full text-sm text-neutral-600 file:mr-3 file:rounded-lg file:border-0 file:bg-orange-50 file:px-3.5 file:py-2 file:text-sm file:font-medium file:text-orange-700 hover:file:bg-orange-100"
+            className="block w-full text-sm text-neutral-600 file:mr-3 file:rounded-lg file:border-0 file:bg-brand-blue-light file:px-3.5 file:py-2 file:text-sm file:font-medium file:text-brand-blue hover:file:bg-blue-100"
           />
           <p className="mt-1.5 text-xs text-neutral-500">JPEG, PNG, WEBP, or GIF. Max 5MB.</p>
           {imageFileError && (
@@ -222,7 +222,7 @@ export default function CreateProductModal({
             type="checkbox"
             name="isPublished"
             defaultChecked
-            className="h-4 w-4 rounded border-neutral-300 text-orange-600 focus:ring-orange-500"
+            className="h-4 w-4 rounded border-neutral-300 text-brand-blue focus:ring-brand-blue"
           />
           Published <span className="text-neutral-400">(will apply once product pages go live)</span>
         </label>

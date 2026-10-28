@@ -8,7 +8,7 @@ import { SHOW_UNVERIFIED_SECTIONS } from "@/data/organization";
 type Status = "idle" | "submitting" | "success" | "error";
 
 const inputClasses =
-  "mt-1.5 w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm text-neutral-900 focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500";
+  "mt-1.5 w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm text-neutral-900 focus:border-brand-blue focus:outline-none focus:ring-1 focus:ring-brand-blue";
 
 export default function ContactForm() {
   const t = useTranslations("form");
@@ -67,7 +67,7 @@ export default function ContactForm() {
         ref={successRef}
         role="status"
         tabIndex={-1}
-        className="rounded-2xl border border-orange-200 bg-orange-50 p-8 text-center focus:outline-none"
+        className="rounded-2xl border border-blue-200 bg-brand-blue-light p-8 text-center focus:outline-none"
       >
         <p className="text-lg font-semibold text-neutral-900">{t("successTitle")}</p>
         <p className="mt-2 text-neutral-600">{t("successBody")}</p>
@@ -79,7 +79,7 @@ export default function ContactForm() {
             setStatus("idle");
             requestAnimationFrame(() => nameRef.current?.focus());
           }}
-          className="mt-5 text-sm font-semibold text-orange-700 hover:text-orange-600"
+          className="mt-5 text-sm font-semibold text-brand-blue hover:text-brand-blue-hover"
         >
           {t("sendAnother")}
         </button>
@@ -147,7 +147,7 @@ export default function ContactForm() {
         <button
           type="submit"
           disabled={status === "submitting"}
-          className="rounded-md bg-orange-700 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-60"
+          className="rounded-md bg-brand-blue px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-blue-hover disabled:cursor-not-allowed disabled:opacity-60"
         >
           {status === "submitting" ? t("sending") : t("submit")}
         </button>

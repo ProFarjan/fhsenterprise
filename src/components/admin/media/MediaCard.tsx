@@ -21,7 +21,7 @@ export default function MediaCard({ item }: { item: MediaCardData }) {
         {item.type === "VIDEO" && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/20">
             <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white/95 shadow-lg">
-              <PlayIcon className="ml-0.5 h-5 w-5 text-orange-600" />
+              <PlayIcon className="ml-0.5 h-5 w-5 text-brand-blue" />
             </div>
           </div>
         )}

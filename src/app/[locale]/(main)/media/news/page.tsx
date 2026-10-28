@@ -96,10 +96,10 @@ export default async function NewsPage({
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
         <div className="relative flex flex-col gap-3 p-8">
-          <span className="w-fit rounded-full bg-orange-700 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
+          <span className="w-fit rounded-full bg-brand-blue px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
             {tMedia("featured")}
           </span>
-          <time dateTime={featured.date} className="text-xs font-semibold uppercase tracking-wide text-orange-300">
+          <time dateTime={featured.date} className="text-xs font-semibold uppercase tracking-wide text-blue-200">
             {formatDate(featured.date, locale)}
           </time>
           <h2 className="max-w-2xl text-2xl font-bold text-white sm:text-3xl">{featured.title}</h2>
@@ -129,12 +129,12 @@ export default async function NewsPage({
                 />
               </div>
               <div className="flex flex-1 flex-col gap-2 p-6">
-                <time dateTime={item.date} className="text-xs font-semibold uppercase tracking-wide text-orange-700">
+                <time dateTime={item.date} className="text-xs font-semibold uppercase tracking-wide text-brand-blue">
                   {formatDate(item.date, locale)}
                 </time>
                 <h3 className="text-lg font-semibold text-neutral-900">{item.title}</h3>
                 <p className="flex-1 text-sm leading-6 text-neutral-600">{item.excerpt}</p>
-                <span className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-orange-700">
+                <span className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-blue">
                   {tCommon("readMore")}
                   <ArrowIcon />
                 </span>

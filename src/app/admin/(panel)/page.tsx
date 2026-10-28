@@ -187,9 +187,9 @@ export default async function AdminDashboardPage() {
             <Link
               key={s.label}
               href={s.href}
-              className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm transition-colors hover:border-orange-200"
+              className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm transition-colors hover:border-blue-200"
             >
-              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-orange-50 text-orange-600">
+              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-blue-light text-brand-blue">
                 <Icon className="h-5 w-5" />
               </span>
               <p className="mt-4 text-2xl font-semibold text-neutral-900 tabular-nums">{s.value}</p>
@@ -223,7 +223,7 @@ export default async function AdminDashboardPage() {
             <ul className="space-y-4">
               {activity.map((a, i) => (
                 <li key={i} className="flex gap-3">
-                  <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-orange-500" />
+                  <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-brand-blue" />
                   <div className="min-w-0">
                     <p className="text-sm break-words text-neutral-700">{a.text}</p>
                     <p className="text-xs text-neutral-400">{timeAgo(a.at)}</p>
@@ -241,7 +241,7 @@ export default async function AdminDashboardPage() {
           <h3 className="text-sm font-semibold text-neutral-900">Recent messages</h3>
           <Link
             href="/admin/messages"
-            className="text-xs font-semibold text-orange-600 hover:text-orange-500"
+            className="text-xs font-semibold text-brand-blue hover:text-brand-blue-hover"
           >
             View all
           </Link>
@@ -283,8 +283,8 @@ export default async function AdminDashboardPage() {
                           Read
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-2.5 py-1 text-xs font-medium text-orange-700">
-                          <span className="h-1.5 w-1.5 rounded-full bg-orange-500" />
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-blue-light px-2.5 py-1 text-xs font-medium text-brand-blue">
+                          <span className="h-1.5 w-1.5 rounded-full bg-brand-blue" />
                           New
                         </span>
                       )}

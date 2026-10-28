@@ -47,7 +47,7 @@ export default async function CompanyHomePage({
             {content.products.items.map((item) => (
               <li
                 key={item}
-                className={`flex items-center gap-3 rounded-xl border ${theme.accentBorder}/30 bg-white px-4 py-3 text-sm font-medium text-neutral-800 shadow-sm`}
+                className={`flex items-center gap-3 rounded-xl border ${theme.accentBorder} bg-white px-4 py-3 text-sm font-medium text-neutral-800 shadow-sm`}
               >
                 <span className={`h-2 w-2 flex-none rounded-full ${theme.accentBg}`} />
                 {item}

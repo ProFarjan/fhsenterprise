@@ -6,6 +6,7 @@ import Breadcrumbs from "@/components/navigation/Breadcrumbs";
 import { getSiteConfig } from "@/data/site";
 import type { AppLocale } from "@/i18n/routing";
 import { buildPageMetadata } from "@/lib/seo";
+import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 
 export async function generateMetadata({
@@ -13,6 +14,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
+  if (getSiteConfig("en").sustainabilityPages.pillars.length === 0) return {};
   const { locale } = await params;
   return buildPageMetadata({
     locale,
@@ -75,6 +77,8 @@ export default async function SustainabilityLayout({
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 }) {
+  // No pillar has content yet -> the whole section is off (nav, sitemap, pages).
+  if (getSiteConfig("en").sustainabilityPages.pillars.length === 0) notFound();
   const { locale } = await params;
   setRequestLocale(locale);
   return <SustainabilityLayoutContent>{children}</SustainabilityLayoutContent>;

@@ -49,14 +49,14 @@ function SustainabilityOverviewPageContent() {
           <Link
             key={pillar.slug}
             href={`/sustainability/${pillar.slug}`}
-            className="group flex flex-col gap-4 rounded-2xl border border-neutral-200 bg-neutral-50 p-7 transition-all hover:-translate-y-1 hover:border-orange-200 hover:bg-white hover:shadow-xl"
+            className="group flex flex-col gap-4 rounded-2xl border border-neutral-200 bg-neutral-50 p-7 transition-all hover:-translate-y-1 hover:border-blue-200 hover:bg-white hover:shadow-xl"
           >
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-orange-600 text-white">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-blue text-white">
               <PillarIcon icon={pillar.icon} />
             </div>
             <h3 className="text-lg font-semibold text-neutral-900">{pillar.title}</h3>
             <p className="text-sm leading-6 text-neutral-600">{pillar.summary}</p>
-            <span className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-orange-700">
+            <span className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-blue">
               {t("explore")}
               <ArrowIcon />
             </span>

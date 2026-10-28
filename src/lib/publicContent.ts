@@ -2,16 +2,12 @@
 // Backed by the same MediaItem / NewsItem / EventItem tables the admin panel
 // writes to (see prisma/schema.prisma and src/app/admin/(panel)/media/).
 //
-// The FHS Enterprise main site (News, Gallery, Events) and the Gallery pages for
-// the Filling Station and Agro subsidiaries are wired to the database. Other
-// subsidiary pages still read their own static data under
-// src/data/companies/ — the `getSite*` functions below are already
-// site-parameterised so wiring a new one is just calling them with that
-// site's key.
+// The parent site's News, Gallery and Events, its FAQ and the company cards read
+// from the database. The `getSite*` functions are parameterised by SiteKey, so
+// a subsidiary's own site can use them too by passing its key.
 import { prisma } from "@/lib/prisma";
 import { SiteKey } from "@/generated/prisma/enums";
 import { youtubeThumbnailUrl } from "@/lib/youtube";
-import { parseProductBenefits, parseProductSpecs } from "@/lib/productJson";
 import { getSiteConfig } from "@/data/site";
 import type { AppLocale } from "@/i18n/routing";
 import type { Company, FaqItem } from "@/types/content";
@@ -344,60 +340,3 @@ export async function getCompanyLogo(site: SiteKey): Promise<string | null> {
   // the browser/`next/image` cache — see the note in getCompanies above.
   return `/api/companies/${company.id}/logo?v=${company.updatedAt.getTime()}`;
 }
-
-// Product rows for the three subsidiaries whose bespoke product type
-// (AgroProduct / FeedProduct / AgritechProduct — see src/types/{agro,feed,
-// agritech}.ts) already has exactly this shape. Returned objects are
-// structurally assignable to any of the three, so each caller just spreads
-// this onto its static `products` array — no per-site mapping needed.
-//
-// Product has no bn/en fields (see prisma/schema.prisma) — admin-added
-// products render with the same text on both locales, unlike the fully
-// bilingual static catalogue.
-export type SimpleDbProduct = {
-  slug: string;
-  category: string;
-  name: string;
-  tagline: string;
-  image: string;
-  description: string;
-  specs: { label: string; value: string }[];
-  benefits: string[];
-};
-
-export async function getSimpleDbProducts(site: SiteKey): Promise<SimpleDbProduct[]> {
-  const rows = await safely(
-    "products",
-    () =>
-      prisma.product.findMany({
-        where: { site, isPublished: true },
-        orderBy: { createdAt: "desc" },
-        select: {
-          id: true,
-          slug: true,
-          category: true,
-          name: true,
-          tagline: true,
-          description: true,
-          benefits: true,
-          specs: true,
-          updatedAt: true,
-        },
-      }),
-    [],
-  );
-
-  return rows.map((row) => ({
-    slug: row.slug,
-    category: row.category,
-    name: row.name,
-    tagline: row.tagline,
-    // Versioned so a replaced image is never served from an immutable cache
-    // entry — see src/app/api/products/[id]/image/route.ts.
-    image: `/api/products/${row.id}/image?v=${row.updatedAt.getTime()}`,
-    description: row.description,
-    specs: parseProductSpecs(row.specs),
-    benefits: parseProductBenefits(row.benefits),
-  }));
-}
-

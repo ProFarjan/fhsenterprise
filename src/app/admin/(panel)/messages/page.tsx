@@ -92,7 +92,7 @@ export default async function AdminMessagesPage({
           <Link
             href="/admin/messages"
             className={`rounded-md px-3 py-1.5 font-medium ${
-              unreadOnly ? "text-neutral-600 hover:bg-neutral-50" : "bg-orange-600 text-white"
+              unreadOnly ? "text-neutral-600 hover:bg-neutral-50" : "bg-brand-blue text-white"
             }`}
           >
             All
@@ -100,7 +100,7 @@ export default async function AdminMessagesPage({
           <Link
             href="/admin/messages?filter=unread"
             className={`rounded-md px-3 py-1.5 font-medium ${
-              unreadOnly ? "bg-orange-600 text-white" : "text-neutral-600 hover:bg-neutral-50"
+              unreadOnly ? "bg-brand-blue text-white" : "text-neutral-600 hover:bg-neutral-50"
             }`}
           >
             Unread{unread > 0 ? ` (${unread})` : ""}
@@ -121,7 +121,7 @@ export default async function AdminMessagesPage({
 
       {messages.length === 0 ? (
         <div className="flex flex-col items-center rounded-xl border border-dashed border-neutral-300 bg-white/60 px-6 py-16 text-center">
-          <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-50 text-orange-600">
+          <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-blue-light text-brand-blue">
             <MessagesIcon className="h-7 w-7" />
           </span>
           <p className="mt-4 text-sm font-medium text-neutral-900">
@@ -140,7 +140,7 @@ export default async function AdminMessagesPage({
                 <summary className="flex cursor-pointer list-none items-center gap-3 px-5 py-4">
                   <span
                     className={`h-2.5 w-2.5 shrink-0 rounded-full ${
-                      m.isRead ? "bg-neutral-300" : "bg-orange-500"
+                      m.isRead ? "bg-neutral-300" : "bg-brand-blue"
                     }`}
                     aria-label={m.isRead ? "Read" : "Unread"}
                   />
@@ -183,7 +183,7 @@ export default async function AdminMessagesPage({
                       <dd>
                         <a
                           href={`mailto:${m.email}`}
-                          className="text-orange-600 hover:text-orange-500"
+                          className="text-brand-blue hover:text-brand-blue-hover"
                         >
                           {m.email}
                         </a>
@@ -195,7 +195,7 @@ export default async function AdminMessagesPage({
                         <dd>
                           <a
                             href={`tel:${m.phone}`}
-                            className="text-orange-600 hover:text-orange-500"
+                            className="text-brand-blue hover:text-brand-blue-hover"
                           >
                             {m.phone}
                           </a>
@@ -211,7 +211,7 @@ export default async function AdminMessagesPage({
                   <div className="mt-5 flex flex-wrap items-center gap-2">
                     <a
                       href={`mailto:${m.email}?subject=${encodeURIComponent(`Re: ${m.subject}`)}`}
-                      className="rounded-lg bg-orange-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-orange-500"
+                      className="rounded-lg bg-brand-blue px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-blue-hover"
                     >
                       Reply by email
                     </a>

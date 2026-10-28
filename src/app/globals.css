@@ -1,9 +1,5 @@
 @import "tailwindcss";
 
-/* Tailwind scans every file under the project root for class names. The parked
-   legacy sites must not contribute CSS to the live stylesheet. */
-@source not "../../legacy";
-
 :root {
   --background: #ffffff;
   --foreground: #171717;

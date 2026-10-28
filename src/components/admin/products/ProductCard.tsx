@@ -57,7 +57,7 @@ export default function ProductCard({
             type="button"
             onClick={onEdit}
             aria-label="Edit"
-            className="rounded-lg bg-white/90 p-1.5 text-neutral-500 shadow-sm transition-colors hover:bg-orange-50 hover:text-orange-600"
+            className="rounded-lg bg-white/90 p-1.5 text-neutral-500 shadow-sm transition-colors hover:bg-brand-blue-light hover:text-brand-blue-hover"
           >
             <EditIcon className="h-4 w-4" />
           </button>
@@ -65,7 +65,7 @@ export default function ProductCard({
         </div>
       </div>
       <div className="p-3.5">
-        <p className="text-[11px] font-semibold uppercase tracking-wide text-orange-600">
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-brand-blue">
           {product.categoryLabel}
         </p>
         <p className="mt-0.5 truncate text-sm font-medium text-neutral-800">{product.name}</p>

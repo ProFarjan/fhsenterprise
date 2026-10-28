@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
+import { SHOW_UNVERIFIED_SECTIONS } from "@/data/organization";
 
 export default function AboutTabs() {
   const pathname = usePathname();
@@ -12,7 +13,7 @@ export default function AboutTabs() {
     { label: t("history"), href: "/about/history" },
     { label: t("founder"), href: "/about/founder" },
     { label: t("missionVision"), href: "/about/mission-vision" },
-    { label: t("milestones"), href: "/about/milestones" },
+    ...(SHOW_UNVERIFIED_SECTIONS.milestones ? [{ label: t("milestones"), href: "/about/milestones" }] : []),
     { label: t("facilities"), href: "/about/facilities" },
     { label: t("faq"), href: "/about/faq" },
   ];

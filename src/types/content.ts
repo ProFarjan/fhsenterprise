@@ -47,15 +47,7 @@ export interface Stat {
   icon: StatIcon;
 }
 
-export type ProductCategoryIcon =
-  | "grain"
-  | "flask"
-  | "cog"
-  | "droplet"
-  | "flame"
-  | "snowflake"
-  | "leaf"
-  | "fuel";
+export type ProductCategoryIcon = "grain" | "cog" | "leaf";
 
 export interface ProductCategory {
   name: string;

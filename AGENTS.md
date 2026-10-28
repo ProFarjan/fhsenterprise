@@ -11,8 +11,9 @@ This version has breaking changes — APIs, conventions, and file structure may 
 > **Superseded in parts — read [`CLAUDE.md`](CLAUDE.md) first.** `CLAUDE.md` is the maintained
 > technical reference; [`OPERATIONS.md`](OPERATIONS.md) covers deployment and backups. This file was
 > written earlier and a number of its statements are now **out of date**, notably: the legacy
-> subsidiary components, types and CSS palettes now live under `legacy/subsidiaries/` (not in
-> `src/`); `prisma.config.ts` is at the repo root; only the FAQ and gallery reads fall back to static
+> subsidiary components, types, CSS palettes and images were **removed** (only the three businesses
+> remain; the old code is in git under the tag `legacy-subsidiaries`); **English** is now the default
+> language; the old orange MR Group colour is gone; `prisma.config.ts` is at the repo root; only the FAQ and gallery reads fall back to static
 > data when the database is empty (all reads survive a database outage); the contact form now
 > stores messages and `/admin/messages` and the dashboard show real data; rate limiting now exists
 > (in memory); the placeholder phone number is no longer shown; and the SiteKey migration history was
@@ -58,7 +59,7 @@ The site presents a parent company landing page and supports **subsidiary compan
 | `DAILY_BAZAR`        | Daily Bazar — Modern Super Shop     | Redirects to external domain          | External redirect |
 
 **Key business features:**
-- Bilingual content (Bangla `bn` default, English `en`)
+- Bilingual content (English `en` default, Bangla `bn`)
 - Admin panel for managing companies, products, media, news, events, and FAQ
 - Contact form with SMTP email delivery
 - SEO: sitemaps, robots.txt, JSON-LD structured data, OpenGraph, Twitter Cards
@@ -456,7 +457,7 @@ components/
 | `request.ts`   | Loads message catalogs from `messages/{locale}.json`             |
 | `navigation.ts`| Exports locale-aware `Link`, `redirect`, `usePathname`, `useRouter`, `getPathname` |
 
-> **Important:** `localeDetection: false` means the site always lands first-time visitors on Bangla (`/bn`), ignoring the browser's `Accept-Language` header. Users switch manually via the language switcher.
+> **Important:** `localeDetection: false` means the site always lands first-time visitors on English (`/en`), ignoring the browser's `Accept-Language` header. Users switch manually via the language switcher.
 
 ---
 
@@ -722,7 +723,7 @@ npm run prisma:push
 
 ### Business Rules
 
-1. **Default locale is Bangla (`bn`)** — First-time visitors always land on `/bn`, regardless of browser language
+1. **Default locale is English (`en`)** — First-time visitors always land on `/en`, regardless of browser language
 2. **Vehicle Solutions and Daily Bazar redirect externally** — These subsidiaries have their own separate deployments at `vehiclesolutions.fhsenterprise.com` and `dailybazar.fhsenterprise.com`
 3. **Only Auto Rice Mill** is an active internal subsidiary with a full subdomain microsite
 4. **Admin panel is locale-free** — Lives at `/admin` (no `/bn/admin` or `/en/admin`)
@@ -738,7 +739,7 @@ npm run prisma:push
 3. **No CI/CD pipeline** — No GitHub Actions, Vercel config, or other automation.
 4. **No rate limiting** — Contact form and login have no rate limiting or CAPTCHA.
 5. **No RBAC enforcement** — `ADMIN` and `SUPER_ADMIN` roles exist in schema but both have identical access.
-6. **Legacy subsidiary components** — Components for 8+ subsidiaries (agro, filling, agromed, feed, agritech, mrlube, mahin, rahim) exist in `src/components/company/` and their CSS palettes in `globals.css`, but only Auto Rice Mill is currently active. These are remnants from the "MR Group" era.
+6. **Former subsidiaries removed** — The components, types, palettes and images of the old MR Group subsidiaries (agro, filling, agromed, feed, agritech, mrlube, mahin, rahim) were deleted; only Auto Rice Mill, Vehicle Solutions and Daily Bazar remain. The old code is in git under the tag `legacy-subsidiaries`.
 7. **No expired session cleanup automation** — `deleteExpiredSessions()` exists but is not called on any schedule.
 8. **Dashboard shows static demo data** — The admin dashboard page displays placeholder statistics, not live data.
 9. **Messages page is a scaffold** — `/admin/messages` exists but is not wired to any data source for viewing contact form submissions.
@@ -760,8 +761,7 @@ npm run prisma:push
 - **Do not modify production data** or run destructive database operations
 - **Do not bypass authentication** or access control checks
 - **Do not introduce new dependencies** without explicit user approval
-- **Do not delete the parked legacy subsidiary code** under `legacy/subsidiaries/` (agro, filling, etc.) — it may be reactivated (see `legacy/subsidiaries/README.md`; it is no longer in `src/` and is no longer type-checked or linted)
-- **Do not edit `src/generated/prisma/`** — always regenerate via Prisma CLI
+- **Do not reintroduce the former MR Group subsidiaries** (agro, filling station, feed, ...): their code and images were deliberately removed; the project is FHS Enterprise and its three businesses only
 
 ### When Adding New Features
 
@@ -798,11 +798,9 @@ npm run prisma:push
 
 ### Subsidiary Component Pattern
 
-> **Historical.** The per-subsidiary component trees described below were moved out of `src/` into
-> `legacy/subsidiaries/src/` (components, types) and `legacy/subsidiaries/palettes.css` (the colour
-> palettes and fonts that used to be in `globals.css`). New subsidiary sites use the shared
-> `CompanyChrome` / `CompanyHomePage` — see `CLAUDE.md`. The structure below is what you will find
-> there if a site is reactivated.
+> **Historical — removed.** The per-subsidiary component trees described below no longer exist in
+> the project (they are in git under the tag `legacy-subsidiaries`). New subsidiary sites use the
+> shared `CompanyChrome` / `CompanyHomePage` — see `CLAUDE.md`.
 
 Each subsidiary follows a consistent structure:
 

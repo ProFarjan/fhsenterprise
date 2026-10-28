@@ -2,13 +2,13 @@ import type { NavItem } from "@/types/content";
 
 // Content shape for an individual company's subdomain site
 // (src/app/[locale]/companies/<subdomain>/), separate from the parent
-// MR Group `SiteConfig` in content.ts.
+// `SiteConfig` in content.ts.
 export interface CompanySiteContent {
   name: string;
   sector: string;
   tagline: string;
   heroImage: string;
-  /** Only set for companies with a bespoke navbar (e.g. agro); anchors into the homepage sections. */
+  /** Navigation links; anchors into the homepage sections. */
   nav?: NavItem[];
   about: {
     heading: string;

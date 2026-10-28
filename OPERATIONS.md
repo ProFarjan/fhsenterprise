@@ -118,5 +118,4 @@ mysqldump --single-transaction --hex-blob --default-character-set=utf8mb4 \
 
 The hero videos (`public/videos`, ~18 MB) and other large binaries are committed to
 git, and every re-encoded version stays in history forever. Consider moving videos to
-object storage / a CDN, or Git LFS, so the repository and deploys stay small. The
-parked legacy sites' media lives under `legacy/subsidiaries/public/` (see its README).
+object storage / a CDN, or Git LFS, so the repository and deploys stay small.

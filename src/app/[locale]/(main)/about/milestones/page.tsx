@@ -4,13 +4,16 @@ import { getSiteConfig } from "@/data/site";
 import { buildPageMetadata } from "@/lib/seo";
 import Breadcrumbs from "@/components/navigation/Breadcrumbs";
 import type { AppLocale } from "@/i18n/routing";
+import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
+import { SHOW_UNVERIFIED_SECTIONS } from "@/data/organization";
 
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
+  if (!SHOW_UNVERIFIED_SECTIONS.milestones) return {};
   const { locale } = await params;
   return buildPageMetadata({
     locale,
@@ -90,6 +93,8 @@ export default async function MilestonesPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
+  // The timeline's years are unverified, so the page is off (see organization.ts).
+  if (!SHOW_UNVERIFIED_SECTIONS.milestones) notFound();
   const { locale } = await params;
   setRequestLocale(locale);
   return <MilestonesPageContent />;

@@ -25,7 +25,7 @@ export default function NewsCard({ item }: { item: NewsCardData }) {
         </div>
       </div>
       <div className="flex flex-1 flex-col gap-1.5 p-3.5">
-        <p className="text-xs font-semibold tracking-wide text-orange-600 uppercase">
+        <p className="text-xs font-semibold tracking-wide text-brand-blue uppercase">
           {item.dateLabel}
         </p>
         <p className="text-sm font-semibold text-neutral-900">{item.title}</p>

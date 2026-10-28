@@ -10,7 +10,7 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="rounded-lg bg-orange-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-orange-500 focus:ring-2 focus:ring-orange-500/40 focus:outline-none disabled:cursor-not-allowed disabled:opacity-70"
+      className="rounded-lg bg-brand-blue px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-blue-hover focus:ring-2 focus:ring-brand-blue/40 focus:outline-none disabled:cursor-not-allowed disabled:opacity-70"
     >
       {pending ? "Updating…" : "Update password"}
     </button>
@@ -18,7 +18,7 @@ function SubmitButton() {
 }
 
 const inputClass =
-  "w-full rounded-lg border border-neutral-200 bg-white px-3.5 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-orange-400 focus:ring-2 focus:ring-orange-500/20 focus:outline-none";
+  "w-full rounded-lg border border-neutral-200 bg-white px-3.5 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-blue-400 focus:ring-2 focus:ring-brand-blue/20 focus:outline-none";
 
 export default function ChangePasswordForm() {
   const [state, formAction] = useActionState<PasswordState, FormData>(

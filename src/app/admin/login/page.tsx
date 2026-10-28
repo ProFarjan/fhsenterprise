@@ -16,13 +16,13 @@ export default async function AdminLoginPage({
     <div className="flex min-h-full items-center justify-center bg-neutral-900 px-4 py-12">
       {/* Ambient brand glow */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute -top-32 -right-24 h-96 w-96 rounded-full bg-orange-600/20 blur-3xl" />
-        <div className="absolute -bottom-40 -left-24 h-96 w-96 rounded-full bg-orange-500/10 blur-3xl" />
+        <div className="absolute -top-32 -right-24 h-96 w-96 rounded-full bg-brand-blue/20 blur-3xl" />
+        <div className="absolute -bottom-40 -left-24 h-96 w-96 rounded-full bg-brand-blue/10 blur-3xl" />
       </div>
 
       <div className="relative w-full max-w-md">
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-600 text-xl font-bold text-white shadow-lg shadow-orange-600/30">
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-blue text-xl font-bold text-white shadow-lg shadow-brand-blue/30">
             FHS
           </div>
           <h1 className="text-2xl font-semibold text-white">Admin Panel</h1>

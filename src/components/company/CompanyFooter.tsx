@@ -1,9 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import type { AppLocale } from "@/i18n/routing";
 
-// Generic footer shared by company subdomain sites that don't have a fully
-// bespoke footer yet (see CompanyChrome). Companies with a custom design
-// (e.g. agro) render their own footer instead of this one.
+// Footer shared by the company subdomain sites (see CompanyChrome).
 export default async function CompanyFooter({
   tagline,
   locale,
@@ -21,7 +19,7 @@ export default async function CompanyFooter({
         <p className="text-sm">{tagline}</p>
         <p className="text-xs text-neutral-500">
           {t("partOf")}{" "}
-          <a href={`//${rootDomain}/${locale}`} className="font-semibold text-orange-500">
+          <a href={`//${rootDomain}/${locale}`} className="font-semibold text-brand-blue">
             FHS Enterprise
           </a>
         </p>

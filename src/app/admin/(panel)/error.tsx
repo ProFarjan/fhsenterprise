@@ -51,7 +51,7 @@ export default function AdminPanelError({
         <button
           type="button"
           onClick={() => unstable_retry()}
-          className="rounded-lg bg-orange-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-orange-500"
+          className="rounded-lg bg-brand-blue px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-blue-hover"
         >
           Try again
         </button>

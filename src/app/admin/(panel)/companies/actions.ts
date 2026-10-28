@@ -174,10 +174,8 @@ export async function removeCompanyImageAction(formData: FormData): Promise<{ er
 export type HeroImageActionState = { error?: string; id?: number };
 
 // A company's hero gallery (CompanyHeroImage) is managed independently of
-// the main edit form — several subsidiaries rotate through multiple hero
-// photos (see the `hero.slides` arrays in
-// src/data/companies/{agritech,feed,agro-medicine}.ts), so images are
-// added/removed one at a time rather than as a single form field.
+// the main edit form — a company can rotate through several hero photos, so
+// images are added/removed one at a time rather than as a single form field.
 export async function addHeroImageAction(formData: FormData): Promise<HeroImageActionState> {
   await requireAdmin();
 

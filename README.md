@@ -40,7 +40,7 @@ npm run dev                     # http://localhost:3000  (admin: /admin)
 The Prisma client is generated into `src/generated/prisma/` (git-ignored); `npm run build`
 and `npm run typecheck` generate it for you, otherwise run `npm run prisma:generate`.
 
-Open the Rice Mill microsite locally at `http://auto-rice-mill.localhost:3000/bn` (browsers
+Open the Rice Mill microsite locally at `http://auto-rice-mill.localhost:3000/en` (browsers
 resolve `*.localhost` to your machine).
 
 ## Scripts
@@ -74,7 +74,6 @@ src/
   proxy.ts                  host-based routing (subdomains) + locale redirects
 prisma/                     schema, migrations, seed scripts, README (database notes)
 messages/                   UI strings, en.json and bn.json (keep keys identical)
-legacy/subsidiaries/        retired subsidiary sites, parked (see its README)
 scripts/archive/            one-off helper scripts, kept for reference
 ```
 
@@ -86,22 +85,14 @@ scripts/archive/            one-off helper scripts, kept for reference
   unreachable, so public pages keep rendering.
 - **Images live in the database** (MySQL `LongBlob`) and are served by `src/app/api/**/image` routes.
   This makes **database backups important** — see [OPERATIONS.md](OPERATIONS.md#backups).
-- **Languages:** Bangla (`/bn`, the default) and English (`/en`). Visitors always land on
-  `/bn` and switch manually.
-- **Admin panel** (`/admin`): companies, products, media & news & events, FAQ, contact
-  messages and settings. Every Server Action re-checks the session; sign-in, password
-  change and the contact form are rate-limited (in memory).
-- **Contact form:** messages are stored in the database (shown in `/admin/messages`) and
-  emailed; the visitor only sees an error if both fail.
-- **Contact details** (phone, address, ...) are set in one file, `src/data/organization.ts`.
-  A `null` value hides that detail everywhere instead of showing a placeholder.
+- **Languages:** English (`/en`, the default) and Bangla (`/bn`). Visitors always land on
+  `/en` and switch to Bangla themselves; their choice is remembered.
 
 ## More documentation
 
 - [`CLAUDE.md`](CLAUDE.md) — architecture and conventions (the maintained technical reference)
 - [`OPERATIONS.md`](OPERATIONS.md) — deploying, environment, monitoring and backups
 - [`prisma/README.md`](prisma/README.md) — database setup and baselining
-- [`legacy/subsidiaries/README.md`](legacy/subsidiaries/README.md) — the parked subsidiary sites
 
 ## License
 

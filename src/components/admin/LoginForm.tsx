@@ -12,7 +12,7 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="w-full rounded-lg bg-orange-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-orange-500 focus:ring-2 focus:ring-orange-500/40 focus:outline-none disabled:cursor-not-allowed disabled:opacity-70"
+      className="w-full rounded-lg bg-brand-blue px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-blue-hover focus:ring-2 focus:ring-brand-blue/40 focus:outline-none disabled:cursor-not-allowed disabled:opacity-70"
     >
       {pending ? "Signing in…" : "Sign in"}
     </button>
@@ -42,7 +42,7 @@ export default function LoginForm() {
             type="email"
             required
             autoComplete="email"
-            className="w-full rounded-lg border border-white/10 bg-neutral-900/60 px-3.5 py-2.5 text-sm text-white placeholder:text-neutral-500 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/30 focus:outline-none"
+            className="w-full rounded-lg border border-white/10 bg-neutral-900/60 px-3.5 py-2.5 text-sm text-white placeholder:text-neutral-500 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/30 focus:outline-none"
             placeholder="you@fhsenterprise.com"
           />
         </div>
@@ -61,7 +61,7 @@ export default function LoginForm() {
               type={showPassword ? "text" : "password"}
               required
               autoComplete="current-password"
-              className="w-full rounded-lg border border-white/10 bg-neutral-900/60 px-3.5 py-2.5 pr-12 text-sm text-white placeholder:text-neutral-500 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/30 focus:outline-none"
+              className="w-full rounded-lg border border-white/10 bg-neutral-900/60 px-3.5 py-2.5 pr-12 text-sm text-white placeholder:text-neutral-500 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/30 focus:outline-none"
               placeholder="••••••••"
             />
             <button

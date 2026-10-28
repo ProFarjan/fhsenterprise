@@ -11,7 +11,7 @@ import ProductCard, { type ProductCardData } from "./ProductCard";
 function EmptyState() {
   return (
     <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-neutral-300 bg-white/60 px-6 py-16 text-center">
-      <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-50 text-orange-600">
+      <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-blue-light text-brand-blue">
         <ProductsIcon className="h-7 w-7" />
       </span>
       <p className="mt-4 text-sm text-neutral-500">No products yet — add the first one.</p>
@@ -48,7 +48,7 @@ export default function ProductsClient({
             <select
               value={siteFilter}
               onChange={(e) => setSiteFilter(e.target.value)}
-              className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-800 shadow-sm focus:border-orange-500 focus:ring-1 focus:ring-orange-500 focus:outline-none"
+              className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-800 shadow-sm focus:border-brand-blue focus:ring-1 focus:ring-brand-blue focus:outline-none"
             >
               <option value="ALL">All companies</option>
               {sites.map((s) => (
@@ -63,7 +63,7 @@ export default function ProductsClient({
         <button
           type="button"
           onClick={() => setModalOpen(true)}
-          className="inline-flex items-center gap-2 rounded-lg bg-orange-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-orange-500"
+          className="inline-flex items-center gap-2 rounded-lg bg-brand-blue px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-blue-hover"
         >
           <PlusIcon className="h-4 w-4" />
           Add product

@@ -37,7 +37,7 @@ export default function Topbar({
 
       {/* Profile — the signed-in admin from the verified server session */}
       <div className="ml-auto flex items-center gap-2.5 pl-1">
-        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-orange-600 text-sm font-semibold text-white">
+        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-blue text-sm font-semibold text-white">
           {initial}
         </div>
         <div className="hidden leading-tight sm:block">
